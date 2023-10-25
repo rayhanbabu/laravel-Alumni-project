@@ -18,12 +18,12 @@ class MaintainToken
     public function handle(Request $request, Closure $next): Response
     {
         
-        $token=$request->header('token');
-        if(!$token){
-            $token=Cookie::get('token');
+        $TOKEN_LOGIN=$request->header('TOKEN_LOGIN');
+        if(!$TOKEN_LOGIN){
+            $TOKEN_LOGIN=$request->cookie('TOKEN_LOGIN');
         }
         
-        $result=MaintainJWTToken::ReadToken($token);
+        $result=MaintainJWTToken::ReadToken($TOKEN_LOGIN);
         if($result=="unauthorized"){
             return response()->json([
                 'status'=>500,

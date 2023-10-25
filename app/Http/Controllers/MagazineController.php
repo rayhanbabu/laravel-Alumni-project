@@ -281,7 +281,19 @@ class MagazineController extends Controller
                   $model->text4=$request->input('text4');
           if($request->hasfile('image')){
 
-          if($model->category=='Slide'){
+
+            if($request->input('category')=='Link'){
+
+              $path='uploads/admin/'.$model->image;
+              if(File::exists($path)){
+               File::delete($path);
+               }
+              $image= $request->file('image'); 
+              $new_name = rand() . '.' .$image->getClientOriginalExtension();
+              $image->move('uploads/admin',$new_name);
+              $model->image=$new_name;
+            }
+           else if($model->category=='Slide'){
             $file=$_FILES['image']['tmp_name'];
             $hw=getimagesize($file);
             $w=$hw[0];

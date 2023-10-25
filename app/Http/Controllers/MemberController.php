@@ -41,7 +41,7 @@ class MemberController extends Controller
              'certificate_image' => 'required|mimes:jpeg,png,jpg,pdf|max:812000',
             ],
             [
-               'member_password.regex'=>'Password is required with a minimum of 6 characters.Should have at least 1 lowercase AND 1 uppercase AND 1 number'
+               'member_password.regex'=>' '
             ]
         );
           
@@ -294,7 +294,6 @@ class MemberController extends Controller
                  'status'=>400,
                  'validate_err'=>$validator->messages(),
               ]);
-
          }else{
           $status=1;
           $member=Member::where('email',$request->email)->first();
@@ -302,12 +301,12 @@ class MemberController extends Controller
                    if($member->member_password==$request->member_password){
                       if($member->member_verify==$status){
                         $token=MaintainJWTToken::CreateToken($member->email,$member->id,$member->admin_name);
-                        Cookie::queue('token',$token,60*24);
+                        Cookie::queue('token_login',$token,60*24);
                     return response()->json([
                         'status'=>200,
-                        'message'=> 'success',
+                        'message'=> 'success login',
                         'token'=>$token,
-                      ]);   
+                      ])->cookie('TOKEN_LOGIN',$token,60*24*30);   
                            
                        }else{
                           return response()->json([
@@ -347,11 +346,11 @@ class MemberController extends Controller
 
 
     public function member_logout(){
-            Cookie::queue('token','',-1);
+         
             return response()->json([
                 'status'=>500,
                 'errors'=> 'Member Logout',
-            ]); 
+            ])->cookie('TOKEN_LOGIN','',-1); 
       }
 
 

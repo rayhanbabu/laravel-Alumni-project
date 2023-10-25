@@ -315,7 +315,7 @@ public function member($category){
 
 
           public function member_update(Request $request ){
-            $validator=Validator::make($request->all(),[    
+            $validator=\Validator::make($request->all(),[    
                     'phone'=>'required|unique:members,phone,'.$request->input('edit_id'),
                     'email'=>'required|unique:members,email,'.$request->input('edit_id'),
                     'serial'=>'required'
@@ -326,9 +326,7 @@ public function member($category){
                      'dureg.required'=>'Registration is required',
                      'dureg.unique'=>'Registration number already exist',
              ]);
-      
-          
-      
+             
           if($validator->fails()){
                  return response()->json([
                     'status'=>400,

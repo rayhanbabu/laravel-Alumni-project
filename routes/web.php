@@ -64,9 +64,7 @@ Route::middleware('MaintainIs')->group(function(){
    Route::get('/maintain/password',[MaintainController::class,'password']);
    Route::post('maintain/password',[MaintainController::class,'passwordedit']);
 
-   
-
-
+  
     //admin
    Route::get('maintain/adminview',[MaintainController::class,'adminview']);
    Route::post('maintain/admininsert',[MaintainController::class,'admininsert']);
@@ -90,7 +88,6 @@ Route::middleware('MaintainIs')->group(function(){
       Route::post('maintain/paymentedit',[OnlinepaymentController::class,'paymentedit']);
       Route::post('onlinepaymentpdf',[OnlinepaymentController::class,'onlinepaymentpdf']);
 
-
       //SMS information
       Route::get('maintain/sms',[SmsController::class,'index']);
       Route::get('/maintain/sms/fetchall',[SmsController::class,'fetchAll']);
@@ -101,7 +98,6 @@ Route::middleware('MaintainIs')->group(function(){
       Route::post('/maintain/smspayment',[SmsController::class,'smspayment']);
       Route::get('/maintain/sms/{type}/{status}/{id}',[SmsController::class,'smsstatus']);
       Route::post('onlinesmspdf',[SmsController::class,'onlinesmspdf']);
-
 
 });
 
