@@ -301,11 +301,11 @@ class MemberController extends Controller
                    if($member->member_password==$request->member_password){
                       if($member->member_verify==$status){
                         $token=MaintainJWTToken::CreateToken($member->email,$member->id,$member->admin_name);
-                        Cookie::queue('token_login',$token,60*24);
+                        //Cookie::queue('token_login',$token,60*24);
                     return response()->json([
                         'status'=>200,
                         'message'=> 'success login',
-                        'token'=>$token,
+                        'TOKEN_LOGIN'=>$token,
                       ])->cookie('TOKEN_LOGIN',$token,60*24*30);   
                            
                        }else{
