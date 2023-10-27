@@ -53,6 +53,8 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $middlewareAliases = [
+        'ForgetTokenExist' => \App\Http\Middleware\ForgetTokenExist::class,
+        'ForgetToken' => \App\Http\Middleware\ForgetToken::class,
         'MaintainTokenExist' => \App\Http\Middleware\MaintainTokenExist::class,
         'MaintainToken' => \App\Http\Middleware\MaintainToken::class,
         'AdminIs' => \App\Http\Middleware\AdminIs::class,

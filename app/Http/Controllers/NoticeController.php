@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\validator;
 use Illuminate\Support\Collection;
+
 use DB;
 use Cookie;
 use Session;
@@ -24,7 +25,7 @@ class NoticeController extends Controller
     public function fetch(){
       if(Session::has('admin')){
       $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-      $data=DB::table('notices')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->paginate(10);
+      $data=DB::table('notices')->where('admin_name',$admin->admin_name)->orderBy('id', 'desc')->paginate(10);
       return view('admin.notice_data',compact('data'));
       }
    }
@@ -44,7 +45,7 @@ class NoticeController extends Controller
                     ->orWhere('title', 'like', '%'.$search.'%')
                     ->orWhere('text', 'like', '%'.$search.'%')
                     ->orderBy($sort_by, $sort_type)
-                    ->paginate(5);
+                    ->paginate(10);
       return view('admin.notice_data', compact('data'))->render();
      }
     }
@@ -61,11 +62,10 @@ class NoticeController extends Controller
     public function store(Request $request) {
 
        $text = $request->text;
-    
 
-      if(Session::has('admin')){
-        $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-      }
+       if(Session::has('admin')){
+             $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+        }
 
 
     Notice::create([
@@ -83,10 +83,10 @@ class NoticeController extends Controller
 
 
      public function view($id)
-     {
+      {
          $data = Notice::find($id);
          return view('admin.notice_view',['data'=>$data]);
-     }
+      }
 
 
      public function edit($id)

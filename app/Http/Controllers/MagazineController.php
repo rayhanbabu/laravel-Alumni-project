@@ -16,6 +16,7 @@ namespace App\Http\Controllers;
  use Illuminate\Support\Facades\Session;
  use Illuminate\Support\Facades\Cookie;
 
+
 class MagazineController extends Controller
 {
     
@@ -32,7 +33,7 @@ class MagazineController extends Controller
             'title' => 'required',
             'category' => 'required',
             'text1' => 'required',
-            'image' => 'mimes:jpeg,png,jpg,pdf|max:716800',
+            'image' => 'mimes:jpeg,png,jpg,pdf|max:700',
          ]);
 
        
@@ -47,18 +48,9 @@ class MagazineController extends Controller
         ]);
 
        }else{
-      
-        $data= Magazine::where('serial',$request->input('serial'))->where('category',$request->input('category'))
-        ->where('admin_name',$admin->admin_name)->count('serial');
         $data1= Magazine::where('category',$request->input('category'))
         ->where('admin_name',$admin->admin_name)->count('id');
-        if($data>=1){
-            return response()->json([
-                 'status'=>600,
-                 'errors'=> 'Serial Number Already Exist',
-            ]);
-
-         }else if($data1>=$count){
+         if($data1>=$count){
           
            return response()->json([
                'status'=>600,
@@ -83,7 +75,7 @@ class MagazineController extends Controller
             if($request->input('category')=='Link'){
               $image= $request->file('image'); 
               $new_name = rand() . '.' .$image->getClientOriginalExtension();
-              $image->move('uploads/admin',$new_name);
+              $image->move(public_path('uploads/admin'),$new_name);
               $model->image=$new_name;
             }
            else if($request->input('category')=='Slide' OR $request->input('category')=='Gallery'){
@@ -92,10 +84,10 @@ class MagazineController extends Controller
               $w=$hw[0];
               $h=$hw[1];	 
               if($w<1930 && $h<1090){
-                 $image= $request->file('image'); 
-                 $new_name = rand() . '.' .$image->getClientOriginalExtension();
-                 $image->move('uploads/admin',$new_name);
-                 $model->image=$new_name;
+                 $uploadedFile = $request->file('image');
+                 $fileName = time() . '.' .$uploadedFile->getClientOriginalExtension();
+                 $uploadedFile->move(public_path('uploads/admin'),$fileName);
+                 $model->image=$fileName;
               }else{
                   return response()->json([
                     'status'=>300,  
@@ -112,7 +104,7 @@ class MagazineController extends Controller
               if($w<310 && $h<310){
                  $image= $request->file('image'); 
                  $new_name = rand() . '.' .$image->getClientOriginalExtension();
-                 $image->move('uploads/admin',$new_name);
+                 $image->move(public_path('uploads/admin'),$new_name);
                  $model->image=$new_name;
               }else{
                   return response()->json([
@@ -143,7 +135,7 @@ class MagazineController extends Controller
        public function fetchAll($member) {
         if(Session::has('admin')){
         $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-        $data = Magazine::where('category',$member)->where('admin_name',$admin->admin_name)->orderBy('serial','desc')->get();
+        $data = Magazine::where('category',$member)->where('admin_name',$admin->admin_name)->orderBy('serial','desc')->orderBy('id','asc')->get();
           $output=' <h5 class="text-success"> Total Row : '.$data->count().' </h5>';	
         if ($data->count()> 0 ) {
           if($member=='Link'){
@@ -260,7 +252,7 @@ class MagazineController extends Controller
              'serial' => 'required',
             'title' => 'required',
             'text1' => 'required',
-            'image' => 'mimes:jpeg,png,jpg|max:716800',
+            'image' => 'mimes:jpeg,png,jpg,pdf|max:716800',
       ]);
     
     if($validator->fails()){
@@ -278,35 +270,36 @@ class MagazineController extends Controller
                 $model->title=$request->input('title');
                 $model->text1=$request->input('text1');
                 $model->text2=$request->input('text2');
-                  $model->text4=$request->input('text4');
+                 $model->text4=$request->input('text4');
           if($request->hasfile('image')){
 
 
-            if($request->input('category')=='Link'){
+            if($model->category=='Link'){
 
-              $path='uploads/admin/'.$model->image;
-              if(File::exists($path)){
-               File::delete($path);
-               }
+                $filePath = public_path('uploads/admin') . '/' . $model->image;
+                 if (file_exists($filePath)) {
+                       unlink($filePath);
+                   }
               $image= $request->file('image'); 
               $new_name = rand() . '.' .$image->getClientOriginalExtension();
-              $image->move('uploads/admin',$new_name);
+              $image->move(public_path('uploads/admin'),$new_name);
               $model->image=$new_name;
             }
-           else if($model->category=='Slide'){
+           else if($model->category=='Slide' || $model->category=='Gallery'){
             $file=$_FILES['image']['tmp_name'];
             $hw=getimagesize($file);
             $w=$hw[0];
             $h=$hw[1];	 
                if($w<1930 && $h<1090){
-                $path='uploads/admin/'.$model->image;
-                if(File::exists($path)){
-                 File::delete($path);
-                 }
-                $image = $request->file('image');
-                $new_name = rand() . '.' . $image->getClientOriginalExtension();
-                $image->move('uploads/admin/', $new_name);
-                $model->image=$new_name;
+
+                $filePath = public_path('uploads/admin') . '/' . $model->image;
+                 if (file_exists($filePath)) {
+                      unlink($filePath);
+                   }
+                   $uploadedFile = $request->file('image');
+                   $fileName = time() . '.' .$uploadedFile->getClientOriginalExtension();
+                   $uploadedFile->move(public_path('uploads/admin'),$fileName);
+                   $model->image=$fileName;
                 } 
                 else{
                 return response()->json([
@@ -321,13 +314,13 @@ class MagazineController extends Controller
              $w=$hw[0];
              $h=$hw[1];	 
                 if($w<310 && $h<310){
-                 $path='uploads/admin/'.$model->image;
-                 if(File::exists($path)){
-                  File::delete($path);
-                  }
+                  $filePath = public_path('uploads/admin') . '/' . $model->image;
+                  if (file_exists($filePath)) {
+                      unlink($filePath);
+                   }
                  $image = $request->file('image');
                  $new_name = rand() . '.' . $image->getClientOriginalExtension();
-                 $image->move('uploads/admin/', $new_name);
+                 $image->move(public_path('uploads/admin'), $new_name);
                  $model->image=$new_name;
                  } 
                  else{
@@ -356,10 +349,10 @@ class MagazineController extends Controller
 
     public function delete(Request $request) {
          $model=Magazine::find($request->input('id'));
-         $path='uploads/admin/'.$model->image;
-          if(File::exists($path)){
-               File::delete($path);
-          }
+         $filePath = public_path('uploads/admin') . '/' . $model->image;
+         if (file_exists($filePath)) {
+              unlink($filePath);
+           }
          $model->delete();
        return response()->json([
           'status'=>200,  

@@ -44,10 +44,7 @@
 
            <input type="hidden" name="category" id="category" value={{$member}} class="form-control" placeholder="" >
 
-           <div class="col-lg-12">
-              <label for="fname">Serial<span style="color:red;"> * </span></label>
-              <input type="number" name="serial" id="serial" class="form-control" placeholder="" required>
-            </div>
+           
 
             <div class="col-lg-12">
               <label for="fname">Title<span style="color:red;"> * </span></label>
@@ -55,6 +52,11 @@
             </div>
 
          @if($member=='Slide')
+
+         <div class="col-lg-12">
+              <label for="fname">Serial<span style="color:red;"> * </span></label>
+              <input type="number" name="serial" id="serial" class="form-control" placeholder="" required>
+            </div>
 
 
                  <input type="hidden" name="text1" id="title" value="text1" class="form-control" placeholder="">
@@ -80,6 +82,11 @@
 
 
           @elseif($member=='Gallery')
+
+          <div class="col-lg-12">
+              <label for="fname">Serial<span style="color:red;"> * </span></label>
+              <input type="number" name="serial" id="serial" class="form-control" placeholder="" required>
+            </div>
                
           <input type="hidden" name="text1" id="title" value="text1" class="form-control" placeholder="">
                  <input type="hidden" name="text2" id="title" class="form-control" placeholder="">
@@ -94,6 +101,10 @@
                 <input type="file" name="image"  id="image" class="form-control" required>
           </div>
        @elseif($member=='Link') 
+
+     
+              <input type="hidden" name="serial" id="serial" class="form-control" value="1"placeholder="" >
+            
                     <input type="hidden" name="text1" id="title" value="text1" class="form-control" placeholder="">
                    <input type="hidden" name="text2" id="title" class="form-control" placeholder="">
                    <input type="hidden" name="name" id="name" class="form-control" placeholder="" >
@@ -109,6 +120,12 @@
 
 
         @else
+
+        <div class="col-lg-12">
+              <label for="fname">Serial<span style="color:red;"> * </span></label>
+              <input type="number" name="serial" id="serial" class="form-control" placeholder="" required>
+            </div>
+
           <div class="my-2">
             <label for="desig">Text 1<span style="color:red;"> * </span></label>
             <textarea name="text1" id="text1" col="10" rows="4"  class="form-control" ></textarea>

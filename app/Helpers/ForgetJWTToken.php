@@ -5,22 +5,19 @@ use Firebase\JWT\Key;
 use Exception;
  
 
-class MaintainJWTToken
+class ForgetJWTToken
 {
-    public static function CreateToken($maintainEmail,$maintainID,$admin_name)
+    public static function CreateToken($email)
     {
-        //60*3= 3 minite
         $key =env('JWT_KEY');
-        $payload=[
-            'iss'=>'rayhan-token',
-            'iat'=>time(),
-            'exp'=>time()+60*60*48,
-            'email'=>$maintainEmail,
-            'member_id'=>$maintainID,
-            'admin_name'=>$admin_name
-        ];
+         $payload=[
+             'iss'=>'forget-token',
+             'iat'=>time(),
+             'exp'=>time()+60*5,
+             'email'=>$email, 
+          ];
         return JWT::encode($payload,$key,'HS256');
-    }
+     }
 
     public static function ReadToken($token)
     {

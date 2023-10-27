@@ -430,12 +430,12 @@ public function delete(Request $request) {
 
    public function webexpre() {
     if(Cookie::has('cook_user')){
-        $cook_user=Cookie::get('cook_user');
-         $admin= Admin::where('admin_name',$cook_user)->select('id','name','nameen','address','email',
+          $cook_user=Cookie::get('cook_user');
+          $admin= Admin::where('admin_name',$cook_user)->select('id','name','nameen','address','email',
                      'mobile','admin_name','header_size','resheader_size')->first();
-        $data1 = expre::where('category','President')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
-        $data2 = expre::where('category','Secretary')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
-        return view('web.expre',['admin'=>$admin ,'data1'=>$data1 ,'data2'=>$data2]);
+          $data1 = expre::where('category','President')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
+          $data2 = expre::where('category','Secretary')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
+          return view('web.expre',['admin'=>$admin ,'data1'=>$data1 ,'data2'=>$data2]);
     }else{
         return redirect('/web/search');   
     } 

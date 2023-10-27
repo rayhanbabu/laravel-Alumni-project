@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Admin;
 use App\Helpers\MaintainJWTToken;
+use App\Helpers\ForgetJWTToken;
 use Illuminate\Support\Facades\Hash;
 use Exception;
 
@@ -30,18 +31,17 @@ class MemberController extends Controller
              'category' =>'required',
              'degree_category' =>'required',
              'blood' =>'required',
-             'gender' =>'required',
              'country' =>'required',
              'city' => 'required',
              'occupation' => 'required',
              'member_password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
              'phone' => 'required||min:11|unique:members,phone',
              'email' => 'required|unique:members,email',
-             'profile_image' => 'required|image|mimes:jpeg,png,jpg|max:412000',
-             'certificate_image' => 'required|mimes:jpeg,png,jpg,pdf|max:812000',
+             'profile_image' => 'required|image|mimes:jpeg,png,jpg|max:400',
+             'certificate_image' => 'required|mimes:jpeg,png,jpg,pdf|max:500',
             ],
             [
-               'member_password.regex'=>' '
+               'member_password.regex'=>'password minimum six characters including one uppercase letter, one lowercase letter and one number '
             ]
         );
           
@@ -78,6 +78,7 @@ class MemberController extends Controller
         $model->email_status='show';
         $model->email_verify=0;
         $model->member_verify=0;
+        $model->status=1;
        
       
          if($request->hasfile('profile_image')){
@@ -88,7 +89,7 @@ class MemberController extends Controller
               if($w<310 && $h<310){
                $image= $request->file('profile_image'); 
                $file_name = 'profile'.rand() . '.' . $image->getClientOriginalExtension();
-               $image->move('uploads/admin', $file_name);
+               $image->move(public_path('uploads/admin'), $file_name);
                $model->profile_image=$file_name;
             }else{
               return response()->json([
@@ -101,17 +102,17 @@ class MemberController extends Controller
             if($request->hasfile('certificate_image')){
                  $image1= $request->file('certificate_image');
                  $file_name1 = 'certicicate'.rand() . '.' . $image1->getClientOriginalExtension();
-                 $image1->move('uploads/admin', $file_name1);
+                 $image1->move(public_path('uploads/admin'), $file_name1);
                  $model->certificate_image=$file_name1;
               }
          $model->save();
 
          $email=$request->input('email');
          $rand=rand(11111,99999);
-         $subject='verify your Email ';  
+         $subject='Verify your Email ';  
          $title='Dear,  '.$request->input('name');
          $body='Please Click URL and verify your email to complete your account setup.';
-         $link=URL::to('email_verify/'.md5($request->input('email')));
+         $link=$admin->other_link.'email_verify/'.md5($request->input('email'));
          $body1='Alternatively, paste the following URL into your browser:';
          $name='DUCAA , developed by ancovabd.com';  
          $details = [
@@ -193,10 +194,12 @@ class MemberController extends Controller
                      'name' => $name,
                     ];
                     Mail::to($email)->send(new \App\Mail\ForgetMail($details));
-    
+
+                    $TOKEN_FORGET=ForgetJWTToken::CreateToken($email);
     
                  return response()->json([
                      'status'=>200,
+                      'TOKEN_FORGET'=>$TOKEN_FORGET,
                       'message'=> 'Recovery code send your E-mail',
                   ]); 
             }else{
@@ -211,18 +214,20 @@ class MemberController extends Controller
 
 
          public function forget_code(request $request){
-          $email=$request->email;
-          $code=$request->forget_code;
-          $email_exist=Member::where('email',$email)->count('email');
-         if($email_exist>=1 OR $code>11){
-            $code_exist=Member::where('email',$email)->where('forget_code',$code)->count('email');
-             if($code_exist>=1){
-                 return response()->json([
-                     'status'=>200,
-                      'message'=> 'Code Match',
-                 ]); 
+           $email=$request->header('email');
+           $code=$request->forget_code;
+           $email_exist=Member::where('email',$email)->count('email');
+          if($email_exist>=1 OR $code>11){
+             $code_exist=Member::where('email',$email)->where('forget_code',$code)->count('email');
+            
+              if($code_exist>=1){
+                  DB::update("update members set  forget_code ='nullvalue' where email = '$email'");
+                  return response()->json([
+                       'status'=>200,
+                        'message'=> 'Code Match',
+                   ]); 
 
-             }else{
+               }else{
               return response()->json([
                  'status'=>500,
                  'message'=> 'Invalid Recovery Code',
@@ -235,51 +240,58 @@ class MemberController extends Controller
                    'massage'=> 'Invalid  Email Or Code ',
              ]); 
           }   
-
-
        }
 
+
        public function confirm_password(request $request){
+        $email=$request->header('email');
+        $validator=\Validator::make($request->all(),[    
+          'new_password'  => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+          'confirm_password'  => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+        ],
+        [
+          'new_password.regex'=>'password minimum six characters including one uppercase 
+                   letter, one lowercase letter and one number ',
+           'confirm_password.regex'=>'password minimum six characters including one uppercase letter, one 
+                            lowercase letter and one number '          
+       ]);
 
-        $validator=\Validator::make($request->all(),[       
-              'new_password' => 'required',
-         ]);
-
-         if($validator->fails()){
-          return response()->json([
-            'status'=>700,
-            'validate_err'=>$validator->messages(),
-          ]);
-        }else{
-  
-        $email=$request->email;
-        $code=$request->forget_code;
-        $new_password=$request->new_password;
-        $code_exist=Member::where('email',$email)->where('forget_code',$code)->count('email');
-
-         if($code_exist>=1){
-           DB::update(
-              "update members set member_password ='$new_password', forget_code ='45ftret56' where email = '$email'"
-            );
-
+        if($validator->fails()){
              return response()->json([
-                'status'=>500,
-                'errors'=> 'Password Change Successfull',
-             ]); 
-    
+               'status'=>700,
+               'errors'=>$validator->messages(),
+            ]);
+       }else{
+        $rend=rand();
+        $new_password=$request->new_password;
+        $confirm_password=$request->confirm_password;
+        if($new_password==$confirm_password){ 
+        $code_exist=Member::where('email',$email)->where('forget_code','nullvalue')->count('email');
+        if($code_exist>=1){
+            DB::update("update members set member_password ='$new_password', forget_code ='$rend' where email = '$email'");
+              return response()->json([
+                 'status'=>200,
+                 'errors'=> 'Password Change Successfull',
+              ]); 
+         }else{
+             return response()->json([
+                 'status'=>600,
+                 'errors'=> 'Invalid Verification code',
+              ]); 
+          }  
+
         }else{
             return response()->json([
-               'status'=>600,
-               'errors'=> 'Invalid Access',
-           ]); 
-        }  
-        
-      }
+                'status'=>500,
+                'message'=> 'New Passsword & Confirm Passsword is not match',
+            ]); 
+         }  
+
+       } 
     }
 
 
     public function member_login(Request $request){
-
 
         $validator=\Validator::make($request->all(),[    
             'email'=>'required',
@@ -291,8 +303,8 @@ class MemberController extends Controller
 
           if($validator->fails()){
                return response()->json([
-                 'status'=>400,
-                 'validate_err'=>$validator->messages(),
+                 'status'=>700,
+                 'errors'=>$validator->messages(),
               ]);
          }else{
           $status=1;
@@ -302,27 +314,28 @@ class MemberController extends Controller
                       if($member->member_verify==$status){
                         $token=MaintainJWTToken::CreateToken($member->email,$member->id,$member->admin_name);
                         //Cookie::queue('token_login',$token,60*24);
+                        //->cookie('TOKEN_LOGIN',$token,60*24*30)
                     return response()->json([
                         'status'=>200,
                         'message'=> 'success login',
                         'TOKEN_LOGIN'=>$token,
-                      ])->cookie('TOKEN_LOGIN',$token,60*24*30);   
+                      ]);   
                            
                        }else{
                           return response()->json([
-                             'status'=>700,
+                             'status'=>800,
                              'errors'=> 'Acount Inactive',
                           ]); 
                        }    
                    }else{
                      return response()->json([
-                        'status'=>600,
+                        'status'=>400,
                         'errors'=> 'Invalid Password',
                      ]); 
                    }
           }else{
              return response()->json([
-                  'status'=>500,
+                  'status'=>300,
                   'errors'=> 'Invalid Email',
               ]); 
            }
@@ -345,12 +358,90 @@ class MemberController extends Controller
     }
 
 
-    public function member_logout(){
-         
+    public function member_update(Request $request){
+
+      $member_id=$request->header('member_id');
+
+      $validator=\Validator::make($request->all(),[       
+        'name' => 'required',
+        'degree_category' =>'required',
+        'blood' =>'required',
+        'country' =>'required',
+        'city' => 'required',
+        'occupation' => 'required',
+        'phone' => 'required|min:11|unique:members,phone,'.$member_id,
+        'email' => 'required|unique:members,email,'.$member_id,
+        'profile_image' => 'image|mimes:jpeg,png,jpg|max:412000',
+       ],
+   );
+
+   if($validator->fails()){
+      return response()->json([
+           'status'=>700,
+          'errors'=>$validator->messages(),
+       ]);
+   }else{
+     
+      $model=Member::find($member_id);
+
+        $model->name=$request->input('name');
+        $model->gender=$request->input('gender');
+        $model->country=$request->input('country');
+        $model->city=$request->input('city');
+        $model->occupation=$request->input('occupation');
+        $model->phone=$request->input('phone');
+        $model->email=$request->input('email');
+        $model->blood=$request->input('blood');
+
+        $model->organization=$request->input('organization');
+        $model->web_link=$request->input('web_link');
+        $model->affiliation=$request->input('affiliation');
+        $model->training=$request->input('training');
+        $model->expertise=$request->input('expertise');
+        
+      
+       
+       if($request->hasfile('profile_image')){
+         $file=$_FILES['profile_image']['tmp_name'];
+         $hw=getimagesize($file);
+         $w=$hw[0];
+         $h=$hw[1];	 
+            if($w<310 && $h<310){
+              $filePath = public_path('uploads/admin') . '/' . $model->profile_image;
+              if (file_exists($filePath)) {
+                   unlink($filePath);
+                }
+             $image= $request->file('profile_image'); 
+             $file_name = 'profile'.rand() . '.' . $image->getClientOriginalExtension();
+             $image->move(public_path('uploads/admin'), $file_name);
+             $model->profile_image=$file_name;
+          }else{
             return response()->json([
-                'status'=>500,
+                'status'=>600,  
+               'message'=>'Profile Image size must be 300*300px ',
+             ]);
+            }
+         }
+
+       $model->save();
+
+        return response()->json([
+            'status'=>200,
+            'data'=>'Profile Update',
+        ]); 
+
+      }
+
+
+  }
+
+
+    public function member_logout(){
+      //->cookie('TOKEN_LOGIN','',-1)
+            return response()->json([
+                'status'=>200,
                 'errors'=> 'Member Logout',
-            ])->cookie('TOKEN_LOGIN','',-1); 
+            ]); 
       }
 
 
@@ -360,17 +451,17 @@ class MemberController extends Controller
 
           $validator=\Validator::make($request->all(),[    
             'old_password'  => 'required',
-            'new_password'  => 'required',
-            'confirm_password'  => 'required',
+            'new_password'  => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+            'confirm_password'  => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
           ],
-           [
-            'old_password.required'=>'Old Password is required',
-          ]);
+          [
+            'new_password.regex'=>'password minimum six characters including one uppercase letter, one lowercase letter and one number '
+         ]);
 
           if($validator->fails()){
                return response()->json([
-                 'status'=>400,
-                 'validate_err'=>$validator->messages(),
+                 'status'=>700,
+                 'errors'=>$validator->messages(),
               ]);
 
          }else{
@@ -391,16 +482,15 @@ class MemberController extends Controller
                 'message'=> 'Passsword change  successfully',
             ]); 
                }else{
-               
                 return response()->json([
-                    'status'=>500,
+                    'status'=>600,
                     'message'=> 'New Passsword & Confirm Passsword is not match',
                 ]); 
                }  
           }else{
           
            return response()->json([
-            'status'=>500,
+            'status'=>400,
             'message'=> 'Invalid Old Password',
         ]); 
           } 

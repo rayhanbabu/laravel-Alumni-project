@@ -28,6 +28,17 @@
                                 <input type="password" name="c_pass" class="form-control">
                            </div>
 
+                           @if ($errors->any())
+      <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+      </div>
+  @endif
+
+
                            <div class="form-group  mx-3 my-3">
                            @if(Session::has('fail'))
                    <div  class="alert alert-danger"> {{Session::get('fail')}}</div>

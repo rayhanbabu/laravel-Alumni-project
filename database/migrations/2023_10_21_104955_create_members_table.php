@@ -24,9 +24,10 @@ class CreateMembersTable extends Migration
             $table->string('emailmd5');
             $table->string('phone');
             $table->string('member_password');
-            $table->enum('degree_category',['Honours','Masters','Phd']);
+            $table->enum('degree_category',['Honours','Masters','PhD']);
             $table->string('email_verify')->default(0);
             $table->string('member_verify')->default(0);
+            $table->string('status')->default(1);
             $table->string('passing_year')->nullable();
             $table->string('certificate_image')->nullable();
             $table->string('gender')->nullable();

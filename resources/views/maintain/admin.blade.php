@@ -466,7 +466,7 @@
          </div> 
 
          <div class="form-group col-sm-6  my-2">
-               <label class=""><b>other link </b></label>
+               <label class=""><b>other/Forntend link .com/ </b></label>
                <input type="text" id="edit_other_link"  name="other_link" class="form-control" >
          </div> 
 

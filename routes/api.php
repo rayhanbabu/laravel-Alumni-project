@@ -27,14 +27,18 @@ use App\Http\Controllers\MemberController;
       //member api
        Route::post('/{username}/application_memebr',[MemberController::class,'application_memebr']);
        Route::get('/email_verify/{emailmd5}', [MemberController::class, 'email_verify']);
+
        Route::get('{username}/forget_password/{email}', [MemberController::class, 'forget_password']);
-       Route::get('{username}/forget_code/{email}/{forget_code}', [MemberController::class, 'forget_code']);
-       Route::post('{username}/confirm_password/{email}/{forget_code}', [MemberController::class, 'confirm_password']);
+        Route::middleware('ForgetToken')->group(function(){
+            Route::get('{username}/forget_code/{forget_code}', [MemberController::class, 'forget_code']);
+            Route::post('{username}/confirm_password/{forget_code}', [MemberController::class, 'confirm_password']);
+        });
 
        Route::post('/{username}/member_login',[MemberController::class,'member_login']);
 
        Route::middleware('MaintainToken')->group(function(){
             Route::get('{username}/member_profile', [MemberController::class, 'member_profile']);
+            Route::post('{username}/member_update', [MemberController::class, 'member_update']);
             Route::get('{username}/member_logout', [MemberController::class, 'member_logout']);
             Route::post('{username}/member_password_update', [MemberController::class, 'password_update']);
 

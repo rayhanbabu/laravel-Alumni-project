@@ -50,8 +50,8 @@
        <tr>
        <th width="15%"> Profile Image </th>
 		   <th width="15%">Certificate</th>
-           <th width="8%" class="sorting" data-sorting_type="asc" data-column_name="card" style="cursor: pointer">
-           Member Card  <span id="card_icon"> <i class="fas fa-sort-amount-up-alt"></i></span> </th>
+           <th width="8%" class="sorting" data-sorting_type="asc" data-column_name="member_card" style="cursor: pointer">
+           Member Card  <span id="member_card_icon"> <i class="fas fa-sort-amount-up-alt"></i></span> </th>
            <th width="8%" class="sorting" data-sorting_type="asc" data-column_name="serial" style="cursor: pointer">
            Serial <span id="serial_icon"> <i class="fas fa-sort-amount-up-alt"></i></span> </th>
 		       <th width="35%">Name</th>

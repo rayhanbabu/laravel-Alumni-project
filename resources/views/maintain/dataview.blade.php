@@ -43,7 +43,7 @@
          <th width="10%" >advisor size</th>
          <th width="10%" >Fb Link</th>
          <th width="10%" >Youtube Link </th>
-         <th width="10%" >Other  Link</th>
+         <th width="10%" > Other/ForntEnd Link</th>
          <th width="10%" >Taxt1 </th>
          <th width="10%" >Taxt2 </th>
          <th width="10%" >Taxt3 </th>
@@ -304,7 +304,7 @@
          </div> 
 
          <div class="form-group col-sm-6  my-2">
-               <label class=""><b>other link </b></label>
+               <label class=""><b> Other/ForntEnd Link </b></label>
                <input type="text" id="edit_other_link"  name="other_link" class="form-control" >
          </div> 
 

@@ -74,6 +74,18 @@ class AdminController extends Controller
 
     function passwordedit(Request $request)
     {
+
+        $request->validate([
+            'email'=>'required',
+            'n_pass'  => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+            'c_pass'  => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+        ],[
+            'n_pass.regex'=>'password minimum six characters including one uppercase 
+            letter, one lowercase letter and one number ',
+           'c_pass.regex'=>'password minimum six characters including one uppercase letter, one 
+                     lowercase letter and one number '     
+        ]);
+
         $email=$request->input('email');
         $n_pass=$request->input('n_pass');
         $c_pass=$request->input('c_pass');
@@ -211,7 +223,7 @@ public function member($category){
       if(Session::has('admin')){
              $admin=Session::get('admin');
          }
-       $data=Member::where('admin_name',$admin->admin_name)->Where('category',$category)->orderBy('member_verify','desc')->paginate(2);
+       $data=Member::where('admin_name',$admin->admin_name)->Where('category',$category)->orderBy('member_verify','asc')->paginate(10);
         return view('admin.member_data',compact('data'));
   }
 
@@ -220,9 +232,7 @@ public function member($category){
 
 
   public function memberstatus($operator,$status,$id){
-     
- 
-
+    
       if($operator=='email'){
              if($status=='deactive'){
                   $type=0;
@@ -276,7 +286,7 @@ public function member($category){
                   ->orWhere('name', 'like', '%'.$search.'%')
                   ->orWhere('email', 'like', '%'.$search.'%');
               })->orderBy($sort_by, $sort_type)
-                      ->paginate(2);
+                      ->paginate(10);
                        return view('admin.member_data', compact('data'))->render();        
              }
         }
@@ -301,15 +311,17 @@ public function member($category){
 
         public function member_delete(Request $request, $id) {
             $member=Member::find($id);
-            $path='uploads/admin/'.$member->profile_image;
+            $path=public_path('uploads/admin/').$member->profile_image;
                 if(File::exists($path)){
                    File::delete($path);
                 }
+
+                $path=public_path('uploads/admin/').$member->certificate_image;
+                if(File::exists($path)){
+                   File::delete($path);
+                }     
             $member->delete();
-            return response()->json([
-               'status'=>200,  
-               'message'=>'Deleted Data',
-             ]);
+            return back()->with('success','Data Delete Successfull');     
           }
 
 
