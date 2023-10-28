@@ -38,6 +38,7 @@
                       <option value="Others">Others</option>
                       <option value="Contact">Contact</option>
                       <option value="Document">Document</option>
+                      <option value="Dashboard">Dashboard</option>
                  </select>
           </div>
 

@@ -23,8 +23,8 @@
   
       <div class="row">
           <div class="col-sm-6 my-2">
-            <label for="name">Date<span style="color:red;"> * </span></label>
-            <input type="date" name="date" id="name"  value="{{$data->date}}"class="form-control" placeholder=""  required>
+              <label for="name">Date<span style="color:red;"> * </span></label>
+             <input type="date" name="date" id="name"  value="{{$data->date}}"class="form-control" placeholder=""  required>
           </div>
 
           <div class="col-sm-6 my-2">
@@ -39,6 +39,7 @@
                       <option value="Others">Others</option>
                       <option value="Contact">Contact</option>
                       <option value="Document">Document</option>
+                      <option value="Dashboard">Dashboard</option>
                  </select>
           </div>
 

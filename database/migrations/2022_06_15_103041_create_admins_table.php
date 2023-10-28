@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('email');
             $table->string('email2');
+            $table->float('getway_fee')->default(0);
             $table->string('email_verify')->nullable();
             $table->string('mobile');
             $table->string('admin_name');

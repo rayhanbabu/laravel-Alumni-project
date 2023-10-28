@@ -17,6 +17,8 @@ use App\Models\Admin;
 use App\Helpers\MaintainJWTToken;
 use App\Helpers\ForgetJWTToken;
 use Illuminate\Support\Facades\Hash;
+use App\Models\App;
+use App\Models\Invoice;
 use Exception;
 
 class MemberController extends Controller
@@ -194,7 +196,7 @@ class MemberController extends Controller
                      'name' => $name,
                     ];
                     Mail::to($email)->send(new \App\Mail\ForgetMail($details));
-
+ 
                     $TOKEN_FORGET=ForgetJWTToken::CreateToken($email);
     
                  return response()->json([
@@ -229,7 +231,7 @@ class MemberController extends Controller
 
                }else{
               return response()->json([
-                 'status'=>500,
+                 'status'=>400,
                  'message'=> 'Invalid Recovery Code',
             ]); 
              }
@@ -237,7 +239,7 @@ class MemberController extends Controller
           }else{
               return response()->json([
                   'status'=>600,
-                   'massage'=> 'Invalid  Email Or Code ',
+                   'massage'=> 'Recovery code not empty ',
              ]); 
           }   
        }
@@ -279,10 +281,9 @@ class MemberController extends Controller
                  'errors'=> 'Invalid Verification code',
               ]); 
           }  
-
         }else{
             return response()->json([
-                'status'=>500,
+                'status'=>300,
                 'message'=> 'New Passsword & Confirm Passsword is not match',
             ]); 
          }  
@@ -446,9 +447,6 @@ class MemberController extends Controller
 
 
       public function password_update(request $request){
-
-      
-
           $validator=\Validator::make($request->all(),[    
             'old_password'  => 'required',
             'new_password'  => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
@@ -497,6 +495,65 @@ class MemberController extends Controller
           
         }
      }
+
+
+      public function category_show(request $request,$username){
+          $data=APP::where('admin_name',$username)->where('status',1)->orderBy('id', 'desc')->get();
+          return response()->json([
+            'status'=>200,
+            'data'=>$data,
+        ]); 
+
+      }
+
+
+      public function invoice_create(request $request,$username){
+
+        $member_id=$request->header('member_id');
+         $validator=\Validator::make($request->all(),[    
+          'category_id'  => 'required',
+        ]
+       );
+       
+        if($validator->fails()){
+             return response()->json([
+               'status'=>700,
+               'errors'=>$validator->messages(),
+            ]);
+
+       }else{
+         $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
+        'mobile','admin_name','header_size','resheader_size','getway_fee')->first();
+          $category=App::where('admin_name',$username)->where('status',1)->where('id',$request->category_id)->first();
+          if($category){
+
+            $total_amount=$category->amount+($category->amount*$admin->getway_fee)/100;
+
+            $model= new Invoice;
+            $model->admin_name=$username;
+            $model->member_id=$member_id;
+            $model->category_id=$request->category_id;
+            $model->amount=$category->amount;
+            $model->getway_fee=$admin->getway_fee;
+            $model->total_amount=$total_amount;
+            $model->save();
+
+            return response()->json([
+               'status'=>200,
+               'message'=>"Invoice Create Successfull",
+           ]); 
+          }else{
+            return response()->json([
+              'status'=>300,
+              'errors'=>"Payment category Invalid",
+          ]); 
+          }
+          
+
+       }
+
+
+      }
   
     
 

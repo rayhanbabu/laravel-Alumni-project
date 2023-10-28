@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\validator;
 use App\Models\Member;
 use Hash;
 use Exception;
+use App\Models\App;
+use App\Models\Invoice;
 
 
 class AdminController extends Controller
@@ -369,6 +371,129 @@ public function member($category){
               }
              }
           }
+
+
+
+          public function paymentview(){
+             return view('admin.paymentview');
+          }
+
+          public function fetch(){
+            if(Session::has('admin')){
+              $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+              $data=Invoice::leftjoin('members','members.id','=','invoices.member_id')
+               ->leftjoin('apps','apps.id','=','invoices.category_id')
+               ->where('invoices.admin_name',$admin->admin_name)
+               ->select('members.member_card','members.name'
+               ,'apps.category','invoices.*')->orderBy('invoices.id', 'desc')->paginate(10);
+               return view('admin.paymentview_data',compact('data'));
+            }
+           }
+
+
+           function fetch_data(Request $request)
+           {
+              if($request->ajax())
+                {
+                   $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+                   $sort_by = $request->get('sortby');
+                   $sort_type = $request->get('sorttype');
+                   $search = $request->get('search');
+                   $search = str_replace(" ", "%", $search);
+                   $data=Invoice::leftjoin('members','members.id','=','invoices.member_id')
+                   ->leftjoin('apps','apps.id','=','invoices.category_id')
+                   ->where('invoices.admin_name',$admin->admin_name)
+                           ->where(function($query) use ($search) {
+                             $query->orwhere('invoices.id', 'like', '%' . $search . '%');
+                             $query->orwhere('members.member_card', 'like', '%' . $search . '%');
+                             $query->orwhere('members.name', 'like', '%' . $search . '%');
+                             $query->orwhere('apps.category', 'like', '%' . $search . '%');
+                            })
+                     ->select('members.member_card','members.name','apps.category','invoices.*')
+                            ->orderBy($sort_by, $sort_type)->paginate(10);
+                 return view('admin.paymentview_data', compact('data'))->render();
+               }
+             }
+
+
+
+
+
+           public function payment_status(Request $request ){
+                 $id=$request->id;
+                 $invoice=Invoice::where('id',$id)->first();
+
+                 if($invoice->payment_type=="Online"){
+                    return response()->json([
+                        'status'=>300,  
+                        'message'=>"Online Payment Exist.Can Not Change Payment Status",
+                      ]);
+
+                 }else{
+                 if($invoice->payment_status==0){
+                     $status=1;
+                     $payment_time=date('Y-m-d H:i:s');
+                     $payment_type='Offline';
+                     $payment_method='admin';
+
+                 }else{
+                      $status=0;
+                      $payment_time=date('2010-10-10 10:10:10');
+                      $payment_type='Offline';
+                      $payment_method='';
+                 }
+                 $payment_date= date('Y-m-d');
+                 $payment_day= date('d');
+                 $payment_month= date('n');
+                 $payment_year= date('Y');
+
+                 $model=Invoice::find($id);
+                 $model->payment_status=$status; 
+                 $model->payment_type=$payment_type; 
+                 $model->payment_time=$payment_time;
+                 $model->payment_method=$payment_method; 
+                 $model->payment_date=$payment_date; 
+                 $model->payment_year=$payment_year; 
+                 $model->payment_month=$payment_month;  
+                 $model->payment_day=$payment_day; 
+                 $model->update();
+            
+                 return response()->json([
+                    'status'=>200,  
+                    'message'=>"Payment Status Update Successfull",
+                  ]);
+                }
+           }
+
+
+           public function payment_delete(Request $request ){
+               $id=$request->id;
+               $email=$request->email;
+               $invoice=Invoice::where('id',$id)->first();
+               $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+               if($email==$admin->email){
+                   if($invoice->payment_status==0){
+                         $model=Invoice::find($id);
+                         $model->delete();
+                         return response()->json([
+                            'status'=>200,  
+                            'message'=>"Invoice delete Successfull",
+                          ]);                         
+                   }else{
+                    return response()->json([
+                        'status'=>300,  
+                        'message'=>"Please Unpaid Payment Status",
+                     ]);
+                   } 
+                }else{
+                  return response()->json([
+                       'status'=>400,  
+                       'message'=>"Invalid Admin Email",
+                    ]);
+                 }
+
+
+           }
   
 
 

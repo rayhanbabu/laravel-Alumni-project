@@ -19,7 +19,8 @@ class AppController extends Controller
     public function fetch(){
       if(Session::has('admin')){
         $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-        $data=APP::where('admin_name',$admin->admin_name)->orderBy('id', 'desc')->paginate(15);
+        $data=APP::where('admin_name',$admin->admin_name)
+        ->orderBy('id', 'desc')->paginate(15);
          return view('admin.app_data',compact('data'));
       }
      }
@@ -28,14 +29,11 @@ class AppController extends Controller
 
       if(Session::has('admin')){
       $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-      $validator=\Validator::make($request->all(),[  
-         'dureg' => 'required',
-         'phone' => 'required',
+        $validator=\Validator::make($request->all(),[  
+           'category' => 'required',
+           'amount' => 'required',
         ],
-        [
-         'dureg.required'=>'Text is required',
-         'phone.required'=>'Serial is required',
-        ]);
+       );
       
 
      if($validator->fails()){
@@ -44,19 +42,16 @@ class AppController extends Controller
              'validate_err'=>$validator->messages(),
            ]);
      }else{
-          $dureg=$request->input('dureg');
-          $phone=$request->input('phone');
-
-               $app= new App;
-               $app->dureg=$request->input('dureg');
-               $app->phone=$request->input('phone');
+                $app= new App;
+                $app->amount=$request->input('amount');
+                $app->status=$request->input('status');
                 $app->category=$request->input('category');
-               $app->admin_name=$admin->admin_name;
-               $app->save();
-              return response()->json([
-               'status'=>200,  
-               'message'=>'Inserted Data',
-             ]);
+                $app->admin_name=$admin->admin_name;
+                $app->save();
+               return response()->json([
+                 'status'=>200,  
+                  'message'=>'Inserted Data',
+               ]);
          }
         }
       }
@@ -82,8 +77,8 @@ class AppController extends Controller
 
       $validator=\Validator::make($request->all(),[
                     
-         'dureg' => 'required',
-         'phone' => 'required',
+         'category' => 'required',
+         'amount' => 'required',
      ]);
 
      if($validator->fails()){
@@ -94,10 +89,10 @@ class AppController extends Controller
       }else{
             $app=App::find($id);
             if($app){
-                $app->dureg=$request->input('dureg');
-                $app->phone=$request->input('phone');
+                 $app->amount=$request->input('amount');
+                 $app->status=$request->input('status');
                  $app->category=$request->input('category');
-                $app->update();   
+                 $app->update();   
               return response()->json([
                   'status'=>200,
                   'message'=>'Data Updated'

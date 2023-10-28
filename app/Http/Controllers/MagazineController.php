@@ -33,7 +33,7 @@ class MagazineController extends Controller
             'title' => 'required',
             'category' => 'required',
             'text1' => 'required',
-            'image' => 'mimes:jpeg,png,jpg,pdf|max:700',
+            'image' => 'mimes:jpeg,png,jpg,pdf|max:750',
          ]);
 
        

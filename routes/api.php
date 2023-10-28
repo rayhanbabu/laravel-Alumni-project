@@ -40,7 +40,9 @@ use App\Http\Controllers\MemberController;
             Route::get('{username}/member_profile', [MemberController::class, 'member_profile']);
             Route::post('{username}/member_update', [MemberController::class, 'member_update']);
             Route::get('{username}/member_logout', [MemberController::class, 'member_logout']);
+            Route::get('{username}/category', [MemberController::class, 'category_show']);
             Route::post('{username}/member_password_update', [MemberController::class, 'password_update']);
+            Route::post('{username}/invoice_create', [MemberController::class, 'invoice_create']);
 
        });
 

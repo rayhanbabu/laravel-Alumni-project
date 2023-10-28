@@ -4,7 +4,7 @@
 @section('content')
 
   <div class="row mt-4 mb-3">
-          <div class="col-6"> <h4 class="mt-0">History View</h4></div>
+          <div class="col-6"> <h4 class="mt-0">Payment Category View</h4></div>
                      <div class="col-3">
                           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             
@@ -34,25 +34,26 @@
             <ul class="alert alert-warning d-none"  id="add_form_errlist"></ul>
 
      <div class="form-group  my-2">
-	      	<label><b>Serial</b></label>
-	        <input name="phone" id="phone" type="text"   class="form-control"  required/>
-          <p class="text-danger err_phone"></p>
+	      	<label><b>Category name</b></label>
+	        <input name="category" id="category" type="text"   class="form-control"  required/>
+          <p class="text-danger err_category"></p>
+     </div>
+
+     <div class="form-group  my-2">
+	      	<label><b>Amount (TK)</b></label>
+	        <input name="amount" id="amount" type="number"   class="form-control"  required/>
+          <p class="text-danger err_category"></p>
      </div>
 
     <div class="form-group  my-2">
-         <label for="lname">category</label>
-                <select class="form-select" name="category" id="category" aria-label="Default select example"  >
-                      <option value="history">history</option>
-                      <option value="bank">bank</option>
+         <label for="lname">Category Show Member</label>
+                <select class="form-select" name="status" id="status" aria-label="Default select example"  >
+                      <option value="1">Show</option>
+                      <option value="0">Hidden</option>
                 </select>
      </div>         
 	  
-   <div class="form-group  my-2">        
-         <label><b>Text</b></label><br>
-         <textarea name="dureg" id="dureg" col="15" rows="6"  class="form-control"  required></textarea>
-          <p class="text-danger err_dureg"></p>
-    </div> 	
-  
+   
 
     
       <div class="loader">
@@ -93,23 +94,25 @@
       <input type="hidden" name="edit_id"  id="edit_id" >
 
                                 
-   <label><b>Serial No</b></label><br>
-   <input name="phone" id="edit_phone" type="text" class="form-control" required/>
-           <p class="text-danger edit_err_phone"></p>
+      <div class="form-group  my-2">
+	      	<label><b>Category name</b></label>
+	        <input name="category" id="edit_category" type="text"   class="form-control"  required/>
+          <p class="text-danger err_category"></p>
+     </div>
 
+     <div class="form-group  my-2">
+	      	<label><b>Amount (TK)</b></label>
+	        <input name="amount" id="edit_amount" type="number"   class="form-control"  required/>
+          <p class="text-danger err_amount"></p>
+     </div>
 
-         <div class="form-group  my-2">
-            <label for="lname">category</label>
-                <select class="form-select" name="category" id="edit_category" aria-label="Default select example"  >
-                      <option value="history">history</option>
-                      <option value="bank">bank</option>
+    <div class="form-group  my-2">
+         <label for="lname">Category Show Member</label>
+                <select class="form-select" name="status" id="edit_status" aria-label="Default select example"  >
+                      <option value="1">Show</option>
+                      <option value="0">Hidden</option>
                 </select>
-         </div>    
-
-
-    <label><b>Text</b></label><br>
-    <textarea name="dureg" id="edit_dureg" col="15" rows="6"  class="form-control" required></textarea>
-      <p class="text-danger edit_err_dureg"></p>
+     </div>         
 
 
     <div class="loader">
@@ -153,11 +156,11 @@
  <table class="table table-bordered" id="employee_data">
  <thead>
        <tr>
-       <th width="25%" class="sorting" data-sorting_type="asc" data-column_name="dureg" style="cursor: pointer" >Serial
-                <span id="serial_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
-       <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="phone" style="cursor: pointer">Text
-                  <span id="text_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
-           <th  width="10%">Category</th>
+       <th width="25%" class="sorting" data-sorting_type="asc" data-column_name="category" style="cursor: pointer" >category
+                <span id="category_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
+       <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Amount
+                  <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
+           <th  width="10%">Status</th>
 		      <th  width="10%"></th>
 		      <th  width="10%"></th>
       </tr>
@@ -296,8 +299,8 @@ $(document).ready(function(){
                   $('#success_message').addClass('alert alert-danger');
                   $('#success_message').text(response.message);
                 }else{
-                  $('#edit_dureg').val(response.edit_value.dureg);
-                  $('#edit_phone').val(response.edit_value.phone);
+                  $('#edit_status').val(response.edit_value.status);
+                  $('#edit_amount').val(response.edit_value.amount);
                   $('#edit_category').val(response.edit_value.category);
                   $('#edit_id').val(edit_id);
                 }

@@ -215,6 +215,14 @@ Route::middleware('AdminIs')->group(function(){
         Route::delete('/expre/delete', [ExpreController::class,'delete']);
         Route::get('/expre/edit', [ExpreController::class, 'edit']);
         Route::post('/expre/update', [ExpreController::class, 'update']);
+
+
+         //Application 
+        Route::get('/admin/paymentview',[AdminController::class,'paymentview']);
+        Route::get('/admin/payment_fetch',[AdminController::class,'fetch']);
+        Route::get('/admin/payment/fetch_data',[AdminController::class,'fetch_data']);
+        Route::post('/admin/payment_status',[AdminController::class,'payment_status']);
+        Route::post('/admin/payment_delete',[AdminController::class,'payment_delete']);
         
         
          //Form Customize
@@ -236,7 +244,7 @@ Route::middleware('AdminIs')->group(function(){
    Route::get('/web/contact', [TestimonialController::class, 'webcontact']);
    Route::get('/web/search', [TestimonialController::class, 'websearch']);
    Route::get('/web/fetch_data',[TestimonialController::class,'fetch_data']);
-   Route::get('/{admin_name}', [TestimonialController::class, 'admin_name']);
+   //Route::get('/{admin_name}', [TestimonialController::class, 'admin_name']);
 
 
     //webpage
@@ -271,6 +279,17 @@ Route::middleware('AdminIs')->group(function(){
 
   Route::post('/pdfs',[HomeController::class,'pdfs']); 
 
+
+
+
+/*
+   //payment
+   Route::get('payment',[FormController::class,'payment'])->name('payment');
+   //You need declear your success & fail route in "app\Middleware\VerifyCsrfToken.php"
+   Route::post('success',[FormController::class,'success'])->name('success');
+   Route::post('fail',[FormController::class,'fail'])->name('fail');
+   Route::get('cancel',[FormController::class,'cancel'])->name('cancel');
+*/
 
   
   

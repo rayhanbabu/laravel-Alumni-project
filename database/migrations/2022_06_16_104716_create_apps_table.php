@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('apps', function (Blueprint $table) {
             $table->id();
             $table->string('admin_name');
-            $table->text('text');
+            $table->text('text')->nullable();
             $table->integer('phone')->nullable();
             $table->string('category');
-            $table->string('amount');
+            $table->string('status');
+            $table->integer('amount');
             $table->timestamps();
         });
     }

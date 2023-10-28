@@ -139,10 +139,7 @@
      </a>
 
 
-     <a class="nav-link @yield('app_select')" href="{{url('admin/app')}}">
-         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             History
-     </a>
+  
 
    @else
 
@@ -239,6 +236,17 @@
      <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
          Ex president / Secretary 
    </a>
+
+
+   <a class="nav-link @yield('app_select')" href="{{url('admin/app')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+             Payment Category
+     </a>
+
+     <a class="nav-link @yield('paymentview_select')" href="{{url('admin/paymentview')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+             Payment View
+     </a>
 
   </div>
  </div>
