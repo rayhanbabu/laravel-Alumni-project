@@ -548,11 +548,20 @@ class MemberController extends Controller
               'errors'=>"Payment category Invalid",
           ]); 
           }
-          
-
+        
        }
 
+      }
 
+      public function invoice_view(request $request,$username){
+           $member_id=$request->header('member_id');
+           $data=Invoice::where('member_id',$member_id)
+           ->leftjoin('apps','apps.id','=','invoices.category_id')->get();
+
+           return response()->json([
+            'status'=>200,
+            'data'=>$data,
+        ]); 
       }
   
     
