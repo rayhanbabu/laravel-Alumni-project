@@ -5,17 +5,15 @@
                   <td>{{ $row->name}}</td>
                   <td>{{ $row->category}}</td>
                   <td>{{ $row->total_amount}}</td>
-                  @if($row->payment_status == 1)
+            @if($row->payment_status == 1)
               <td> <button type="button" id="{{ $row->id}}" class="status_id btn btn-success btn-sm">Paid</button> </td>
             @else
              <td> <button type="button" id="{{ $row->id}}" class="status_id btn btn-warning btn-sm">Pending</button> </td>
-             @endif
+           @endif
                   <td>{{ $row->payment_type}}</td>
                   <td>{{ $row->payment_method}} {{ $row->payment_time}}</td>
-                  
-      
-
-       <td> <button type="button" id="{{ $row->id}}" class="delete_id btn btn-danger btn-sm">Delete</button> </td>
+               
+          <td> <button type="button" id="{{ $row->id}}" class="delete_id btn btn-danger btn-sm">Delete</button> </td>
          
 
      

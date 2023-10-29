@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\validator;
 use App\Models\Member;
 use Hash;
+use PDF;
 use Exception;
 use App\Models\App;
 use App\Models\Invoice;
@@ -375,7 +376,8 @@ public function member($category){
 
 
           public function paymentview(){
-             return view('admin.paymentview');
+            $data=APP::where('admin_name',Session::get('admin')->admin_name)->where('status',1)->orderBy('id', 'desc')->get();
+             return view('admin.paymentview',['category'=>$data]);
           }
 
           public function fetch(){
@@ -491,10 +493,53 @@ public function member($category){
                        'message'=>"Invalid Admin Email",
                     ]);
                  }
-
-
            }
-  
+
+
+
+    public function payment_category(Request $request){
+    
+      $month=date('n',strtotime($_POST['month']));
+      $year=date('Y',strtotime($_POST['month']));
+      $monthyear=$request->input('month');
+      $category=$request->input('category');
+
+      $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+      $category_name= App::where('id',$category)->first();
+
+      if($_POST['month']){
+        $invoice=Invoice::leftjoin('members','members.id','=','invoices.member_id')
+         ->where('invoices.admin_name',$admin->admin_name)->where('invoices.category_id',$category)
+         ->where('invoices.payment_month',$month)->where('invoices.payment_year',$year)->where('invoices.payment_status',1)
+         ->select('members.member_card','members.name','invoices.*')->orderBy('member_card','asc')->get();
+      }else{
+       $invoice=Invoice::leftjoin('members','members.id','=','invoices.member_id')
+         ->where('invoices.admin_name',$admin->admin_name)->where('invoices.category_id',$category)->where('invoices.payment_status',1)
+         ->select('members.member_card','members.name','invoices.*')->orderBy('member_card','asc')->get();
+      }
+   
+      $file='Invoice-'.$monthyear.'.pdf';
+
+      $pdf = PDF::loadView('pdf.payment_category',[
+        'title' => 'PDF Title',
+        'author' => 'PDF Author',
+        'margin_left' => 20,
+        'margin_right' => 20,
+        'margin_top' => 60,
+        'margin_bottom' => 20,
+        'margin_header' => 15,
+        'margin_footer' => 10,
+        'showImageErrors' => true,
+        'invoice' => $invoice,
+        'category_name' => $category_name,
+        'monthyear' => $monthyear,
+        'admin' => $admin,
+    ]);
+
+       return $pdf->stream($file.'.pdf');
+    
+  }
+
 
 
 

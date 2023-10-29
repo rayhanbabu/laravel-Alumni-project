@@ -10,7 +10,6 @@ namespace App\Http\Controllers;
  {
     public function generatePDF()
     {
-            
              $pdf = PDF::loadView('pdf.my-file-pdf',[
                     'title' => 'PDF Title',
                     'author' => 'PDF Author',

@@ -163,13 +163,31 @@ public function update(Request $request){
 }
 
 
-public function delete(Request $request) {
-  $text=Finance::find($request->input('id'));
-  $text->delete();
-  return response()->json([
-     'status'=>200,  
-     'message'=>'Deleted Data',
-   ]);
+   public function delete(Request $request) {
+              $id=$request->id;
+               $email=$request->email;
+               $invoice=Finance::where('id',$id)->first();
+               $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+               if($email==$admin->email){
+                   if($invoice->payment_status==0){
+                         $model=Finance::find($id);
+                         $model->delete();
+                         return response()->json([
+                            'status'=>200,  
+                            'message'=>"Invoice delete Successfull",
+                          ]);                         
+                   }else{
+                    return response()->json([
+                        'status'=>300,  
+                        'message'=>"Please Unpaid Payment Status",
+                     ]);
+                   } 
+                }else{
+                  return response()->json([
+                       'status'=>400,  
+                       'message'=>"Invalid Admin Email",
+                    ]);
+                 }
 }
 
 

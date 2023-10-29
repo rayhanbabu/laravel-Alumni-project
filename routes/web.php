@@ -223,6 +223,7 @@ Route::middleware('AdminIs')->group(function(){
         Route::get('/admin/payment/fetch_data',[AdminController::class,'fetch_data']);
         Route::post('/admin/payment_status',[AdminController::class,'payment_status']);
         Route::post('/admin/payment_delete',[AdminController::class,'payment_delete']);
+        Route::post('/admin/payment_category',[AdminController::class,'payment_category']);
         
         
          //Form Customize

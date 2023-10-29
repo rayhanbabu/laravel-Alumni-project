@@ -23,7 +23,7 @@ class CreateFinancesTable extends Migration
             $table->integer('amount');
             $table->string('cetagory');
             $table->date('date');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }

@@ -516,7 +516,6 @@ public function adminstatus($type,$status,$id){
 
 
     public function adminpdf(Request $request){
-
          $invoice=$request->input('invoice');
          $file='Payment_'.$invoice.'.pdf';
          $admin=Admin::get();

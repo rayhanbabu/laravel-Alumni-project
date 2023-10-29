@@ -2,20 +2,45 @@
 @section('page_title','Payment View')
 @section('paymentview_select','active')
 @section('content')
+ 
+<div class="row mt-4 mb-3">
+               <div class="col-3"> <h5 class="mt-0">Payment View</h5></div>
+                     <div class="col-4">
+                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                             <form action="{{url('admin/payment_category')}}" method="POST" enctype="multipart/form-data">
+                                  {!! csrf_field() !!}
+                                  <select class="form-control" name="category" required>
+                                    <option value="">Select Payment Category </option>
+                                    @foreach($category as $row)
+                                  <option value="{{$row->id}}">{{$row->category}}</option>
+                                 @endforeach	
+                               </select> 
+					                     
+                         </div>
+                     </div>
 
-  <div class="row mt-4 mb-3">
-          <div class="col-4"> <h5 class="mt-0">Payment  View</h5></div>
-                     <div class="col-3">
-                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                     <div class="col-2">
+                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                           
+                         <input type="month" name="month" id="month" class="form-control" placeholder="" >          
+                         </div>
+                     </div>
+
+                     <div class="col-2">
+                         <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                             
-                          </div>
-                      </div>
-                      <div class="col-3">
-                         <div class="d-grid gap-2 d-md-flex ">         
-                </div>
-          </div> 
-    </div> 
+                         <button type="submit" name="search" class="btn btn-primary"> Pdf View </button> 
+					                   </form>   
+                         </div>
+                     </div>
 
+                     <div class="col-1">
+                         <div class="d-grid gap-2 d-md-flex ">
+                       						 
+                             
+                         </div>
+                     </div> 
+             </div>
 
   
 

@@ -3,11 +3,11 @@
                   <td>{{ $row->category}}</td>
                   <td>{{ $row->amount}}</td>
                   <td>
-        @if($row->status == 1)
-          <a href="#"  class="btn btn-success btn-sm">Show<a>
+          @if($row->status == 1)
+             <a href="#"  class="btn btn-success btn-sm">Show<a>
             @else
-        <a href="#"  class="btn btn-danger btn-sm"> Hidden<a>
-            @endif
+             <a href="#"  class="btn btn-danger btn-sm"> Hidden<a>
+          @endif
          </td>
 
                   <td> <button type="button" value="{{ $row->id}}" class="edit_id btn btn-primary btn-sm">Edit</button> </td>

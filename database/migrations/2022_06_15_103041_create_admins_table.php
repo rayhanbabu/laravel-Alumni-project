@@ -21,6 +21,14 @@ return new class extends Migration
             $table->string('email');
             $table->string('email2');
             $table->float('getway_fee')->default(0);
+            $table->float('offline_amount')->default(0);
+            $table->float('online_amount')->default(0);
+            $table->float('online_withdraw')->default(0);
+            $table->float('online_cur_amount')->default(0);
+            $table->float('sponsor_amount')->default(0);
+            $table->float('total_amount')->default(0);
+            $table->float('spent')->default(0);
+            $table->float('reserve_amount')->default(0);
             $table->string('email_verify')->nullable();
             $table->string('mobile');
             $table->string('admin_name');
