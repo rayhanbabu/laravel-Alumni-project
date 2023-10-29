@@ -24,7 +24,7 @@ use Exception;
 class MemberController extends Controller
 {
     
-
+ 
     public function application_memebr(Request $request){
 
         $admin= Admin::where('admin_name',$request->username)->first();
@@ -35,9 +35,9 @@ class MemberController extends Controller
              'blood' =>'required',
              'country' =>'required',
              'city' => 'required',
-             'occupation' => 'required',
+             'occupation' => 'required',  
              'member_password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
-             'phone' => 'required||min:11|unique:members,phone',
+             'phone' => 'required||min:8|unique:members,phone',
              'email' => 'required|unique:members,email',
              'profile_image' => 'required|image|mimes:jpeg,png,jpg|max:400',
              'certificate_image' => 'required|mimes:jpeg,png,jpg,pdf|max:500',
@@ -174,6 +174,10 @@ class MemberController extends Controller
      
      
      public function forget_password(request $request){
+
+     
+
+   
             $email=$request->email;
             $rand=rand(11111,99999);
             $email_exist=Member::where('email',$email)->count('email');
@@ -211,11 +215,11 @@ class MemberController extends Controller
                ]); 
             }   
 
-
          }
 
 
          public function forget_code(request $request){
+
            $email=$request->header('email');
            $code=$request->forget_code;
            $email_exist=Member::where('email',$email)->count('email');
@@ -241,7 +245,8 @@ class MemberController extends Controller
                   'status'=>600,
                    'message'=> 'Recovery code not empty ',
              ]); 
-          }   
+          }  
+        
        }
 
 
@@ -312,7 +317,8 @@ class MemberController extends Controller
           $member=Member::where('email',$request->email)->first();
           if($member){
                    if($member->member_password==$request->member_password){
-                      if($member->member_verify==$status){
+                      if($member->status==$status){
+                        if($member->email_verify==$status){
                         $token=MaintainJWTToken::CreateToken($member->email,$member->id,$member->admin_name);
                         //Cookie::queue('token_login',$token,60*24);
                         //->cookie('TOKEN_LOGIN',$token,60*24*30)
@@ -320,7 +326,14 @@ class MemberController extends Controller
                         'status'=>200,
                         'message'=> 'success login',
                         'TOKEN_LOGIN'=>$token,
-                      ]);   
+                      ]);  
+                      
+                    }else{
+                      return response()->json([
+                         'status'=>900,
+                         'message'=> 'Invalid Email',
+                      ]); 
+                   }   
                            
                        }else{
                           return response()->json([
@@ -384,7 +397,7 @@ class MemberController extends Controller
      
       $model=Member::find($member_id);
 
-        $model->name=$request->input('name');
+        $model->name=$request->input('name'); 
         $model->gender=$request->input('gender');
         $model->country=$request->input('country');
         $model->city=$request->input('city');
@@ -394,6 +407,7 @@ class MemberController extends Controller
         $model->blood=$request->input('blood');
 
         $model->organization=$request->input('organization');
+        $model->designation=$request->input('designation');
         $model->web_link=$request->input('web_link');
         $model->affiliation=$request->input('affiliation');
         $model->training=$request->input('training');
@@ -526,8 +540,10 @@ class MemberController extends Controller
           $category=App::where('admin_name',$username)->where('status',1)->where('id',$request->category_id)->first();
           if($category){
 
+            $verify= Member::where('member_verify',1)->where('id',$member_id)->count('id');
             $total_amount=$category->amount+($category->amount*$admin->getway_fee)/100;
 
+            if($verify>=1){
             $model= new Invoice;
             $model->admin_name=$username;
             $model->member_id=$member_id;
@@ -541,6 +557,14 @@ class MemberController extends Controller
                'status'=>200,
                'message'=>"Invoice Create Successfull",
            ]); 
+
+          }else{
+            return response()->json([
+              'status'=>400,
+              'message'=>"Memebr Verify Pending . Please Contact Authority",
+          ]); 
+          }
+
           }else{
             return response()->json([
               'status'=>300,
