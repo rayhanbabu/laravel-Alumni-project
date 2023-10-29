@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Member;
 use PhpOffice\PhpSpreadsheet\Writer\Ods\Meta;
+use Exception;
 
 class TestimonialController extends Controller
 {
@@ -494,6 +495,7 @@ public function delete(Request $request) {
                        'admin'=>$admin,'slide'=>$slide,'slide1'=>$slide1,
                        'welcome'=>$welcome,'test'=>$test,'logu'=>$logu,'homecount'=>$homecount
                    ]);
+
              }
 
 

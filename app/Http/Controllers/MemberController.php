@@ -51,7 +51,7 @@ class MemberController extends Controller
       if($validator->fails()){
          return response()->json([
              'status'=>700,
-             'errors'=>$validator->messages(),
+             'message'=>$validator->messages(),
           ]);
      }else{
         $count= Member::where('admin_name',$request->username)->count('id')+1;
@@ -96,7 +96,7 @@ class MemberController extends Controller
             }else{
               return response()->json([
                   'status'=>600,  
-                 'message'=>'Profile Image size must be 300*300px ',
+                  'message'=>'Profile Image size must be 300*300px ',
                ]);
               }
            }
@@ -207,7 +207,7 @@ class MemberController extends Controller
             }else{
                 return response()->json([
                     'status'=>600,
-                     'massage'=> 'Invalid  Email ',
+                     'message'=> 'Invalid  Email ',
                ]); 
             }   
 
@@ -239,7 +239,7 @@ class MemberController extends Controller
           }else{
               return response()->json([
                   'status'=>600,
-                   'massage'=> 'Recovery code not empty ',
+                   'message'=> 'Recovery code not empty ',
              ]); 
           }   
        }
@@ -261,7 +261,7 @@ class MemberController extends Controller
         if($validator->fails()){
              return response()->json([
                'status'=>700,
-               'errors'=>$validator->messages(),
+               'message'=>$validator->messages(),
             ]);
        }else{
         $rend=rand();
@@ -273,12 +273,12 @@ class MemberController extends Controller
             DB::update("update members set member_password ='$new_password', forget_code ='$rend' where email = '$email'");
               return response()->json([
                  'status'=>200,
-                 'errors'=> 'Password Change Successfull',
+                 'message'=> 'Password Change Successfull',
               ]); 
          }else{
              return response()->json([
                  'status'=>600,
-                 'errors'=> 'Invalid Verification code',
+                 'message'=> 'Invalid Verification code',
               ]); 
           }  
         }else{
@@ -305,7 +305,7 @@ class MemberController extends Controller
           if($validator->fails()){
                return response()->json([
                  'status'=>700,
-                 'errors'=>$validator->messages(),
+                 'message'=>$validator->messages(),
               ]);
          }else{
           $status=1;
@@ -325,19 +325,19 @@ class MemberController extends Controller
                        }else{
                           return response()->json([
                              'status'=>800,
-                             'errors'=> 'Acount Inactive',
+                             'message'=> 'Acount Inactive',
                           ]); 
                        }    
                    }else{
                      return response()->json([
                         'status'=>400,
-                        'errors'=> 'Invalid Password',
+                        'message'=> 'Invalid Password',
                      ]); 
                    }
           }else{
              return response()->json([
                   'status'=>300,
-                  'errors'=> 'Invalid Email',
+                  'message'=> 'Invalid Email',
               ]); 
            }
       }
@@ -351,7 +351,6 @@ class MemberController extends Controller
 
         $member_id=$request->header('member_id');
         $member=Member::where('id',$member_id)->first();
-
         return response()->json([
             'status'=>200,
             'data'=>$member,
@@ -379,7 +378,7 @@ class MemberController extends Controller
    if($validator->fails()){
       return response()->json([
            'status'=>700,
-          'errors'=>$validator->messages(),
+           'message'=>$validator->messages(),
        ]);
    }else{
      
@@ -418,8 +417,8 @@ class MemberController extends Controller
              $model->profile_image=$file_name;
           }else{
             return response()->json([
-                'status'=>600,  
-               'message'=>'Profile Image size must be 300*300px ',
+                 'status'=>600,  
+                 'message'=>'Profile Image size must be 300*300px ',
              ]);
             }
          }
@@ -428,7 +427,7 @@ class MemberController extends Controller
 
         return response()->json([
             'status'=>200,
-            'data'=>'Profile Update',
+            'message'=>'Profile Update',
         ]); 
 
       }
@@ -441,7 +440,7 @@ class MemberController extends Controller
       //->cookie('TOKEN_LOGIN','',-1)
             return response()->json([
                 'status'=>200,
-                'errors'=> 'Member Logout',
+                'message'=> 'Member Logout',
             ]); 
       }
 
@@ -459,7 +458,7 @@ class MemberController extends Controller
           if($validator->fails()){
                return response()->json([
                  'status'=>700,
-                 'errors'=>$validator->messages(),
+                 'message'=>$validator->messages(),
               ]);
 
          }else{
@@ -518,7 +517,7 @@ class MemberController extends Controller
         if($validator->fails()){
              return response()->json([
                'status'=>700,
-               'errors'=>$validator->messages(),
+               'message'=>$validator->messages(),
             ]);
 
        }else{
@@ -545,7 +544,7 @@ class MemberController extends Controller
           }else{
             return response()->json([
               'status'=>300,
-              'errors'=>"Payment category Invalid",
+              'message'=>"Payment category Invalid",
           ]); 
           }
         

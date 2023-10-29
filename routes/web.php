@@ -238,6 +238,7 @@ Route::middleware('AdminIs')->group(function(){
 
     //registration
    Route::get('/', [MaintainController::class, 'reg']);
+   /*
    Route::post('/web/insert', [MaintainController::class, 'webinsert']);
    Route::get('/email_verify/{email2}', [MaintainController::class, 'email_verify']);
    
@@ -245,10 +246,10 @@ Route::middleware('AdminIs')->group(function(){
    Route::get('/web/contact', [TestimonialController::class, 'webcontact']);
    Route::get('/web/search', [TestimonialController::class, 'websearch']);
    Route::get('/web/fetch_data',[TestimonialController::class,'fetch_data']);
-   //Route::get('/{admin_name}', [TestimonialController::class, 'admin_name']);
+   Route::get('/{admin_name}', [TestimonialController::class, 'admin_name']);
 
 
-    //webpage
+    webpage
     Route::get('/rewr', [TestimonialController::class, 'webhome']);
     Route::get('/web/member/{member}', [TestimonialController::class, 'webmember']);
     Route::get('/web/viewmember/{id}', [TestimonialController::class, 'viewmember']);
@@ -257,7 +258,7 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('/web/expre', [TestimonialController::class, 'webexpre']);
     Route::get('/web/history', [TestimonialController::class, 'webhistory']);
 
-
+   */
 
     
 
