@@ -238,10 +238,10 @@ Route::middleware('AdminIs')->group(function(){
 
     //registration
    Route::get('/', [MaintainController::class, 'reg']);
-   /*
+   
    Route::post('/web/insert', [MaintainController::class, 'webinsert']);
    Route::get('/email_verify/{email2}', [MaintainController::class, 'email_verify']);
-   
+   /*
     //Organozation Search
    Route::get('/web/contact', [TestimonialController::class, 'webcontact']);
    Route::get('/web/search', [TestimonialController::class, 'websearch']);
