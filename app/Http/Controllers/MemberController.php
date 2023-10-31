@@ -176,9 +176,6 @@ class MemberController extends Controller
      
      public function forget_password(request $request){
 
-     
-
-   
             $email=$request->email;
             $rand=rand(11111,99999);
             $email_exist=Member::where('email',$email)->count('email');
@@ -442,7 +439,7 @@ class MemberController extends Controller
 
         return response()->json([
             'status'=>200,
-            'message'=>'Profile Update',
+            'data'=>$model,
         ]); 
 
       }
@@ -540,10 +537,16 @@ class MemberController extends Controller
         'mobile','admin_name','header_size','resheader_size','getway_fee')->first();
           $category=App::where('admin_name',$username)->where('status',1)->where('id',$request->category_id)->first();
           if($category){
-
             $verify= Member::where('member_verify',1)->where('id',$member_id)->count('id');
-            $total_amount=$category->amount+($category->amount*$admin->getway_fee)/100;
 
+            $exist_category= Invoice::where('member_id',$member_id)->where('category_id',$request->category_id)->count('id');
+              if($exist_category>=1){
+                  return response()->json([
+                     'status'=>600,
+                     'message'=>"Booking category Already Added",
+                 ]);     
+            }else{
+            $total_amount=$category->amount+($category->amount*$admin->getway_fee)/100;
             if($verify>=1){
             $model= new Invoice;
             $model->admin_name=$username;
@@ -565,6 +568,7 @@ class MemberController extends Controller
               'message'=>"Memebr Verify Pending . Please Contact Authority",
           ]); 
           }
+        }
 
           }else{
             return response()->json([
@@ -587,6 +591,28 @@ class MemberController extends Controller
             'data'=>$data,
         ]); 
       }
+
+
+      public function invoice_pdf(request $request,$username,$id){
+        $member_id=$request->header('member_id');
+        $data=Invoice::where('member_id',$member_id)->where('category_id',$id)
+        ->leftjoin('apps','apps.id','=','invoices.category_id')
+        ->leftjoin('members','members.id','=','invoices.member_id')
+        ->get();
+     
+         if($data){
+           return response()->json([
+              'status'=>200,
+               'data'=>$data,
+           ]); 
+         }else{
+          return response()->json([
+             'status'=>300,
+             'data'=>"Not Paid",
+         ]); 
+         }
+         
+    }
   
     
 

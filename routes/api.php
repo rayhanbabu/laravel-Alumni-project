@@ -44,6 +44,7 @@ use App\Http\Controllers\MemberController;
             Route::post('{username}/member_password_update', [MemberController::class, 'password_update']);
             Route::post('{username}/invoice_create', [MemberController::class, 'invoice_create']);
             Route::get('{username}/invoice_view', [MemberController::class, 'invoice_view']);
+            Route::get('{username}/invoice_pdf/{id}', [MemberController::class, 'invoice_pdf']);
 
        });
 
