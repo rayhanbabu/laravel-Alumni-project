@@ -140,6 +140,9 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('/admin/member/{operator}/{status}/{id}', [AdminController::class, 'memberstatus']);
     Route::get('/admin/member_delete/{id}', [AdminController::class, 'member_delete']);
 
+    Route::get('admin/dataview',[AdminController::class,'dataview']);
+    Route::post('admin/dataedit',[AdminController::class,'dataedit']);
+
 
       //Notice
        Route::get('/admin/notice',[NoticeController::class,'index']);
@@ -168,6 +171,8 @@ Route::middleware('AdminIs')->group(function(){
         Route::delete('/magazine/delete', [MagazineController::class,'delete']);
         Route::get('/magazine/edit', [MagazineController::class,'edit']);
         Route::post('/magazine/update', [MagazineController::class,'update']);
+
+      
 
 
        //Text

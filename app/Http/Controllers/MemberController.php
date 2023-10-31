@@ -596,7 +596,8 @@ class MemberController extends Controller
       public function invoice_pdf(request $request,$username,$id){
         $member_id=$request->header('member_id');
         $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
-         'mobile','admin_name','header_size','resheader_size','getway_fee')->first();
+         'mobile','admin_name','header_size','resheader_size','getway_fee','token1','token2'
+         ,'token3','token4','token5','token6')->first();
         $data=Invoice::where('member_id',$member_id)->where('category_id',$id)
         ->leftjoin('apps','apps.id','=','invoices.category_id')
         ->leftjoin('members','members.id','=','invoices.member_id')

@@ -80,8 +80,9 @@
          <th width="10%" >Created, Subscrible, Duration, Expired </th>
          <th width="15%" >version type, Payment</th>
          <th width="15%" >E-mail</th>
-		     <th width="15%" >Mobile </th>
-	       <th width="15%" >Username</th>
+	   <th width="15%" >Mobile </th>
+         <th width="15%" >Getway Fee </th>
+	   <th width="15%" >Username</th>
          <th width="15%" >Password</th>
          <th width="5%" >Email verify</th>
          <th width="5%" >Status</th>
@@ -100,6 +101,7 @@
         <td>{{$item->version_type}}, {{$item->payment}}</td>
         <td>{{$item->email}}</td>
         <td>{{$item->mobile}}</td>
+        <td>{{$item->getway_fee}}</td>
         <td>{{$item->admin_name}}</td>
         <td>{{$item->admin_password}}</td>
        
@@ -132,7 +134,8 @@
        data-text4="{{$item->text4}}" data-version_type="{{$item->version_type}}"
        data-resheader_size="{{$item->resheader_size}}"  data-executive_size="{{$item->executive_size}}"
        data-senior_size="{{$item->senior_size}}" data-general_size="{{$item->general_size}}" data-notice_size="{{$item->notice_size}}"
-       data-welcome_size="{{$item->welcome_size}}"data-testimonial_size="{{$item->testimonial_size}}"data-slide_size="{{$item->slide_size}}" >Edit</button>
+       data-welcome_size="{{$item->welcome_size}}"data-testimonial_size="{{$item->testimonial_size}}" 
+       data-slide_size="{{$item->slide_size}}" data-getway_fee="{{$item->getway_fee}}" >Edit</button>
     </td>
 
         <td><a  class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to milloff  this month?')"  href="{{ url('maintain/admindelete/'.$item->id)}}">Delete</a></td>
@@ -192,6 +195,7 @@
                    var welcome_size = $(this).data("welcome_size");
                    var testimonial_size = $(this).data("testimonial_size");
                    var slide_size = $(this).data("slide_size");
+                   var getway_fee = $(this).data("getway_fee");
                      $('#edit_name').val(name);
                      $('#edit_nameen').val(nameen);
                      $('#edit_address').val(address);
@@ -224,6 +228,7 @@
                      $('#edit_welcome_size').val(welcome_size);
                      $('#edit_testimonial_size').val(testimonial_size);
                      $('#edit_slide_size').val(slide_size);
+                     $('#edit_getway_fee').val(getway_fee);
 
                      $('#updatemodal').modal('show');
                 });
@@ -285,6 +290,8 @@
                <label class=""><b>Password</b></label>
                <input type="text" name="admin_password" class="form-control" required>
            </div>
+
+         
 
           
         <div class="form-group  mb-4">
@@ -366,6 +373,11 @@
           <div class="form-group  col-sm-6 my-2">
                <label class=""><b>Password</b></label>
                <input type="text" id="edit_admin_password"  name="admin_password" class="form-control" required>
+          </div>
+
+          <div class="form-group  col-sm-6 my-2">
+               <label class=""><b>Getway fee</b></label>
+               <input type="text" id="edit_getway_fee"  name="getway_fee" class="form-control" required>
           </div>
 
           

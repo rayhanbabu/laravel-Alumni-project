@@ -396,12 +396,11 @@ public function admininsert(request $request){
 
 public function adminedit(request $request){
 
-
-    $validated = $request->validate([
-         'mobile' => 'required|unique:admins,mobile,'.$request->input('id'),
-         'email' => 'required|unique:admins,mobile,'.$request->input('id'),
-         'admin_name' => 'required|unique:admins,admin_name,'.$request->input('id'),
-    ]);
+     $validated = $request->validate([
+          'mobile' => 'required|unique:admins,mobile,'.$request->input('id'),
+          'email' => 'required|unique:admins,mobile,'.$request->input('id'),
+          'admin_name' => 'required|unique:admins,admin_name,'.$request->input('id'),
+      ]);
 
     $admin= Admin::find($request->input('id'));
     $admin->name=$request->input('name');
@@ -434,6 +433,7 @@ public function adminedit(request $request){
     $admin->welcome_size=$request->input('welcome_size');
     $admin->testimonial_size=$request->input('testimonial_size');
     $admin->slide_size=$request->input('slide_size');
+    $admin->getway_fee=$request->input('getway_fee');
     $admin->update();
     return redirect()->back()->with('success','Admin Update Successfuly');
 }
@@ -500,6 +500,7 @@ public function adminstatus($type,$status,$id){
         $admin->welcome_size=$request->input('welcome_size');
         $admin->testimonial_size=$request->input('testimonial_size');
         $admin->slide_size=$request->input('slide_size');
+       
         $admin->update();
         return redirect()->back()->with('success','Maintain Update Successfuly');
 

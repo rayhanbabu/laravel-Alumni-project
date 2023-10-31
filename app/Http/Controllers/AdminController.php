@@ -537,8 +537,31 @@ public function member($category){
     ]);
 
        return $pdf->stream($file.'.pdf');
-    
   }
+
+
+  public function dataview(Request $request){
+    $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->get();
+    return view('admin.dataview',['admin'=>$admin]);
+
+  }
+
+  public function dataedit(Request $request){
+          
+    $admin= Admin::find($request->input('id'));
+   
+    $admin->token1=$request->input('token1');
+    $admin->token2=$request->input('token2');
+    $admin->token3=$request->input('token3');
+    $admin->token4=$request->input('token4');
+    $admin->token5=$request->input('token5');
+    $admin->token6=$request->input('token6');
+   
+    $admin->update();
+    return redirect()->back()->with('success','Token Setup Update Successfuly');
+
+  }
+
 
 
 

@@ -82,6 +82,12 @@ return new class extends Migration
             $table->string('custom8')->nullable();
             $table->string('custom9')->nullable();
             $table->string('custom10')->nullable();
+            $table->text('token1')->nullable();
+            $table->text('token2')->nullable();
+            $table->text('token3')->nullable();
+            $table->text('token4')->nullable();
+            $table->text('token5')->nullable();
+            $table->text('token6')->nullable();
             $table->timestamps();
         });
     }
