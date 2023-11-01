@@ -598,10 +598,16 @@ class MemberController extends Controller
         $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
          'mobile','admin_name','header_size','resheader_size','getway_fee','token1','token2'
          ,'token3','token4','token5','token6')->first();
-        $data=Invoice::where('member_id',$member_id)->where('category_id',$id)
+
+       // $data=Invoice::where('member_id',$member_id)->where('category_id',$id)
+      //  ->leftjoin('apps','apps.id','=','invoices.category_id')
+       // ->leftjoin('members','members.id','=','invoices.member_id')
+       // ->get();
+
+        $data=Invoice::leftjoin('members','members.id','=','invoices.member_id')
         ->leftjoin('apps','apps.id','=','invoices.category_id')
-        ->leftjoin('members','members.id','=','invoices.member_id')
-        ->get();
+        ->where('invoices.member_id',$member_id)->where('invoices.category_id',$id)
+        ->select('members.member_card','members.name','apps.category','invoices.*')->get();
      
          if($data){
            return response()->json([
