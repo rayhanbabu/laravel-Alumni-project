@@ -78,14 +78,14 @@ class InvoiceController extends Controller
 
         }else{
             return response()->json([
-              'status'=>300,
+              'status'=>400,
               'message'=>"Invoice Not Found",
            ]);
         }
 
         } catch (Exception $e){ 
             return response()->json([
-                'status'=>400,
+                'status'=>500,
                 'message'=>"Something went wrong",
              ]);
           }
