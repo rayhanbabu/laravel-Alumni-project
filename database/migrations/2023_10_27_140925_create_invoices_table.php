@@ -26,8 +26,8 @@ return new class extends Migration
             $table->float('amount');
             $table->float('getway_fee');
             $table->float('total_amount');
-            $table->string('tran_id')->default('null');
-            $table->enum('payment_status',['0','1',])->default(0);
+            $table->string('tran_id')->unique();
+            $table->string('payment_status')->default(0);
             $table->enum('payment_type',['Online','Offline',])->nullable();
             $table->timestamp('payment_time')->nullable();
             $table->string('payment_method')->nullable();

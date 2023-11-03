@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\InvoiceController;
 
 
 /*
@@ -46,8 +47,20 @@ use App\Http\Controllers\MemberController;
             Route::get('{username}/invoice_view', [MemberController::class, 'invoice_view']);
             Route::get('{username}/invoice_pdf/{id}', [MemberController::class, 'invoice_pdf']);
 
+
+
+            Route::post('{username}/payment_create', [InvoiceController::class,'payment_create']);
+           
+         
+
+
        });
 
+       Route::get('payment_success', [InvoiceController::class,'payment_success']);
+       Route::get('payment_fail', [InvoiceController::class,'payment_fail']);
+       Route::post('payment_ipn', [InvoiceController::class,'payment_ipn']);
+
+      
         
 
        //public APi
@@ -62,9 +75,10 @@ use App\Http\Controllers\MemberController;
 
        //category =Gallery
        Route::get('/{username}/magazine/{category}', [TestimonialController::class, 'apimagazine']);
-
-
        Route::get('/{username}/expre', [TestimonialController::class, 'apiexpre']);
-       
+
+       //Payment Getway
+        
+      
        
        

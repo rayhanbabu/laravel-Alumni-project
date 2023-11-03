@@ -500,7 +500,17 @@ public function adminstatus($type,$status,$id){
         $admin->welcome_size=$request->input('welcome_size');
         $admin->testimonial_size=$request->input('testimonial_size');
         $admin->slide_size=$request->input('slide_size');
+        $admin->text2=$request->input('text2');
        
+        $admin->store_id=$request->input('store_id');
+        $admin->store_password=$request->input('store_password');
+        $admin->currency=$request->input('currency');
+        $admin->success_url=$request->input('success_url');
+        $admin->fail_url=$request->input('fail_url');
+        $admin->cancel_url=$request->input('cancel_url');
+        $admin->init_url=$request->input('init_url');
+        $admin->ipn_url=$request->input('ipn_url');
+     
         $admin->update();
         return redirect()->back()->with('success','Maintain Update Successfuly');
 

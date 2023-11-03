@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use App\Models\Admin;
 use App\Helpers\MaintainJWTToken;
 use App\Helpers\ForgetJWTToken;
@@ -550,6 +551,7 @@ class MemberController extends Controller
             if($verify>=1){
             $model= new Invoice;
             $model->admin_name=$username;
+            $model->tran_id=Str::random(8);
             $model->member_id=$member_id;
             $model->category_id=$request->category_id;
             $model->amount=$category->amount;
@@ -584,7 +586,8 @@ class MemberController extends Controller
       public function invoice_view(request $request,$username){
            $member_id=$request->header('member_id');
            $data=Invoice::where('member_id',$member_id)
-           ->leftjoin('apps','apps.id','=','invoices.category_id')->get();
+           ->leftjoin('apps','apps.id','=','invoices.category_id')
+           ->select('apps.category','invoices.*')->get();
 
            return response()->json([
             'status'=>200,
@@ -594,15 +597,15 @@ class MemberController extends Controller
 
 
       public function invoice_pdf(request $request,$username,$id){
-        $member_id=$request->header('member_id');
-        $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
+         $member_id=$request->header('member_id');
+         $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
          'mobile','admin_name','header_size','resheader_size','getway_fee','token1','token2'
          ,'token3','token4','token5','token6')->first();
 
-       // $data=Invoice::where('member_id',$member_id)->where('category_id',$id)
-      //  ->leftjoin('apps','apps.id','=','invoices.category_id')
-       // ->leftjoin('members','members.id','=','invoices.member_id')
-       // ->get();
+        // $data=Invoice::where('member_id',$member_id)->where('category_id',$id)
+        //  ->leftjoin('apps','apps.id','=','invoices.category_id')
+        // ->leftjoin('members','members.id','=','invoices.member_id')
+        // ->get();
 
         $data=Invoice::leftjoin('members','members.id','=','invoices.member_id')
         ->leftjoin('apps','apps.id','=','invoices.category_id')

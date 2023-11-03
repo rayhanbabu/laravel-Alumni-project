@@ -48,6 +48,15 @@
          <th width="10%" >Taxt2 </th>
          <th width="10%" >Taxt3 </th>
          <th width="10%" >Taxt4 </th>
+         <th width="10%" >Store Id </th>
+         <th width="10%" >Store Password </th>
+         <th width="10%" >currency </th>
+         <th width="10%" >success_url </th>
+         <th width="10%" >fail_url </th>
+         <th width="10%" >cancel_url</th>
+         <th width="10%" >ipn_url </th>
+         <th width="10%" >init_url </th>
+
          <th width="5%" >Edit</th>
         
       </tr>
@@ -75,11 +84,20 @@
         <td>{{$item->text2}}</td>
         <td>{{$item->text3}}</td>
         <td>{{$item->text4}}</td>
+
+        <td>{{$item->store_id}}</td>
+        <td>{{$item->store_password}}</td>
+        <td>{{$item->currency}}</td>
+        <td>{{$item->success_url}}</td>
+        <td>{{$item->fail_url}}</td>
+        <td>{{$item->cancel_url}}</td>
+        <td>{{$item->ipn_url}}</td>
+        <td>{{$item->init_url}}</td>
        
 
     <td>
       <button type="button" name="edit" id="{{$item->id}}" class="btn btn-success btn-sm edit" 
-	  	 data-payment="{{$item->payment}}"  data-payment_duration="{{$item->payment_duration}}"  data-subscribe="{{$item->subscribe}}"
+	 data-payment="{{$item->payment}}"  data-payment_duration="{{$item->payment_duration}}" data-subscribe="{{$item->subscribe}}"
        data-magazine_size="{{$item->magazine_size}}" data-member_size="{{$item->member_size}}"
        data-advisor_size="{{$item->advisor_size}}"  data-blood_size="{{$item->blood_size}}"
        data-header_size="{{$item->header_size}}"  data-fb_link="{{$item->fb_link}}"
@@ -88,7 +106,10 @@
        data-text4="{{$item->text4}}" data-version_type="{{$item->version_type}}"
        data-resheader_size="{{$item->resheader_size}}"  data-executive_size="{{$item->executive_size}}"
        data-senior_size="{{$item->senior_size}}" data-general_size="{{$item->general_size}}" data-notice_size="{{$item->notice_size}}"
-       data-welcome_size="{{$item->welcome_size}}"data-testimonial_size="{{$item->testimonial_size}}"data-slide_size="{{$item->slide_size}}" >Edit</button>
+       data-welcome_size="{{$item->welcome_size}}"data-testimonial_size="{{$item->testimonial_size}}"data-slide_size="{{$item->slide_size}}" 
+       data-store_id="{{$item->store_id}}" data-store_password="{{$item->store_password}}" data-currency="{{$item->currency}}"
+       data-success_url="{{$item->success_url}}" data-fail_url="{{$item->fail_url}}" data-cancel_url="{{$item->cancel_url}}" 
+       data-ipn_url="{{$item->ipn_url}}" data-init_url="{{$item->init_url}}" >Edit</button>
     </td>
 
       
@@ -142,6 +163,15 @@
                    var welcome_size = $(this).data("welcome_size");
                    var testimonial_size = $(this).data("testimonial_size");
                    var slide_size = $(this).data("slide_size");
+
+                   var store_id = $(this).data("store_id");
+                  var store_password = $(this).data("store_password");
+                  var currency = $(this).data("currency");
+                  var success_url = $(this).data("success_url");
+                  var fail_url = $(this).data("fail_url");
+                  var cancel_url = $(this).data("cancel_url");
+                  var init_url = $(this).data("init_url");
+                  var ipn_url = $(this).data("ipn_url");
                  
                    
                      $('#edit_id').val(id);
@@ -169,6 +199,15 @@
                      $('#edit_welcome_size').val(welcome_size);
                      $('#edit_testimonial_size').val(testimonial_size);
                      $('#edit_slide_size').val(slide_size);
+
+                     $('#edit_store_id').val(store_id);
+                     $('#edit_store_password').val(store_password);
+                     $('#edit_currency').val(currency);
+                     $('#edit_success_url').val(success_url);
+                     $('#edit_fail_url').val(fail_url);
+                     $('#edit_cancel_url').val(cancel_url);
+                     $('#edit_ipn_url').val(ipn_url);
+                     $('#edit_init_url').val(init_url);
                      $('#updatemodal').modal('show');
                 });
 
@@ -327,6 +366,51 @@
                <label class=""><b>Text4   </b></label>
                <input type="text" id="edit_text4"  name="text4" class="form-control" >
          </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>Store_id   </b></label>
+               <input type="text" id="edit_store_id"  name="store_id" class="form-control" >
+         </div> 
+
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>store_passwd  </b></label>
+               <input type="text" id="edit_store_password"  name="store_password" class="form-control" >
+         </div>
+         
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>currency  </b></label>
+               <input type="text" id="edit_currency"  name="currency" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>success_url  </b></label>
+               <input type="text" id="edit_success_url"  name="success_url" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>fail_url  </b></label>
+               <input type="text" id="edit_fail_url"  name="fail_url" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>cancel_url  </b></label>
+               <input type="text" id="edit_cancel_url"  name="cancel_url" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>ipn_url  </b></label>
+               <input type="text" id="edit_ipn_url"  name="ipn_url" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>init_url  </b></label>
+               <input type="text" id="edit_init_url"  name="init_url" class="form-control" >
+         </div> 
+         
+
+
+
 
     </div>
 
