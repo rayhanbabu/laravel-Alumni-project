@@ -127,7 +127,7 @@ class MemberController extends Controller
            'body1'=>$body1,
            'name'=>$name,
          ];
-         Mail::to($email)->send(new \App\Mail\RegMail($details));
+        // Mail::to($email)->send(new \App\Mail\RegMail($details));
 
 
            return response()->json([
