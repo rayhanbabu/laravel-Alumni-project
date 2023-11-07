@@ -1,22 +1,32 @@
 <?php
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use App\Models\Magazine;
 function prx($arr){
-  echo "<pre>";
-  print_r($arr);
-  die();
+   echo "<pre>";
+   print_r($arr);
+   die();
 }
 
 
-function admininfo($admin_name,$find){
-  $admin=DB::table('admins')->where('admin_name',$admin_name)->first();
-  return $admin->$find;
-}
+  function admininfo($admin_name,$find){
+     $admin=DB::table('admins')->where('admin_name',$admin_name)->first();
+     return $admin->$find;
+  }
 
-function countinfo($table,$admin_name,$category){
+  function countinfo($table,$admin_name,$category){
       $count=DB::table($table)->where('admin_name',$admin_name)->where('category',$category)->count();
-   return $count;
-}
+     return $count;
+  }
+
+  
+  function member_category(){
+    if(Session::has('admin')){
+       $admin=Session::get('admin');
+         $category=DB::table('apps')->where('admin_name',$admin->admin_name)->where('admin_category','Member')->get();
+         return $category;
+       } 
+   }
 
 
 
@@ -79,25 +89,13 @@ function get_balance() {
     }
 
     function getURL(){
-      $protocol=((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='off')|| $_SERVER['SERVER_PORT']==443)?"https://":"http://";
-       $host=$_SERVER['HTTP_HOST'];
-       $uri=$_SERVER['REQUEST_URI'];				  
-       return $protocol.$host;
+        $protocol=((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='off')|| $_SERVER['SERVER_PORT']==443)?"https://":"http://";
+        $host=$_SERVER['HTTP_HOST'];
+        $uri=$_SERVER['REQUEST_URI'];				  
+        return $protocol.$host;
         
       }
 
 
-   function fbimage(){
-   if(Cookie::has('cook_user')){
-         $cook_user=Cookie::get('cook_user');
-         $fbimage = Magazine::where('category','Slide')->where('admin_name',$cook_user)->first();
-         if($fbimage){
-             return 'uploads/admin/'.$fbimage->image;
-         }else{
-            return 'images/slide.jpg';
-         }
-        
-    }
 
-}
       

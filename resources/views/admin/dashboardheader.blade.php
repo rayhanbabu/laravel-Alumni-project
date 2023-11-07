@@ -154,10 +154,11 @@
   </a>
    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
       <nav class="sb-sidenav-menu-nested nav">
-          <a class="nav-link @yield('Executive_select')" href="{{url('/admin/member/Executive')}}">Executive Member </a>
-          <a class="nav-link @yield('Life_Member_select')" href="{{url('/admin/member/Life_Member')}}">Life Member</a>
-          <a class="nav-link @yield('Member_select')" href="{{url('/admin/member/Member')}}">Member </a>
+               @foreach(member_category() as $row)                   
+                 <a class="nav-link @yield('Executive_select')" href="{{url('/admin/member/'.$row->id)}}">{{$row->category}} </a>                  
+               @endforeach
       </nav>
+     
  </div>
 
 		
@@ -238,9 +239,14 @@
    </a>
 
 
-   <a class="nav-link @yield('app_select')" href="{{url('admin/app')}}">
+     <a class="nav-link " href="{{url('admin/app/Member')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             Payment Category
+             Member Category
+     </a>
+
+     <a class="nav-link " href="{{url('admin/app/Event')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+             Event Category
      </a>
 
      <a class="nav-link @yield('paymentview_select')" href="{{url('admin/paymentview')}}">

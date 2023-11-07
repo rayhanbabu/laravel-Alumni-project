@@ -45,15 +45,9 @@ use App\Http\Controllers\InvoiceController;
             Route::post('{username}/member_password_update', [MemberController::class, 'password_update']);
             Route::post('{username}/invoice_create', [MemberController::class, 'invoice_create']);
             Route::get('{username}/invoice_view', [MemberController::class, 'invoice_view']);
-            Route::get('{username}/invoice_pdf/{id}', [MemberController::class, 'invoice_pdf']);
-
-
-
+            Route::get('{username}/invoice_pdf/{id}', [MemberController::class, 'invoice_pdf']);     
             Route::post('{username}/payment_create', [InvoiceController::class,'payment_create']);
            
-         
-
-
        });
 
        Route::get('payment_success', [InvoiceController::class,'payment_success']);
@@ -63,16 +57,21 @@ use App\Http\Controllers\InvoiceController;
       
         
 
-       //public APi
-       Route::get('/{username}', [TestimonialController::class,'apiusername']);
-       Route::get('/{username}/home', [TestimonialController::class,'apihome']);
-        // category= History, Notice, Upcoming, Past, Constitution, Contact, Others, Document 
-       Route::get('/{username}/notice/{category}', [TestimonialController::class, 'apinotice']);
+         //public APi
+        Route::get('/{username}', [TestimonialController::class,'apiusername']);
+        Route::get('/{username}/home', [TestimonialController::class,'apihome']);
+        //category= History, Notice, Upcoming, Past, Constitution, Contact, Others, Document 
+        Route::get('/{username}/notice/{category}', [TestimonialController::class, 'apinotice']);
 
           // member=Executive , Life_Member, Member
        Route::get('/{username}/member/{member}', [TestimonialController::class, 'apimember']);
        Route::get('/{username}/viewmember/{id}', [TestimonialController::class,'apiviewmember']);
 
+       Route::get('/{username}/membersearch', [TestimonialController::class,'apimembersearch']);
+
+       Route::get('/{username}/member_category', [TestimonialController::class,'apimembercategory']);
+
+       
        //category =Gallery
        Route::get('/{username}/magazine/{category}', [TestimonialController::class, 'apimagazine']);
        Route::get('/{username}/expre', [TestimonialController::class, 'apiexpre']);

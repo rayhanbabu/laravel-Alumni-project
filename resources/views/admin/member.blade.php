@@ -1,12 +1,12 @@
 @extends('admin/dashboardheader')
 @section('page_title','Admin Panel')
-@section($category.'_select','active')
+@section($category_id.'_select','active')
 @section('content')
 
 
 
 <div class="row mt-3 mb-0 mx-2">
-                <div class="col-sm-3 my-2"> <h4 class="mt-0">{{$category}} View </h4></div>
+                <div class="col-sm-3 my-2"> <h5 class="mt-0"><?php if($category->category){ echo $category->category;}else{ echo "";}?> View </h5></div>
                      
                  <div class="col-sm-6 my-2">
                  <div class="d-grid gap-2 d-flex justify-content-end"> 
@@ -38,7 +38,7 @@
     </div>
     <div class="col-md-3">
      <div class="form-group">
-      <input type="text" name="search" id="search" placeholder="Enter Search " class="form-control"  autocomplete="off"  />
+      <input type="text" name="search" id="search" placeholder="Enter Search " class="form-control form-control-sm"  autocomplete="off"  />
      </div>
     </div>
    </div>
@@ -57,6 +57,7 @@
 		       <th width="35%">Name</th>
 	         <th width="20%">Email </th>
           <th width="35%">Mobile</th>
+          <th width="5%">Password</th>
           <th width="15%">Edit</th>
           <th width="5%">View</th>		
           
@@ -79,7 +80,7 @@
      <input type="hidden" name="hidden_column_name" id="hidden_column_name" value="member_verify" />
      <input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="desc" />
 
-     <input type="hidden" name="category" id="category" value="{{$category}}"/>
+     <input type="hidden" name="category_id" id="category_id" value="{{$category_id}}"/>
  
  
 </div>
@@ -102,7 +103,7 @@
          function fetchAll(){
             $.ajax({
               type:'GET',
-              url:'/admin/member_fetch/'+category,
+              url:'/admin/member_fetch/{{$category_id}}',
               datType:'json',
               success:function(response){
                     $('tbody').html('');
@@ -130,7 +131,7 @@
                   $('#edit_id').val(response.value.id);
                   $('#edit_name').val(response.value.name);
                   $('#edit_serial').val(response.value.serial);
-                  $('#edit_category').val(response.value.category);
+                  $('#edit_category_id').val(response.value.category_id);
                   $('#edit_member_card').val(response.value.member_card);
                   $('#edit_blood').val(response.value.blood);
                   $('#edit_email').val(response.value.email);
@@ -164,7 +165,7 @@
                 }else{
                   $('#view_name').text(response.value.name);
                   $('#view_member_card').text(response.value.member_card);
-                  $('#view_category').text(response.value.category);
+                  $('#view_category_id').text(response.value.category_id);
                   $('#view_email').text(response.value.email);
                   $('#view_phone').text(response.value.phone);
                   $('#view_degree_category').text(response.value.degree_category);
@@ -227,6 +228,8 @@
                     $('.edit_err_serial').text(response.validate_err.serial);
                     $('.edit_err_phone').text(response.validate_err.phone);
                     $('.edit_err_email').text(response.validate_err.email);
+                    $('.edit_err_member_card').text(response.validate_err.member_card);
+                    
               }
           
             $('.loader').hide();
@@ -247,7 +250,7 @@
 
       function fetch_data(page, sort_type="", sort_by="", search=""){
         $.ajax({
-        url:"/admin/member/fetch_data/"+category+"?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
+        url:"/admin/member/fetch_data/{{$category_id}}/"+"?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
         success:function(data)
         {
         $('tbody').html('');
@@ -334,16 +337,22 @@
 
               <div class="col-lg-6 my-2">
               <label for="lname">Category<span style="color:red;"> * </span></label>
-               <select class="form-select" name="category" id="edit_category" aria-label="Default select example"  required >
-                      <option value="Executive">Executive</option>
-                      <option value="Life_Member">Life_Member</option>
-                      <option value="Member">Member</option>
+               <select class="form-select" name="category_id" id="edit_category_id" aria-label="Default select example"  required >
+                   @foreach(member_category() as $category) 
+                      <option value="{{$category->id}}">{{$category->category}}</option>
+                   @endforeach
 
                </select>
             </div>
 
             <div class="col-lg-12 my-2">
-                    <label> Designation </label>
+                    <label> Member Card<span style="color:red;"> * </span></label>
+                    <input name="member_card"  type="text" id="edit_member_card" class="form-control" value="" required />
+                    <p class="text-danger edit_err_member_card"></p>
+              </div>
+
+            <div class="col-lg-12 my-2">
+                    <label> Designation of Ducaa </label>
                     <input name="designation"  type="text" id="edit_designation" class="form-control" value=""  />
                     <p class="text-danger edit_err_designation"></p>
               </div>

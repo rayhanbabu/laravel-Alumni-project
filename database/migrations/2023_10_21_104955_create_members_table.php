@@ -17,8 +17,7 @@ class CreateMembersTable extends Migration
             $table->id();
             $table->integer('serial');
             $table->string('admin_name');
-            $table->string('category');
-            $table->integer('member_card');
+            $table->integer('category_id');
             $table->string('name');
             $table->string('email');
             $table->string('emailmd5');

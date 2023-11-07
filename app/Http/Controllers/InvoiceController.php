@@ -6,117 +6,155 @@ use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\validator;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cookie;
 use App\Models\Maintain;
+use App\Models\Admin;
 use App\Models\Member;
 use Exception;
 
 class InvoiceController extends Controller
 {
 
-    public function payment_create(request $request,$username){
-        try{
-        $member_id=$request->header('member_id');
-        $ssl=Maintain::first();
-        $validator=\Validator::make($request->all(),[    
-           'invoice_id'  =>'required',
-        ]
-       );    
-
-        if($validator->fails()){
-           return response()->json([
-               'status'=>700,
-               'message'=>$validator->messages(),
-          ]);
+  public function amarpay_epay($username,$tran_id){
+      try{ 
+      $invoice= Invoice::where('admin_name',$username)->where('tran_id',$tran_id)->first();  
+      if($invoice){
+           $admin=Admin::where('admin_name',$username)->select('other_link')->first();
+            Cookie::queue('front_end_link',$admin->other_link,60/5); // 60 minutes
+            return view('web.amarpay_epay',['tran_id'=>$invoice->tran_id,]); 
+       }else{
+           return "Invalid Url";
         }
 
-         $invoice=Invoice::where('id',$request->invoice_id)->where('member_id',$member_id)->first();
-         if($invoice){
-         if($invoice->payment_status==1){
-                 return response()->json([
-                      'status'=>300,
-                      'message'=>"Payment Already Paid",
-                 ]); 
-          }else{
-               $member=Member::find($member_id);
-               $response = Http::asForm()->post($ssl->init_url,[
-                "store_id"=>$ssl->store_id, 
-                "store_passwd"=>$ssl->store_password,
-                "total_amount"=>$invoice->total_amount, 
-                "currency"=>$ssl->currency, 
-                "tran_id"=>$invoice->tran_id, 
-                "success_url"=>"$ssl->success_url?tran_id=$invoice->tran_id",
-                "fail_url"=>"$ssl->fail_url?tran_id=$invoice->tran_id",
-                "cancel_url"=>"$ssl->cancel_url?tran_id=$invoice->tran_id",
-                "ipn_url"=>$ssl->ipn_url,
-                "cus_name"=>$member->name, 
-                "cus_email"=>$member->email, 
-                "cus_addl"=>$member->country,
-                "cus_add2"=>$member->city, 
-                "cus_city"=>$member->city,
-                "cus_state"=>$member->city,
-                "cus_postcode"=>"1200",
-                "cus_country"=>$member->city,
-                "cus_phone"=>$member->phone,
-                "cus_fax"=>$member->phone,
-                "shipping_method"=>"YES",
-                "ship_name"=>$member->name,
-                "ship_addl"=>$member->city, 
-                "ship_add2"=>$member->city, 
-                "ship_city"=>$member->city,
-                "ship_state"=>$member->city, 
-                "ship_country"=>$member->country, 
-                "ship_postcode"=>"1200e",
-                "product_name"=>"Apple Shop Product", 
-                "product_category"=>"Apple Shop Category",
-                "product_profile"=>"Apple Shop Profile",
-                "product_amount"=>$invoice->total_amount, 
-                 ]); 
-                   return $response->json('desc'); 
-             
-             
-          }
+     }catch (Exception $e) { return "Something Error"; } 
 
-        }else{
-            return response()->json([
-              'status'=>400,
-              'message'=>"Invoice Not Found",
-           ]);
-        }
-
-        } catch (Exception $e){ 
-            return response()->json([
-                'status'=>500,
-                'message'=>"Something went wrong",
-             ]);
-          }
-
-             
-    }
+   }
+      
+   
 
 
-    static function payment_fail($tran_id)
-     {
-       Invoice::where(['tran_id'=>$tran_id,''])->update(['payment_status'=>'Fail']);
-       return 1;
-    } 
+  public function amarpay_payment($tran_id){
 
-static function payment_success($tran_id)
-  {
-      Invoice::where(['tran_id'=>$tran_id])->update(['payment_status'=>1]);
-       return 1; 
-   } 
+   try{ 
+    $invoice= Invoice::where('tran_id',$tran_id)->first(); 
+    $member= Member::where('id',$invoice->member_id)->first();
+    $tran_id = $tran_id;  //unique transection id for every transection 
+    $currency= "BDT"; //aamarPay support Two type of currency USD & BDT  
 
- static function payment_cancel($tran_id){
-      Invoice::where(['tran_id'=>$tran_id])->update(['payment_status'=>'Cancel']);
-       return 1;
+    $amount = $invoice->total_amount;   //10 taka is the minimum amount for show card option in aamarPay payment gateway
+    
+
+
+
+    //For live Store Id & Signature Key please mail to support@aamarpay.com
+    $store_id = "aamarpaytest"; 
+    $signature_key = "dbb74894e82415a2f7ff0ec3a97e4183"; 
+    $url = "https://​sandbox​.aamarpay.com/jsonpost.php"; // for Live Transection use "https://secure.aamarpay.com/jsonpost.php"
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => $url,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS =>'{
+        "store_id": "'.$store_id.'",
+        "tran_id": "'.$tran_id.'",
+        "success_url": "'.route('amarpay_success').'",
+        "fail_url": "'.route('amarpay_fail').'",
+        "cancel_url": "'.route('amarpay_cancel').'",
+        "amount": "'.$amount.'",
+        "currency": "'.$currency.'",
+        "signature_key": "'.$signature_key.'",
+        "desc": "'.$invoice->category_id.'",
+        "cus_name": "'.$member->name.'",
+        "cus_email": "'.$member->email.'",
+        "cus_add1": "'.$member->id.'",
+        "cus_add2": "Mohakhali DOHS",
+        "cus_city": "'.$member->city.'",
+        "cus_state": "'.$member->city.'",
+        "cus_postcode": "1206",
+        "cus_country": "'.$member->country.'",
+        "cus_phone": "'.$member->phone.'",
+        "opt_a":"'.$invoice->id.'" ,
+        "type": "json"
+    }',
+    CURLOPT_HTTPHEADER => array(
+        'Content-Type: application/json'
+    ),
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+     //dd($response);
+    
+    $responseObj = json_decode($response);
+
+    if(isset($responseObj->payment_url) && !empty($responseObj->payment_url)) {
+
+        $paymentUrl = $responseObj->payment_url;
+        // dd($paymentUrl);
+        return redirect()->away($paymentUrl);
+
+     }else{
+        echo $response;
+     }
+
+   }catch (Exception $e) { return "Something Error"; } 
   }
 
 
-static function payment_ipn($tran_id)
-  { 
-      Invoice::where(['tran_id'=>$tran_id])->update(['payment_status'=>'Ipn Problem']);
-      return 1; 
-  } 
+
+  public function amarpay_success(Request $request){
+
+   //try{ 
+     $request_id= $request->mer_txnid;
+    //verify the transection using Search Transection API 
+
+     $url = "http://sandbox.aamarpay.com/api/v1/trxcheck/request.php?request_id=$request_id&store_id=aamarpaytest&signature_key=dbb74894e82415a2f7ff0ec3a97e4183&type=json";
+    
+    //For Live Transection Use "http://secure.aamarpay.com/api/v1/trxcheck/request.php"
+    
+     $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => $url,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+    ));
+
+      $response = curl_exec($curl);
+
+       curl_close($curl);
+       //  echo  $response;
+        $success = json_decode($response, true);
+
+        echo $success['status_code'];
+
+      //}catch (Exception $e) { return "Something Error"; } 
+
+   }
+
+
+     public function amarpay_fail(Request $request){
+          return $request;
+     }
+
+       public function amarpay_cancel(){
+               return 'Canceled';
+       }
+
 
    
 }

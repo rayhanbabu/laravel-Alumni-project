@@ -15,6 +15,7 @@ use App\Http\Controllers\OnlinepaymentController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\ExpreController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,9 +123,9 @@ Route::middleware('AdminIs')->group(function(){
 
 
     //Application 
-    Route::get('/admin/app',[AppController::class,'index']);
+    Route::get('/admin/app/{admin_category}',[AppController::class,'index']);
     Route::post('/admin/app',[AppController::class,'store']);
-    Route::get('/admin/app_fetch',[AppController::class,'fetch']);
+    Route::get('/admin/app_fetch/{admin_category}',[AppController::class,'fetch']);
     Route::get('/admin/app/fetch_data',[AppController::class,'fetch_data']);
     Route::get('/admin/app_edit/{id}',[AppController::class,'edit']);
     Route::post('/admin/app_update/{id}',[AppController::class,'update']);
@@ -132,10 +133,10 @@ Route::middleware('AdminIs')->group(function(){
 
 
     //member
-    Route::get('/admin/member/{category}', [AdminController::class, 'member']);
-    Route::get('/admin/member_fetch/{category}', [AdminController::class, 'member_fetch']);
+    Route::get('/admin/member/{category_id}', [AdminController::class, 'member']);
+    Route::get('/admin/member_fetch/{category_id}', [AdminController::class, 'member_fetch']);
     Route::get('/admin/member_view/{id}', [AdminController::class, 'member_view']);
-    Route::get('/admin/member/fetch_data/{category}', [AdminController::class, 'member_fetch_data']);
+    Route::get('/admin/member/fetch_data/{category_id}', [AdminController::class, 'member_fetch_data']);
     Route::post('/admin/member_update', [AdminController::class, 'member_update']);
     Route::get('/admin/member/{operator}/{status}/{id}', [AdminController::class, 'memberstatus']);
     Route::get('/admin/member_delete/{id}', [AdminController::class, 'member_delete']);
@@ -241,32 +242,26 @@ Route::middleware('AdminIs')->group(function(){
 
    });
 
+
+   //Amarpay Payment getway
+   Route::get('epay/{username}/{tran_id}',[InvoiceController::class,'amarpay_epay'])->name('amarpay_epay');
+
+   Route::get('amarpay_payment/{tran_id}',[InvoiceController::class,'amarpay_payment'])->name('amarpay_payment');
+   //You need declear your success & fail route in "app\Middleware\VerifyCsrfToken.php"
+   Route::post('amarpay_success',[InvoiceController::class,'amarpay_success'])->name('amarpay_success');
+   Route::post('amarpay_fail',[InvoiceController::class,'amarpay_fail'])->name('amarpay_fail');
+   Route::get('amarpay_cancel',[InvoiceController::class,'amarpay_cancel'])->name('amarpay_cancel');
+
+
+
+   /*
     //registration
    Route::get('/', [MaintainController::class, 'reg']);
    
    Route::post('/web/insert', [MaintainController::class, 'webinsert']);
    Route::get('/email_verify/{email2}', [MaintainController::class, 'email_verify']);
-   /*
-    //Organozation Search
-   Route::get('/web/contact', [TestimonialController::class, 'webcontact']);
-   Route::get('/web/search', [TestimonialController::class, 'websearch']);
-   Route::get('/web/fetch_data',[TestimonialController::class,'fetch_data']);
-   Route::get('/{admin_name}', [TestimonialController::class, 'admin_name']);
-
-
-    webpage
-    Route::get('/rewr', [TestimonialController::class, 'webhome']);
-    Route::get('/web/member/{member}', [TestimonialController::class, 'webmember']);
-    Route::get('/web/viewmember/{id}', [TestimonialController::class, 'viewmember']);
-    Route::get('/web/magazine', [TestimonialController::class, 'webmagazine']);
-    Route::get('/web/notice', [TestimonialController::class, 'webnotice']);
-    Route::get('/web/expre', [TestimonialController::class, 'webexpre']);
-    Route::get('/web/history', [TestimonialController::class, 'webhistory']);
-
-   */
-
+   
     
-
    Route::get('/testimonial', [TestimonialController::class, 'testimonial']);
    Route::get('/langhome', [TestimonialController::class, 'langhome']);
 
@@ -286,17 +281,10 @@ Route::middleware('AdminIs')->group(function(){
 
   Route::post('/pdfs',[HomeController::class,'pdfs']); 
 
-
-
-
-/*
-   //payment
-   Route::get('payment',[FormController::class,'payment'])->name('payment');
-   //You need declear your success & fail route in "app\Middleware\VerifyCsrfToken.php"
-   Route::post('success',[FormController::class,'success'])->name('success');
-   Route::post('fail',[FormController::class,'fail'])->name('fail');
-   Route::get('cancel',[FormController::class,'cancel'])->name('cancel');
 */
+
+
+
 
   
   

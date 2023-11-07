@@ -52,7 +52,7 @@
     </div>
     <div class="col-md-3">
      <div class="form-group">
-      <input type="text" name="search" id="search" placeholder="Enter Search " class="form-control"  autocomplete="off"  />
+      <input type="text" name="search" id="search" placeholder="Enter Search " class="form-control form-control-sm"  autocomplete="off"  />
      </div>
     </div>
    </div>

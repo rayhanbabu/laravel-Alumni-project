@@ -31,7 +31,7 @@ class MemberController extends Controller
         $admin= Admin::where('admin_name',$request->username)->first();
           $validator=\Validator::make($request->all(),[       
              'name' => 'required',
-             'category' =>'required',
+             'category_id' =>'required',
              'degree_category' =>'required',
              'blood' =>'required',
              'country' =>'required',
@@ -44,7 +44,7 @@ class MemberController extends Controller
              'certificate_image' => 'required|mimes:jpeg,png,jpg,pdf|max:500',
             ],
             [
-               'member_password.regex'=>'password minimum six characters including one uppercase letter, one lowercase letter and one number '
+              'member_password.regex'=>'password minimum six characters including one uppercase letter, one lowercase letter and one number '
             ]
         );
           
@@ -55,11 +55,14 @@ class MemberController extends Controller
              'message'=>$validator->messages(),
           ]);
      }else{
+        $app= App::where('admin_name',$request->username)->where('id',$request->input('category_id'))
+         ->where('admin_category','Member')->first();
+        if($app){
         $count= Member::where('admin_name',$request->username)->count('id')+1;
         $member_card=10000+$count;
       
         $model= new Member;
-        $model->category=$request->input('category');
+        $model->category_id=$request->input('category_id');
         $model->serial=$count;
         $model->member_card=$member_card;
         $model->admin_name=$request->username;
@@ -112,7 +115,7 @@ class MemberController extends Controller
 
          $email=$request->input('email');
          $rand=rand(11111,99999);
-         $subject='Verify your Email ';  
+         $subject='Verify your Email';  
          $title='Dear,  '.$request->input('name');
          $body='Please Click URL and verify your email to complete your account setup.';
          $link=$admin->other_link.'email_verify/'.md5($request->input('email'));
@@ -127,22 +130,39 @@ class MemberController extends Controller
            'body1'=>$body1,
            'name'=>$name,
          ];
-        // Mail::to($email)->send(new \App\Mail\RegMail($details));
+          //Mail::to($email)->send(new \App\Mail\RegMail($details));
+          $total_amount=$app->amount+($app->amount*$admin->getway_fee)/100;
+          $invoice= new Invoice;
+          $invoice->admin_name=$app->admin_name;
+          $invoice->tran_id=Str::random(8);
+          $invoice->member_id=$model->id;
+          $invoice->category_id=$app->id;
+          $invoice->amount=$app->amount;
+          $invoice->getway_fee=$admin->getway_fee;
+          $invoice->total_amount=$total_amount;
+          $invoice->save();
 
-
-           return response()->json([
+         return response()->json([
                'status'=>200,  
                'message'=>'Application Successfull. Please Verify your E-mail',
            ]);
 
+          }else{
+              return response()->json([
+                 'status'=>600,  
+                 'message'=>'Undefind Category',
+               ]);
+          }
+
          }
-  
-         }else{
-             return response()->json([
-                'status'=>600,  
-                'message'=>'Something Rong Or Undefind Username',
-             ]);
-         }
+
+           }else{
+              return response()->json([
+                 'status'=>600,  
+                 'message'=>'Something Rong Or Undefind Username',
+              ]);
+           }
+
   
       }
 
@@ -510,33 +530,30 @@ class MemberController extends Controller
 
 
       public function category_show(request $request,$username){
-          $data=APP::where('admin_name',$username)->where('status',1)->orderBy('id', 'desc')->get();
-          return response()->json([
-            'status'=>200,
-            'data'=>$data,
-        ]); 
+           $data=APP::where('admin_name',$username)->where('admin_category','Event')->where('status',1)->orderBy('id', 'desc')->get();
+           return response()->json([
+             'status'=>200,
+             'data'=>$data,
+           ]); 
+       }
 
-      }
 
-
-      public function invoice_create(request $request,$username){
-
-        $member_id=$request->header('member_id');
-         $validator=\Validator::make($request->all(),[    
-          'category_id'  => 'required',
-        ]
+       public function invoice_create(request $request,$username){
+            $member_id=$request->header('member_id');
+            $validator=\Validator::make($request->all(),[    
+              'category_id'  => 'required',
+              ]
        );
        
         if($validator->fails()){
              return response()->json([
-               'status'=>700,
-               'message'=>$validator->messages(),
+                'status'=>700,
+                'message'=>$validator->messages(),
             ]);
-
        }else{
          $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
         'mobile','admin_name','header_size','resheader_size','getway_fee')->first();
-          $category=App::where('admin_name',$username)->where('status',1)->where('id',$request->category_id)->first();
+          $category=App::where('admin_name',$username)->where('admin_category','Event')->where('status',1)->where('id',$request->category_id)->first();
           if($category){
             $verify= Member::where('member_verify',1)->where('id',$member_id)->count('id');
 
@@ -549,15 +566,15 @@ class MemberController extends Controller
             }else{
             $total_amount=$category->amount+($category->amount*$admin->getway_fee)/100;
             if($verify>=1){
-            $model= new Invoice;
-            $model->admin_name=$username;
-            $model->tran_id=Str::random(8);
-            $model->member_id=$member_id;
-            $model->category_id=$request->category_id;
-            $model->amount=$category->amount;
-            $model->getway_fee=$admin->getway_fee;
-            $model->total_amount=$total_amount;
-            $model->save();
+             $model= new Invoice;
+             $model->admin_name=$username;
+             $model->tran_id=Str::random(8);
+             $model->member_id=$member_id;
+             $model->category_id=$request->category_id;
+             $model->amount=$category->amount;
+             $model->getway_fee=$admin->getway_fee;
+             $model->total_amount=$total_amount;
+             $model->save();
 
             return response()->json([
                'status'=>200,

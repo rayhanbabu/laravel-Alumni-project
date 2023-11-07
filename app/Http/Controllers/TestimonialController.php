@@ -345,7 +345,7 @@ public function delete(Request $request) {
              $admin= Admin::where('admin_name',$admin_name)->select('id','name','nameen','address','email',
                      'mobile','admin_name','header_size','resheader_size')->first();
             if($admin){
-                Cookie::queue('cook_user',$admin->admin_name,259200);
+                Cookie::queue('cook_user',$admin->admin_name,60/6); // 60 minutes
                 return redirect('/');   
              }else{
                 return redirect('/web/search');  
@@ -515,41 +515,88 @@ public function delete(Request $request) {
 
 
         
-     public function apimember($username,$member) {
-         $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
-                     'mobile','admin_name','header_size','resheader_size')->first();
-        $data = Member::where('category',$member)->where('admin_name',$admin->admin_name)
-        ->where('member_verify',1)->orderBy('serial', 'asc')->
-        select('id','admin_name','category','name','email'
-               ,'phone','degree_category','passing_year','profile_image'
-               ,'gender','birth_date','blood','country','city','occupation','organization','designation'
-               ,'blood_status','phone_status','email_status','fb_link','web_link')->get();
-        $logu = Magazine::where('category','Slide')->where('text4','HeaderLogu')->where('admin_name',$admin->admin_name)->first();
-                
-          return response()->json([
-              'admin'=>$admin,
-              'logu'=>$logu,
-              'data'=>$data,
-             
-         ]);
+     public function apimember(request $request ,$username,$category_id){
+    
+        $query=Member::query();
 
+        if($search=$request->search){
+             $query->whereRaw("name LIKE '%".$search."%'")
+             ->orWhereRaw("email LIKE '%".$search."%'");
+        }
+
+         //if($sort=$request->sort){
+                // $query->orderBy("member_card", $sort);}
+
+          
+        $perPage=$request->input('perPage',2);
+        $page=$request->input('page',1);
+       
+        $query->leftjoin('apps','apps.id','=','members.category_id');
+
+        $query->where('members.category_id',$category_id)->where('members.admin_name',$username)
+            ->where('member_verify',1);
+
+        $query->select('members.id','members.admin_name','category_id','name','email'
+          ,'members.phone','degree_category','passing_year','profile_image','member_card'
+          ,'gender','birth_date','blood','country','city','occupation','organization','designation'
+          ,'blood_status','phone_status','email_status','fb_link','web_link','affiliation'
+          ,'training','expertise','apps.category');
+
+          $total=$query->count();
+          $query->orderBy("serial", 'asc');
+          $result=$query->offset(($page-1) * $perPage)->limit($perPage)->get();
+        
+
+        return response()->json([
+          'message'=>"Successfully fetched",
+          'data'=>$result, 
+          'total'=>$total,
+          'page'=>$page,
+          'last_page'=>ceil($total/$perPage)
+        ]);
     }
 
 
-    public function apiviewmember(Request $request) {
+    public function apiviewmember(Request $request,$username) {
       $id = $request->id;
-      $data = Member::where('member_verify',1)->where('id',$id)->orderBy('serial', 'asc')->
-      select('id','admin_name','category','name','email'
-             ,'phone','degree_category','passing_year','profile_image'
-             ,'gender','birth_date','blood','country','city','occupation','organization','designation'
-             ,'blood_status','phone_status','email_status','fb_link','web_link')->get();
+      $data = Member::leftjoin('apps','apps.id','=','members.category_id')
+      ->where('members.id',$id)->where('members.admin_name',$username)
+      ->where('member_verify',1)->orderBy('serial','asc')->
+       select('members.id','members.admin_name','category_id','name','email'
+           ,'members.phone','degree_category','passing_year','profile_image'
+           ,'gender','birth_date','blood','country','city','occupation','organization','designation'
+           ,'blood_status','phone_status','email_status','fb_link','web_link','affiliation'
+           ,'training','expertise','apps.category')->get();
       return response()->json([
         'status'=>200,  
         'data'=>$data,
       ]);
     }
- 
- 
+
+    public function apimembersearch(Request $request,$username) {
+        $search = $request->get('search');
+        $search = str_replace(" ", "%", $search);
+        $data=Member::Where('admin_name',$username)->where('member_verify',1)->where(function($query) use ($search) {
+          $query->where('name', 'like', '%'.$search.'%')
+            ->orWhere('email', 'like', '%'.$search.'%');
+       })->orderBy('id','asc')->paginate(30);
+
+       return response()->json([
+        'status'=>200,  
+        'data'=>$data,
+      ]);
+    }
+
+    public function apimembercategory($username){
+      $data= App::where('admin_name',$username)->where('admin_category','Member')
+      ->where('status',1)->select('id','category')->get();
+     
+       return response()->json([
+           'status'=>200,
+            'data'=>$data 
+      ]);
+    }
+    
     public function apimagazine($username,$category){
           $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
                      'mobile','admin_name','header_size','resheader_size')->first();
@@ -562,16 +609,12 @@ public function delete(Request $request) {
               'data'=>$data
               
           ]);
-
      }
     
     
-    
-   
-
 
     public function apiexpre($username) {
-      $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
+         $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
               'mobile','admin_name','header_size','resheader_size')->first();
           $data1 = expre::where('category','President')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
           $data2 = expre::where('category','Secretary')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();

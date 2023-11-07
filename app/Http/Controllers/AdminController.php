@@ -46,7 +46,7 @@ class AdminController extends Controller
             return back()->with('fail','Incorrect Password');
         }
      }else{
-        return back()->with('fail','Incorrect Username');
+             return back()->with('fail','Incorrect Username');
      }
 
 }
@@ -180,11 +180,11 @@ class AdminController extends Controller
 
 public function confirmpass(request $request){
     
-    $email_id_pass=$request->input('email_id_pass');
-    $npass=$request->input('npass');
-    $cpass=$request->input('cpass');
-    //$password=Hash::make($npass);
-    $password=$npass;
+     $email_id_pass=$request->input('email_id_pass');
+     $npass=$request->input('npass');
+     $cpass=$request->input('cpass');
+     //$password=Hash::make($npass);
+     $password=$npass;
    
      if($npass == $cpass){
        DB::update(
@@ -194,7 +194,6 @@ public function confirmpass(request $request){
             'status'=>500,
             'errors'=> 'valid code',
          ]); 
-
     }else{
         return response()->json([
            'status'=>600,
@@ -205,29 +204,37 @@ public function confirmpass(request $request){
 
 
 
-public function member($category){
+public function member($category_id){
       try {
       $status1=0;
       $status=1;
       if(Session::has('admin')){
         $admin=Session::get('admin');
-    }
-      $verify=DB::table('members')->where('category',$category)->where('admin_name',$admin->admin_name)->where('member_verify',$status)->count('id');
-      $not_verify=DB::table('members')->where('category',$category)->where('admin_name',$admin->admin_name)->where('member_verify',$status1)->count('id');
-      $email_verify=DB::table('members')->where('category',$category)->where('admin_name',$admin->admin_name)->where('member_verify',$status1)->count('id');
-      return view('admin.member',['category'=>$category, 'verify'=>$verify, 'not_verify'=>$not_verify, 'email_verify'=>$email_verify]);
-
+        $category=DB::table('apps')->where('admin_name',$admin->admin_name)->where('admin_category','Member')
+        ->where('id',$category_id)->first();
+       if($category){
+          $verify=DB::table('members')->where('category_id',$category_id)->where('admin_name',$admin->admin_name)->where('member_verify',$status)->count('id');
+          $not_verify=DB::table('members')->where('category_id',$category_id)->where('admin_name',$admin->admin_name)->where('member_verify',$status1)->count('id');
+          $email_verify=DB::table('members')->where('category_id',$category_id)->where('admin_name',$admin->admin_name)->where('member_verify',$status1)->count('id');
+           return view('admin.member',['category'=>$category,'category_id'=>$category_id, 'verify'=>$verify, 'not_verify'=>$not_verify, 'email_verify'=>$email_verify]);
+        }else{
+          return "Something Error occurred";
+       }
+      }
      }catch (Exception $e) { return  'something Error';}
   }
 
 
-  public function member_fetch($category){
-  
+  public function member_fetch($category_id){
+     try {
       if(Session::has('admin')){
              $admin=Session::get('admin');
          }
-       $data=Member::where('admin_name',$admin->admin_name)->Where('category',$category)->orderBy('member_verify','asc')->paginate(10);
+       $data=Member::leftjoin('apps','apps.id','=','members.category_id')
+       ->where('members.admin_name',$admin->admin_name)->Where('members.category_id',$category_id)
+       ->select('apps.category','members.*')->orderBy('member_verify','asc')->paginate(10);
         return view('admin.member_data',compact('data'));
+      }catch (Exception $e) { return  'something Error';}
   }
 
 
@@ -283,12 +290,14 @@ public function member($category){
         $sort_type = $request->get('sorttype'); 
               $search = $request->get('search');
               $search = str_replace(" ", "%", $search);
-              $data=Member::Where('admin_name',$admin->admin_name)->Where('category',$request->category)->where(function($query) use ($search) {
-                 $query->where('phone', 'like', '%'.$search.'%')
+              $data=Member::leftjoin('apps','apps.id','=','members.category_id')
+              ->where('members.admin_name',$admin->admin_name)->Where('members.category_id',$request->category_id)
+              ->where(function($query) use ($search) {
+                 $query->where('members.phone', 'like', '%'.$search.'%')
                   ->orWhere('member_card', 'like', '%'.$search.'%')
                   ->orWhere('name', 'like', '%'.$search.'%')
                   ->orWhere('email', 'like', '%'.$search.'%');
-              })->orderBy($sort_by, $sort_type)
+              })->select('apps.category','members.*')->orderBy('member_verify','asc')->orderBy($sort_by, $sort_type)
                       ->paginate(10);
                        return view('admin.member_data', compact('data'))->render();        
              }
@@ -333,6 +342,7 @@ public function member($category){
             $validator=\Validator::make($request->all(),[    
                     'phone'=>'required|unique:members,phone,'.$request->input('edit_id'),
                     'email'=>'required|unique:members,email,'.$request->input('edit_id'),
+                    'member_card'=>'required|unique:members,member_card,'.$request->input('edit_id'),
                     'serial'=>'required'
              ],
              [
@@ -353,8 +363,9 @@ public function member($category){
                   $model->phone=$request->input('phone');
                   $model->email=$request->input('email');
                   $model->serial=$request->input('serial');
-                  $model->category=$request->input('category');  
+                  $model->category_id=$request->input('category_id');  
                   $model->blood=$request->input('blood'); 
+                  $model->member_card=$request->input('member_card'); 
                   $model->designation=$request->input('designation'); 
                   $model->email_status=$request->input('email_status');
                   $model->phone_status=$request->input('phone_status');

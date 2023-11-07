@@ -7,19 +7,20 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Admin;
 use DB;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class AppController extends Controller
 {
     
-      public function index(){
-          return view('admin.app');
+      public function index($admin_category){
+
+          return view('admin.app',['admin_category'=>$admin_category]);
       }
 
-    public function fetch(){
+    public function fetch($admin_category){
       if(Session::has('admin')){
         $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-        $data=APP::where('admin_name',$admin->admin_name)
+        $data=APP::where('admin_name',$admin->admin_name)->where('admin_category',$admin_category)
         ->orderBy('id', 'desc')->paginate(15);
          return view('admin.app_data',compact('data'));
       }
@@ -28,8 +29,8 @@ class AppController extends Controller
      public function store(Request $request){
 
       if(Session::has('admin')){
-      $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-        $validator=\Validator::make($request->all(),[  
+         $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+         $validator=\Validator::make($request->all(),[  
            'category' => 'required',
            'amount' => 'required',
         ],
@@ -46,6 +47,7 @@ class AppController extends Controller
                 $app->amount=$request->input('amount');
                 $app->status=$request->input('status');
                 $app->category=$request->input('category');
+                $app->admin_category=$request->input('admin_category');
                 $app->admin_name=$admin->admin_name;
                 $app->save();
                return response()->json([

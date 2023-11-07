@@ -1,6 +1,6 @@
 @foreach($data as $row)
       <tr>
-                  <td>{{ $row->id}}</td>
+                  <td>{{ $row->tran_id}}</td>
                   <td>{{ $row->member_card}}</td>
                   <td>{{ $row->name}}</td>
                   <td>{{ $row->category}}</td>

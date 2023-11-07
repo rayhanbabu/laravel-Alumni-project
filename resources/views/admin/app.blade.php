@@ -4,7 +4,7 @@
 @section('content')
 
   <div class="row mt-4 mb-3">
-          <div class="col-6"> <h4 class="mt-0">Payment Category View</h4></div>
+          <div class="col-6"> <h4 class="mt-0">{{$admin_category}}  Category View</h4></div>
                      <div class="col-3">
                           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             
@@ -38,6 +38,8 @@
 	        <input name="category" id="category" type="text"   class="form-control"  required/>
           <p class="text-danger err_category"></p>
      </div>
+
+     <input type="hidden" name="admin_category"  id="admin_category" value="{{$admin_category}}" >
 
      <div class="form-group  my-2">
 	      	<label><b>Amount (TK)</b></label>
@@ -156,6 +158,7 @@
  <table class="table table-bordered" id="employee_data">
  <thead>
        <tr>
+       <th  width="10%">Id</th>
        <th width="25%" class="sorting" data-sorting_type="asc" data-column_name="category" style="cursor: pointer" >category
                 <span id="category_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
        <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Amount
@@ -193,15 +196,16 @@ $(document).ready(function(){
 
 
          fetch();
+
+         var admin_category=$('#admin_category').val();
          function fetch(){
             $.ajax({
              type:'GET',
-             url:'/admin/app_fetch',
+             url:'/admin/app_fetch/{{$admin_category}}',
              datType:'json',
              success:function(response){
                     $('tbody').html('');
-                   $('.x_content tbody').html(response);
-         
+                    $('.x_content tbody').html(response);
                 }
             });
          }

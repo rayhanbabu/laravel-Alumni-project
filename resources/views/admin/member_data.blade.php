@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\URL;
   <td>{{ $row->name}}</td>
   <td>{{ $row->email}}</td>
   <td>{{ $row->phone}}</td>
+  <td>{{ $row->member_password}}</td>
   <td> <button type="button" value="{{ $row->id}}" class="edit btn btn-info btn-sm">Edit </button> </td>
   <td> <button type="button" value="{{ $row->id}}" class="view_all btn btn-primary btn-sm">View</button> </td>
 
