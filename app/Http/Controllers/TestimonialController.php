@@ -354,121 +354,7 @@ public function delete(Request $request) {
        }
 
 
-       /*public function webhome(){
-             if(Cookie::has('cook_user')){
-                   $cook_user=Cookie::get('cook_user');
-                   $admin= Admin::where('admin_name',$cook_user)->select('id','name','nameen','address','email',
-                     'mobile','admin_name','header_size','resheader_size')->first();
-                   $slide = Magazine::where('category','Slide')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
-                   $slide1 = Magazine::where('category','Slide')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->first();
-                   $welcome = Magazine::where('category','Welcome')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
-                   $test = Magazine::where('category','Testimonial')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
-                   
-                   
-                   
-                   return view('web.home',['admin'=>$admin,'slide'=>$slide,'slide1'=>$slide1,
-                      'welcome'=>$welcome,'test'=>$test]);
-               }else{
-                   return redirect('/web/search');   
-               } 
-        }*/
-
-        public function webhome(){
-
-          return "It appears that you don't have permission to access this page. Please make sure you are authorized to view this page.";
-
-        }
-
-      public function webmember($member) {
-         if(Cookie::has('cook_user')){
-             $cook_user=Cookie::get('cook_user');
-              $admin= Admin::where('admin_name',$cook_user)->select('id','name','nameen','address','email',
-                     'mobile','admin_name','header_size','resheader_size')->first();
-             $data = testimonial::where('category',$member)->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
-             return view('web.member',['admin'=>$admin,'data'=>$data,'member'=>$member]);
-         }else{
-             return redirect('/web/search');   
-         } 
-      }
-
-
-      public function viewmember(Request $request) {
-        $id = $request->id;
-        $data = Testimonial::find($id);
-        return response()->json([
-          'status'=>200,  
-          'data'=>$data,
-        ]);
-      }
-      
-
-
-      public function webmagazine() {
-        if(Cookie::has('cook_user')){
-             $cook_user=Cookie::get('cook_user');
-             $admin= Admin::where('admin_name',$cook_user)->select('id','name','nameen','address','email',
-                     'mobile','admin_name','header_size','resheader_size')->first();
-            $data = Magazine::where('category','Magazine')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->paginate(5);
-            return view('web.magazine',['admin'=>$admin,'data'=>$data]);
-        }else{
-            return redirect('/web/search');   
-        } 
-     }
-
-
-     public function webnotice() {
-      if(Cookie::has('cook_user')){
-          $cook_user=Cookie::get('cook_user');
-           $admin= Admin::where('admin_name',$cook_user)->select('id','name','nameen','address','email',
-                     'mobile','admin_name','header_size','resheader_size')->first();
-          $data = Notice::where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
-          return view('web.notice',['admin'=>$admin,'data'=>$data]);
-      }else{
-          return redirect('/web/search');   
-      } 
-   }
-
-
-   public function webexpre() {
-    if(Cookie::has('cook_user')){
-          $cook_user=Cookie::get('cook_user');
-          $admin= Admin::where('admin_name',$cook_user)->select('id','name','nameen','address','email',
-                     'mobile','admin_name','header_size','resheader_size')->first();
-          $data1 = expre::where('category','President')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
-          $data2 = expre::where('category','Secretary')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
-          return view('web.expre',['admin'=>$admin ,'data1'=>$data1 ,'data2'=>$data2]);
-    }else{
-        return redirect('/web/search');   
-    } 
-
-   }
-
-
-   public function webhistory() {
-      if(Cookie::has('cook_user')){
-           $cook_user=Cookie::get('cook_user');
-            $admin= Admin::where('admin_name',$cook_user)->select('id','name','nameen','address','email',
-                     'mobile','admin_name','header_size','resheader_size')->first();
-           $data = App::where('admin_name',$admin->admin_name)->orderBy('phone', 'asc')->get();
-          return view('web.history',['admin'=>$admin ,'data'=>$data]);
-       }else{
-         return redirect('/web/search');   
-       } 
-    }
-
-
-
-
-   
-         //api Appliaction
-           
-     
-
-
-        
-    
-
-
+  
 
           public function apiusername($username){
                 return response()->json(['username'=>$username]);
@@ -518,17 +404,16 @@ public function delete(Request $request) {
      public function apimember(request $request ,$username,$category_id){
     
         $query=Member::query();
-
         if($search=$request->search){
-             $query->whereRaw("name LIKE '%".$search."%'")
-             ->orWhereRaw("email LIKE '%".$search."%'");
-        }
+           $query->whereRaw("name LIKE '%".$search."%'")
+              ->orWhereRaw("email LIKE '%".$search."%'");
+         }
 
          //if($sort=$request->sort){
                 // $query->orderBy("member_card", $sort);}
 
           
-        $perPage=$request->input('perPage',2);
+        $perPage=$request->input('perPage',18);
         $page=$request->input('page',1);
        
         $query->leftjoin('apps','apps.id','=','members.category_id');

@@ -20,7 +20,7 @@ class InvoiceController extends Controller
       $invoice= Invoice::where('admin_name',$username)->where('tran_id',$tran_id)->first();  
       if($invoice){
            $admin=Admin::where('admin_name',$username)->select('other_link')->first();
-            Cookie::queue('front_end_link',$admin->other_link,60/5); // 60 minutes
+            Cookie::queue('front_end_link',$admin->other_link,60/2); // 60 minutes
             return view('web.amarpay_epay',['tran_id'=>$invoice->tran_id,]); 
        }else{
            return "Invalid Url";
@@ -82,6 +82,7 @@ class InvoiceController extends Controller
         "cus_country": "'.$member->country.'",
         "cus_phone": "'.$member->phone.'",
         "opt_a":"'.$invoice->id.'" ,
+        "ship_name":"'.$invoice->id.'" ,
         "type": "json"
     }',
     CURLOPT_HTTPHEADER => array(
@@ -113,7 +114,7 @@ class InvoiceController extends Controller
 
   public function amarpay_success(Request $request){
 
-   //try{ 
+   try{ 
      $request_id= $request->mer_txnid;
     //verify the transection using Search Transection API 
 
@@ -140,15 +141,32 @@ class InvoiceController extends Controller
        //  echo  $response;
         $success = json_decode($response, true);
 
-        echo $success['status_code'];
+          //echo $success['status_code'];
+                 $payment_date= date('Y-m-d',strtotime($success['date_processed']));
+                 $payment_day= date('d',strtotime($success['date_processed']));
+                 $payment_month= date('n',strtotime($success['date_processed']));
+                 $payment_year= date('Y',strtotime($success['date_processed']));
 
-      //}catch (Exception $e) { return "Something Error"; } 
+                 $model=Invoice::find($success['opt_a']);
+                 $model->payment_status=1; 
+                 $model->payment_type='Online'; 
+                 $model->payment_time=$success['date_processed'];
+                 $model->payment_method=$success['payment_type']; 
+                 $model->payment_date=$payment_date; 
+                 $model->payment_year=$payment_year; 
+                 $model->payment_month=$payment_month;  
+                 $model->payment_day=$payment_day; 
+                 $model->update();
+
+               return view('web.payment_success');   
+      }catch (Exception $e) { return "Something Error"; } 
 
    }
 
 
      public function amarpay_fail(Request $request){
-          return $request;
+         //  return $request;
+        return view('web.payment_fail');   
      }
 
        public function amarpay_cancel(){

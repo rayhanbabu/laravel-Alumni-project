@@ -126,7 +126,7 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('/admin/app/{admin_category}',[AppController::class,'index']);
     Route::post('/admin/app',[AppController::class,'store']);
     Route::get('/admin/app_fetch/{admin_category}',[AppController::class,'fetch']);
-    Route::get('/admin/app/fetch_data',[AppController::class,'fetch_data']);
+    Route::get('/admin/app/fetch_data/{admin_category}',[AppController::class,'fetch_data']);
     Route::get('/admin/app_edit/{id}',[AppController::class,'edit']);
     Route::post('/admin/app_update/{id}',[AppController::class,'update']);
     Route::delete('/admin/app_delete/{id}',[AppController::class,'destroy']);

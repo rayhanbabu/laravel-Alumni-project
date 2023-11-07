@@ -121,16 +121,21 @@ class AppController extends Controller
     
 
 
-    function fetch_data(Request $request)
+    function fetch_data(Request $request,$admin_category)
     {
      if($request->ajax())
      {
+      $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
       $sort_by = $request->get('sortby');
       $sort_type = $request->get('sorttype'); 
             $search = $request->get('search');
             $search = str_replace(" ", "%", $search);
-      $data = App::where('dureg', 'like', '%'.$search.'%')
-                    ->orWhere('phone', 'like', '%'.$search.'%')
+      $data = App::where('admin_name',$admin->admin_name)
+              ->where('admin_category',$admin_category)
+              ->where(function($query) use ($search) {
+                  $query->orwhere('category', 'like', '%'.$search.'%');
+                  $query->orWhere('amount', 'like', '%'.$search.'%');
+                  })
                     ->orderBy($sort_by, $sort_type)
                     ->paginate(15);
                     return view('admin.app_data', compact('data'))->render();

@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Cookie;
 <div class="container mt-4">
 <div class="row">
   <div class="col-sm-6 p-3 shadow"> 
-             <p class="text-end"><a class="btn btn-primary" href="{{url($front_end_link.'/dashbord')}}" role="button">Back Invoice Download Page</a>  </p>     
+             <p class="text-end"><a class="btn btn-primary" href="{{url($front_end_link.'/dashbord')}}" role="button">Back Dashboard Page</a>  </p>     
     <div class="card">
          <div class="card-body">
-             <h1 class="text-center text-success">
-                   Congratulation.<br>Your Payment Successfully completed.
+             <h1 class="text-center text-danger">
+                  Your Payment Fail .
             </h1>
        </div>
       </div>

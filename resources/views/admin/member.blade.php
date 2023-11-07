@@ -250,7 +250,7 @@
 
       function fetch_data(page, sort_type="", sort_by="", search=""){
         $.ajax({
-        url:"/admin/member/fetch_data/{{$category_id}}/"+"?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
+        url:"/admin/member/fetch_data/{{$category_id}}"+"?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
         success:function(data)
         {
         $('tbody').html('');

@@ -159,7 +159,7 @@
  <thead>
        <tr>
        <th  width="10%">Id</th>
-       <th width="25%" class="sorting" data-sorting_type="asc" data-column_name="category" style="cursor: pointer" >category
+       <th width="25%" class="sorting" data-sorting_type="asc" data-column_name="category" style="cursor: pointer" >category 
                 <span id="category_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
        <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Amount
                   <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
@@ -364,7 +364,7 @@ $(document).on('submit', '#add_form', function(e){
 
     function fetch_data(page, sort_type="", sort_by="", search=""){
         $.ajax({
-        url:"/admin/app/fetch_data?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
+        url:"/admin/app/fetch_data/{{$admin_category}}?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
         success:function(data)
         {
         $('tbody').html('');
