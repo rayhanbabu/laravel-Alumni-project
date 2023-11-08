@@ -262,6 +262,8 @@ Route::middleware('AdminIs')->group(function(){
     Route::post('amarpay_fail',[InvoiceController::class,'amarpay_fail'])->name('amarpay_fail');
     Route::get('amarpay_cancel',[InvoiceController::class,'amarpay_cancel'])->name('amarpay_cancel');
 
+    Route::get('payment',[InvoiceController::class,'payment'])->name('payment');
+
 
 
     //registration
