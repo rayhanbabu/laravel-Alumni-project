@@ -15,12 +15,12 @@ class WithdrawController extends Controller
         return view('admin.withdraw');
     }
 
-  public function fetch($admin_category){
+  public function fetch(){
     if(Session::has('admin')){
       $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-      $data=APP::where('admin_name',$admin->admin_name)->where('admin_category',$admin_category)
-      ->orderBy('id', 'desc')->paginate(15);
-       return view('admin.app_data',compact('data'));
+      $data=Withdraw::where('admin_name',$admin->admin_name)
+         ->orderBy('id', 'desc')->paginate(15);
+       return view('admin.withdraw_data',compact('data'));
     }
    }
 
@@ -35,81 +35,42 @@ class WithdrawController extends Controller
     
    if($validator->fails()){
          return response()->json([
-           'status'=>400,
-           'validate_err'=>$validator->messages(),
+           'status'=>700,
+           'message'=>$validator->messages(),
          ]);
    }else{
-          if($admin->online_amount)
-              $app= new App;
-              $app->amount=$request->input('amount');
-              $app->status=$request->input('status');
-              $app->category=$request->input('category');
-              $app->admin_category=$request->input('admin_category');
+          if($admin->online_cur_amount-$request->withdraw_amount>500){
+              $app= new Withdraw;
+              $app->withdraw_amount=$request->input('withdraw_amount');
+              $app->bank_route=$admin->bank_route;
+              $app->bank_account=$admin->bank_account;
+              $app->bank_name=$admin->bank_name;
+              $app->withdraw_submited_time=date('Y-m-d H:i:s');
               $app->admin_name=$admin->admin_name;
               $app->save();
              return response()->json([
                'status'=>200,  
                 'message'=>'Inserted Data',
              ]);
+
+            }else{
+                return response()->json([
+                     'status'=>300,  
+                     'message'=>'Withdraw Amount than than current amount. 500 taka Must be reserved ',
+                  ]);
+            }
        }
       }
     }
 
 
-      public function edit($id){
-          $edit_value=App::find($id);
-          if($edit_value){
-             return response()->json([
-                  'status'=>200,  
-                  'edit_value'=>$edit_value,
-                ]);
-           }else{
-               return response()->json([
-                  'status'=>404,  
-                  'message'=>'Student not found',
-                ]);
-           }
-   }
-
-
-   public function update(Request $request, $id){
-
-    $validator=\Validator::make($request->all(),[
-                  
-       'category' => 'required',
-       'amount' => 'required',
-   ]);
-
-   if($validator->fails()){
-    return response()->json([
-      'status'=>400,
-      'validate_err'=>$validator->messages(),
-    ]);
-    }else{
-          $app=App::find($id);
-          if($app){
-               $app->amount=$request->input('amount');
-               $app->status=$request->input('status');
-               $app->category=$request->input('category');
-               $app->update();   
-            return response()->json([
-                'status'=>200,
-                'message'=>'Data Updated'
-             ]);
-           }else{
-              return response()->json([
-                  'status'=>404,  
-                  'message'=>'Student not found',
-                ]);
-          }
-
-       }
-   }  
+   
 
 
    public function destroy($id){
-      $notice=App::find($id);
-      $notice->delete();
+      $app=Withdraw::find($id);
+      $app->withdraw_status=5;
+      $app->update();
       return response()->json([
          'status'=>200,  
          'message'=>'Deleted Data',

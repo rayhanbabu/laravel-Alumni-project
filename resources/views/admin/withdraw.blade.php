@@ -90,7 +90,7 @@
      </div>
 
      <div class="form-group  my-2">
-	      	<label><b>Amount (TK)</b></label>
+	      	<label><b> Amount (TK)</b></label>
 	        <input name="amount" id="edit_amount" type="number"   class="form-control"  required/>
           <p class="text-danger err_amount"></p>
      </div>
@@ -146,13 +146,14 @@
  <thead>
        <tr>
        <th  width="10%">Id</th>
-       <th width="25%" class="sorting" data-sorting_type="asc" data-column_name="category" style="cursor: pointer" >category 
-                <span id="category_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
-       <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Amount
-                  <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
-           <th  width="10%">Status</th>
-		      <th  width="10%"></th>
-		      <th  width="10%"></th>
+       <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Withdraw Amount
+            <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
+        <th  width="10%"> Withdraw Submitted time</th>
+        <th  width="10%">Current Balance</th>
+        <th  width="10%">Withdraw time</th>
+		    <th  width="10%">Withdraw Status</th>
+
+		    <th  width="10%">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -196,14 +197,14 @@ $(document).ready(function(){
          }
 
     
-           $(document).on('click', '.delete_id', function(e){ 
+           $(document).on('click', '.deleteIcon', function(e){ 
             e.preventDefault(); 
             var delete_id = $(this).val(); 
             if(confirm("Are you sure you want to delete this?"))
                  {
                    $.ajax({
                    type:'DELETE',
-                   url:'/admin/with_delete/'+delete_id,
+                   url:'/admin/withdraw_delete/'+delete_id,
                    success:function(response){    
                        //console.log(response); 
                        $('#success_message').html("");
@@ -220,83 +221,6 @@ $(document).ready(function(){
                   return false; 
                   }
             });
-
-
-
-
-
-        $(document).on('submit', '#edit_form', function(e){ 
-        e.preventDefault(); 
-        var edit_id=$('#edit_id').val();
-
-        let editData=new FormData($('#edit_form')[0]);
-        $.ajax({
-             type:'POST',
-             url:'/admin/with_update/'+edit_id,
-             data:editData,
-             contentType: false,
-             processData:false,
-             beforeSend : function()
-               {
-               $('.loader').show();
-               $("#edit_btn").prop('disabled', true)
-
-               },
-             success:function(response){
-                   // console.log(response);
-                   if(response.status == 400){
-                    $('.edit_err_phone').text(response.validate_err.phone);
-                    $('.edit_err_dureg').text(response.validate_err.dureg);
-                       //  $('#edit_form_errlist').html("");
-                       //  $('#edit_form_errlist').removeClass('d-none');
-                       //  $.each(response.errors,function(key,err_values){ 
-                       //  $('#edit_form_errlist').append('<li>'+err_values+'</li>');
-                       //  });
-                  }else{
-                    $('#edit_form_errlist').html("");
-                    $('#edit_form_errlist').addClass('d-none');
-                    $('#success_message').html("");
-                    $('#success_message').addClass('alert alert-success');
-                    $('#success_message').text(response.message)
-                    $('#EditModal').modal('hide');
-                    $('.err_phone').text('');
-                    $('.err_dureg').text('');
-                    fetch();
-                  }
-                  $("#edit_btn").prop('disabled', false)
-                  $('.loader').hide();
-             }
-          });
-       });
-
-
-
-
-           $(document).on('click', '.edit_id', function(e){ 
-            e.preventDefault(); 
-            var edit_id = $(this).val(); 
-            //alert(edit_id)
-            $('#EditModal').modal('show');
-            $.ajax({
-             type:'GET',
-             url:'/admin/with_edit/'+edit_id,
-             success:function(response){
-             
-                if(response.status == 404){
-                  $('#success_message').html("");
-                  $('#success_message').addClass('alert alert-danger');
-                  $('#success_message').text(response.message);
-                }else{
-                  $('#edit_status').val(response.edit_value.status);
-                  $('#edit_amount').val(response.edit_value.amount);
-                  $('#edit_category').val(response.edit_value.category);
-                  $('#edit_id').val(edit_id);
-                }
-             }
-             });
-           });
-
-  
 
 
 
@@ -318,12 +242,11 @@ $(document).on('submit', '#add_form', function(e){
                },
              success:function(response){
               //console.log(response);
-             if(response.status == 400){
-                   $('.err_phone').text(response.validate_err.phone);
-                   $('.err_dureg').text(response.validate_err.dureg);
-                 }else if(response.status == 500){
-                  Swal.fire("Du reg  already exist ", "Please try again", "warning");
-                 }else{
+             if(response.status == 700 ){
+                   $('.err_withdraw_amount').text(response.message.dureg);
+              }else if(response.status == 300){
+                   $('.err_withdraw_amount').text(response.message);
+               }else if(response.status == 200){
                     //console.log(response.message);
                     $('#add_form_errlist').html("");
                     $('#add_form_errlist').addClass('d-none');
@@ -332,8 +255,7 @@ $(document).on('submit', '#add_form', function(e){
                     $('#success_message').text(response.message)
                     $('#AddModal').modal('hide');
                     $("#add_form")[0].reset();
-                    $('.err_phone').text('');
-                    $('.err_dureg').text('');
+                    $('.err_withdraw_amount').text('');
                     fetch();
                  }  
                  $('.loader').hide();

@@ -247,8 +247,6 @@ Route::middleware('AdminIs')->group(function(){
     Route::post('/admin/withdraw',[WithdrawController::class,'store']);
     Route::get('/admin/withdraw_fetch/',[WithdrawController::class,'fetch']);
     Route::get('/admin/withdraw/fetch_data/',[WithdrawController::class,'fetch_data']);
-    Route::get('/admin/withdraw_edit/{id}',[WithdrawController::class,'edit']);
-    Route::post('/admin/withdraw_update/{id}',[WithdrawController::class,'update']);
     Route::delete('/admin/withdraw_delete/{id}',[WithdrawController::class,'destroy']);
 
 
