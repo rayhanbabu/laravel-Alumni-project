@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\validator;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use App\Models\Maintain;
 use App\Models\Admin;
 use App\Models\Member;
@@ -84,6 +85,7 @@ class InvoiceController extends Controller
         "cus_phone": "' . $member->phone . '",
         "opt_a":"' . $invoice->id . '" ,
         "opt_b":"' . $admin->other_link . '" ,
+        "opt_c":"' . $admin->admin_name . '" ,
         "type": "json"
     }',
         CURLOPT_HTTPHEADER => array(
@@ -149,6 +151,8 @@ class InvoiceController extends Controller
       $payment_month = date('n', strtotime($success['date_processed']));
       $payment_year = date('Y', strtotime($success['date_processed']));
 
+     
+
       $model = Invoice::find($success['opt_a']);
       $model->payment_status = 1;
       $model->payment_type = 'Online';
@@ -160,10 +164,10 @@ class InvoiceController extends Controller
       $model->payment_day = $payment_day;
       $model->update();
 
+  
       return view('web.payment_success', ["web_link" => $success['opt_b']]);
     } catch (Exception $e) {
-      return "Something Error. please try again";
-    }
+     return "Something Error. please try again"; }
   }
 
 

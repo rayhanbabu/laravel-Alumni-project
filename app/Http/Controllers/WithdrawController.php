@@ -6,7 +6,7 @@ use App\Models\Withdraw;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Admin;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class WithdrawController extends Controller
