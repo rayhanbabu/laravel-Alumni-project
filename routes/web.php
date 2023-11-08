@@ -16,6 +16,7 @@ use App\Http\Controllers\SmsController;
 use App\Http\Controllers\ExpreController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\WithdrawController;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,6 +122,7 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('/admin/password',[AdminController::class,'password']);
     Route::post('admin/password',[AdminController::class,'passwordedit']);
 
+    Route::post('admin/amarpay_search',[InvoiceController::class,'amarpay_search']);
 
     //Application 
     Route::get('/admin/app/{admin_category}',[AppController::class,'index']);
@@ -240,28 +242,36 @@ Route::middleware('AdminIs')->group(function(){
         Route::get('admin/form_delete/{id}', [FormController::class,'form_delete']);
 
 
+            //Withdraw 
+    Route::get('/admin/withdraw/',[WithdrawController::class,'index']);
+    Route::post('/admin/withdraw',[WithdrawController::class,'store']);
+    Route::get('/admin/withdraw_fetch/',[WithdrawController::class,'fetch']);
+    Route::get('/admin/withdraw/fetch_data/',[WithdrawController::class,'fetch_data']);
+    Route::get('/admin/withdraw_edit/{id}',[WithdrawController::class,'edit']);
+    Route::post('/admin/withdraw_update/{id}',[WithdrawController::class,'update']);
+    Route::delete('/admin/withdraw_delete/{id}',[WithdrawController::class,'destroy']);
+
+
    });
 
 
-   //Amarpay Payment getway
-   Route::get('epay/{username}/{tran_id}',[InvoiceController::class,'amarpay_epay'])->name('amarpay_epay');
-
-   Route::get('amarpay_payment/{tran_id}',[InvoiceController::class,'amarpay_payment'])->name('amarpay_payment');
+    //Amarpay Payment getway
+    Route::get('epay/{username}/{tran_id}',[InvoiceController::class,'amarpay_epay'])->name('amarpay_epay');
+ 
+    Route::get('amarpay_payment/{tran_id}',[InvoiceController::class,'amarpay_payment'])->name('amarpay_payment');
    //You need declear your success & fail route in "app\Middleware\VerifyCsrfToken.php"
-   Route::post('amarpay_success',[InvoiceController::class,'amarpay_success'])->name('amarpay_success');
-   Route::post('amarpay_fail',[InvoiceController::class,'amarpay_fail'])->name('amarpay_fail');
-   Route::get('amarpay_cancel',[InvoiceController::class,'amarpay_cancel'])->name('amarpay_cancel');
+    Route::post('amarpay_success',[InvoiceController::class,'amarpay_success'])->name('amarpay_success');
+    Route::post('amarpay_fail',[InvoiceController::class,'amarpay_fail'])->name('amarpay_fail');
+    Route::get('amarpay_cancel',[InvoiceController::class,'amarpay_cancel'])->name('amarpay_cancel');
 
 
 
-   /*
     //registration
-   Route::get('/', [MaintainController::class, 'reg']);
+    Route::get('/', [MaintainController::class, 'reg']);
+    Route::post('/web/insert', [MaintainController::class, 'webinsert']);
+    Route::get('/email_verify/{email2}', [MaintainController::class, 'email_verify']);
    
-   Route::post('/web/insert', [MaintainController::class, 'webinsert']);
-   Route::get('/email_verify/{email2}', [MaintainController::class, 'email_verify']);
-   
-    
+      /* 
    Route::get('/testimonial', [TestimonialController::class, 'testimonial']);
    Route::get('/langhome', [TestimonialController::class, 'langhome']);
 

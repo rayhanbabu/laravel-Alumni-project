@@ -1,7 +1,4 @@
-<?php 
-use Illuminate\Support\Facades\Cookie;
- $front_end_link=Cookie::get('front_end_link');
- ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +13,7 @@ use Illuminate\Support\Facades\Cookie;
 <div class="container mt-4">
 <div class="row">
   <div class="col-sm-6 p-3 shadow"> 
-             <p class="text-end"><a class="btn btn-primary" href="{{url($front_end_link.'/dashbord')}}" role="button">Back</a>  </p>     
+             <p class="text-end"><a class="btn btn-primary" href="{{url($web_link.'dashbord')}}" role="button">Back</a>  </p>     
     <div class="card">
          <div class="card-body">
    

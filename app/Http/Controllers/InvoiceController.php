@@ -15,164 +15,212 @@ use Exception;
 class InvoiceController extends Controller
 {
 
-  public function amarpay_epay($username,$tran_id){
-      try{ 
-      $invoice= Invoice::where('admin_name',$username)->where('tran_id',$tran_id)->first();  
-      if($invoice){
-           $admin=Admin::where('admin_name',$username)->select('other_link')->first();
-            Cookie::queue('front_end_link',$admin->other_link,60/2); // 60 minutes
-            return view('web.amarpay_epay',['tran_id'=>$invoice->tran_id,]); 
-       }else{
-           return "Invalid Url";
-        }
-
-     }catch (Exception $e) { return "Something Error"; } 
-
-   }
-      
-   
-
-
-  public function amarpay_payment($tran_id){
-
-   try{ 
-    $invoice= Invoice::where('tran_id',$tran_id)->first(); 
-    $member= Member::where('id',$invoice->member_id)->first();
-    $tran_id = $tran_id;  //unique transection id for every transection 
-    $currency= "BDT"; //aamarPay support Two type of currency USD & BDT  
-
-    $amount = $invoice->total_amount;   //10 taka is the minimum amount for show card option in aamarPay payment gateway
-    
-
-
-
-    //For live Store Id & Signature Key please mail to support@aamarpay.com
-    $store_id = "aamarpaytest"; 
-    $signature_key = "dbb74894e82415a2f7ff0ec3a97e4183"; 
-    $url = "https://​sandbox​.aamarpay.com/jsonpost.php"; // for Live Transection use "https://secure.aamarpay.com/jsonpost.php"
-
-    $curl = curl_init();
-
-    curl_setopt_array($curl, array(
-    CURLOPT_URL => $url,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'POST',
-    CURLOPT_POSTFIELDS =>'{
-        "store_id": "'.$store_id.'",
-        "tran_id": "'.$tran_id.'",
-        "success_url": "'.route('amarpay_success').'",
-        "fail_url": "'.route('amarpay_fail').'",
-        "cancel_url": "'.route('amarpay_cancel').'",
-        "amount": "'.$amount.'",
-        "currency": "'.$currency.'",
-        "signature_key": "'.$signature_key.'",
-        "desc": "'.$invoice->category_id.'",
-        "cus_name": "'.$member->name.'",
-        "cus_email": "'.$member->email.'",
-        "cus_add1": "'.$member->id.'",
-        "cus_add2": "Mohakhali DOHS",
-        "cus_city": "'.$member->city.'",
-        "cus_state": "'.$member->city.'",
-        "cus_postcode": "1206",
-        "cus_country": "'.$member->country.'",
-        "cus_phone": "'.$member->phone.'",
-        "opt_a":"'.$invoice->id.'" ,
-        "ship_name":"'.$invoice->id.'" ,
-        "type": "json"
-    }',
-    CURLOPT_HTTPHEADER => array(
-        'Content-Type: application/json'
-    ),
-    ));
-
-    $response = curl_exec($curl);
-
-    curl_close($curl);
-     //dd($response);
-    
-    $responseObj = json_decode($response);
-
-    if(isset($responseObj->payment_url) && !empty($responseObj->payment_url)) {
-
-        $paymentUrl = $responseObj->payment_url;
-        // dd($paymentUrl);
-        return redirect()->away($paymentUrl);
-
-     }else{
-        echo $response;
-     }
-
-   }catch (Exception $e) { return "Something Error"; } 
+  public function amarpay_epay($username, $tran_id)
+  {
+    try {
+      $invoice = Invoice::where('admin_name', $username)->where('tran_id', $tran_id)->first();
+      if ($invoice) {
+        $admin = Admin::where('admin_name', $username)->select('other_link')->first();
+        return view('web.amarpay_epay', ['tran_id' => $invoice->tran_id, 'web_link' => $admin->other_link]);
+      } else {
+        return "Invalid Url";
+      }
+    } catch (Exception $e) {
+      return "Something Error. please try again";
+    }
   }
 
 
 
-  public function amarpay_success(Request $request){
 
-   try{ 
-     $request_id= $request->mer_txnid;
-    //verify the transection using Search Transection API 
+  public function amarpay_payment($tran_id)
+  {
+    try {
+      $invoice = Invoice::where('tran_id', $tran_id)->first();
+      $member = Member::where('id', $invoice->member_id)->first();
+      $admin = Admin::where('admin_name', $invoice->admin_name)->select('other_link')->first();
+      $tran_id = $tran_id;  //unique transection id for every transection 
+      $currency = "BDT"; //aamarPay support Two type of currency USD & BDT  
 
-     $url = "http://sandbox.aamarpay.com/api/v1/trxcheck/request.php?request_id=$request_id&store_id=aamarpaytest&signature_key=dbb74894e82415a2f7ff0ec3a97e4183&type=json";
-    
-    //For Live Transection Use "http://secure.aamarpay.com/api/v1/trxcheck/request.php"
-    
-     $curl = curl_init();
+      $amount = $invoice->total_amount;   //10 taka is the minimum amount for show card option in aamarPay payment gateway
 
-    curl_setopt_array($curl, array(
-    CURLOPT_URL => $url,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    ));
+
+
+
+      //For live Store Id & Signature Key please mail to support@aamarpay.com
+      $store_id = "aamarpaytest";
+      $signature_key = "dbb74894e82415a2f7ff0ec3a97e4183";
+      $url = "https://​sandbox​.aamarpay.com/jsonpost.php"; // for Live Transection use "https://secure.aamarpay.com/jsonpost.php"
+
+      $curl = curl_init();
+
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => '{
+        "store_id": "' . $store_id . '",
+        "tran_id": "' . $tran_id . '",
+        "success_url": "' . route('amarpay_success') . '",
+        "fail_url": "' . route('amarpay_fail') . '",
+        "cancel_url": "' . route('amarpay_cancel') . '",
+        "amount": "' . $amount . '",
+        "currency": "' . $currency . '",
+        "signature_key": "' . $signature_key . '",
+        "desc": "' . $invoice->category_id . '",
+        "cus_name": "' . $member->name . '",
+        "cus_email": "' . $member->email . '",
+        "cus_add1": "' . $member->id . '",
+        "cus_add2": "Mohakhali DOHS",
+        "cus_city": "' . $member->city . '",
+        "cus_state": "' . $member->city . '",
+        "cus_postcode": "1206",
+        "cus_country": "' . $member->country . '",
+        "cus_phone": "' . $member->phone . '",
+        "opt_a":"' . $invoice->id . '" ,
+        "opt_b":"' . $admin->other_link . '" ,
+        "type": "json"
+    }',
+        CURLOPT_HTTPHEADER => array(
+          'Content-Type: application/json'
+        ),
+      ));
 
       $response = curl_exec($curl);
 
-       curl_close($curl);
-       //  echo  $response;
-        $success = json_decode($response, true);
+      curl_close($curl);
+      //dd($response);
 
-          //echo $success['status_code'];
-                 $payment_date= date('Y-m-d',strtotime($success['date_processed']));
-                 $payment_day= date('d',strtotime($success['date_processed']));
-                 $payment_month= date('n',strtotime($success['date_processed']));
-                 $payment_year= date('Y',strtotime($success['date_processed']));
+      $responseObj = json_decode($response);
 
-                 $model=Invoice::find($success['opt_a']);
-                 $model->payment_status=1; 
-                 $model->payment_type='Online'; 
-                 $model->payment_time=$success['date_processed'];
-                 $model->payment_method=$success['payment_type']; 
-                 $model->payment_date=$payment_date; 
-                 $model->payment_year=$payment_year; 
-                 $model->payment_month=$payment_month;  
-                 $model->payment_day=$payment_day; 
-                 $model->update();
+      if (isset($responseObj->payment_url) && !empty($responseObj->payment_url)) {
 
-               return view('web.payment_success');   
-      }catch (Exception $e) { return "Something Error"; } 
-
-   }
+        $paymentUrl = $responseObj->payment_url;
+        // dd($paymentUrl);
+        return redirect()->away($paymentUrl);
+      } else {
+        echo $response;
+      }
+    } catch (Exception $e) {
+      return "Something Error. please try again";
+    }
+  }
 
 
-     public function amarpay_fail(Request $request){
-         //  return $request;
-        return view('web.payment_fail');   
-     }
 
-       public function amarpay_cancel(){
-               return 'Canceled';
-       }
+  public function amarpay_success(Request $request)
+  {
+    try {
+      $request_id = $request->mer_txnid;
+      //verify the transection using Search Transection API 
+
+      $url = "http://sandbox.aamarpay.com/api/v1/trxcheck/request.php?request_id=$request_id&store_id=aamarpaytest&signature_key=dbb74894e82415a2f7ff0ec3a97e4183&type=json";
+
+      //For Live Transection Use "http://secure.aamarpay.com/api/v1/trxcheck/request.php"
+
+      $curl = curl_init();
+
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+      ));
+
+      $response = curl_exec($curl);
+
+      curl_close($curl);
+      // echo  $response;
+
+      //database working part 
+      $success = json_decode($response, true);
+      //echo $success['status_code'];
+      $payment_date = date('Y-m-d', strtotime($success['date_processed']));
+      $payment_day = date('d', strtotime($success['date_processed']));
+      $payment_month = date('n', strtotime($success['date_processed']));
+      $payment_year = date('Y', strtotime($success['date_processed']));
+
+      $model = Invoice::find($success['opt_a']);
+      $model->payment_status = 1;
+      $model->payment_type = 'Online';
+      $model->payment_time = $success['date_processed'];
+      $model->payment_method = $success['payment_type'];
+      $model->payment_date = $payment_date;
+      $model->payment_year = $payment_year;
+      $model->payment_month = $payment_month;
+      $model->payment_day = $payment_day;
+      $model->update();
+
+      return view('web.payment_success', ["web_link" => $success['opt_b']]);
+    } catch (Exception $e) {
+      return "Something Error. please try again";
+    }
+  }
 
 
+  public function amarpay_fail(Request $request)
+  {
+    try {
+
+      $fail = $request;
+      return view('web.payment_fail', ["web_link" => $fail['opt_b']]);
+    } catch (Exception $e) {
+      return "Something Error. please try again";
+    }
+  }
+
+  public function amarpay_cancel()
+  {
+    return 'Payment Canceled. Please try again';
+  }
+
+
+
+  public function amarpay_search(Request $request)
+  {
+    try {
+      $tran_id = $request->tran_id;
+      $store_id = "aamarpaytest";
+      $signature_key = "dbb74894e82415a2f7ff0ec3a97e4183";
+
+      $url = "http://sandbox.aamarpay.com/api/v1/trxcheck/request.php?request_id=$tran_id&store_id=$store_id&signature_key=$signature_key&type=json";
+ 
+       //return $url;
+     // die();
+      $curl = curl_init();
+
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+      ));
+
+      $response = curl_exec($curl);
+
+      curl_close($curl);
    
+      $data = json_decode($response, true);
+    if ($data === null) {
+        echo "JSON decoding failed.";
+    } else {
+      return view('admin.invoice_search', ["data" =>$data]);
+     }
+    } catch (Exception $e) {
+      return "Something Error. please try again";
+    }
+  }
 }

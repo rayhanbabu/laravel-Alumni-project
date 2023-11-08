@@ -434,6 +434,9 @@ public function adminedit(request $request){
     $admin->testimonial_size=$request->input('testimonial_size');
     $admin->slide_size=$request->input('slide_size');
     $admin->getway_fee=$request->input('getway_fee');
+    $admin->bank_name=$request->input('bank_name');
+    $admin->bank_account=$request->input('bank_account');
+    $admin->bank_route=$request->input('bank_route');
     $admin->update();
     return redirect()->back()->with('success','Admin Update Successfuly');
 }

@@ -135,6 +135,7 @@
        data-resheader_size="{{$item->resheader_size}}"  data-executive_size="{{$item->executive_size}}"
        data-senior_size="{{$item->senior_size}}" data-general_size="{{$item->general_size}}" data-notice_size="{{$item->notice_size}}"
        data-welcome_size="{{$item->welcome_size}}"data-testimonial_size="{{$item->testimonial_size}}" 
+       data-bank_name="{{$item->bank_name}}" data-bank_account="{{$item->bank_account}}" data-bank_route="{{$item->bank_route}}"
        data-slide_size="{{$item->slide_size}}" data-getway_fee="{{$item->getway_fee}}" >Edit</button>
     </td>
 
@@ -196,6 +197,9 @@
                    var testimonial_size = $(this).data("testimonial_size");
                    var slide_size = $(this).data("slide_size");
                    var getway_fee = $(this).data("getway_fee");
+                   var bank_name = $(this).data("bank_name");
+                   var bank_account = $(this).data("bank_account");
+                   var bank_route = $(this).data("bank_route");
                      $('#edit_name').val(name);
                      $('#edit_nameen').val(nameen);
                      $('#edit_address').val(address);
@@ -229,7 +233,9 @@
                      $('#edit_testimonial_size').val(testimonial_size);
                      $('#edit_slide_size').val(slide_size);
                      $('#edit_getway_fee').val(getway_fee);
-
+                     $('#edit_bank_name').val(bank_name);
+                     $('#edit_bank_account').val(bank_account);
+                     $('#edit_bank_route').val(bank_route);
                      $('#updatemodal').modal('show');
                 });
 
@@ -498,8 +504,23 @@
          </div> 
 
          <div class="form-group col-sm-6  my-2">
-               <label class=""><b>Menu Bar Hidden  </b></label>
+               <label class=""><b>Menu Bar Hidden(0,1)  </b></label>
                <input type="text" id="edit_text4"  name="text4" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>Bank name   </b></label>
+               <input type="text" id="edit_bank_name"  name="bank_name" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b> Bank Account   </b></label>
+               <input type="text" id="edit_bank_account"  name="bank_account" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>Bank Route  </b></label>
+               <input type="text" id="edit_bank_route"  name="bank_route" class="form-control" >
          </div> 
 
     </div>

@@ -88,6 +88,9 @@ return new class extends Migration
             $table->text('token4')->nullable();
             $table->text('token5')->nullable();
             $table->text('token6')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('bank_account')->nullable();
+            $table->string('bank_route')->nullable();
             $table->timestamps();
         });
     }

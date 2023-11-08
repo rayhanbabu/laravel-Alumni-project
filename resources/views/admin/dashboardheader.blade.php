@@ -139,6 +139,20 @@
      </a>
 
 
+     <a class="nav-link  @yield('Earning_select') @yield('Spending_select')
+    collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts">
+      <div class="sb-nav-link-icon "><i class="fas fa-columns"></i></div>
+           Finance
+       <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+    </a>
+     <div class="collapse" id="collapseLayouts1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+       <nav class="sb-sidenav-menu-nested nav">
+          <a class="nav-link @yield('Earning_select')" href="{{url('/finance/index/Earning')}}">Earning</a>
+          <a class="nav-link @yield('Spending_select')" href="{{url('/finance/index/Spending')}}">Spending </a> 
+      </nav>
+   </div>
+
+
   
 
    @else
@@ -163,18 +177,7 @@
 
 		
 
-   <a class="nav-link  @yield('Earning_select') @yield('Spending_select')
-    collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts">
-      <div class="sb-nav-link-icon "><i class="fas fa-columns"></i></div>
-           Finance
-       <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-    </a>
-     <div class="collapse" id="collapseLayouts1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-       <nav class="sb-sidenav-menu-nested nav">
-          <a class="nav-link @yield('Earning_select')" href="{{url('/finance/index/Earning')}}">Earning</a>
-          <a class="nav-link @yield('Spending_select')" href="{{url('/finance/index/Spending')}}">Spending </a> 
-      </nav>
-   </div>
+
 
 
    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseattansms" aria-expanded="false" aria-controls="collapseLayouts">
@@ -197,9 +200,6 @@
            News & Event 
      </a>
 
-
-
- 
 
    <a class="nav-link @yield('bloodsearch_select')" href="{{url('/bloodsearch')}}">
        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -257,6 +257,11 @@
      <a class="nav-link @yield('dataview_select')" href="{{url('admin/dataview')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
              Token  Setup
+     </a>
+
+     <a class="nav-link @yield('withdraw_select')" href="{{url('admin/withdraw')}}">
+        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+          Withdraw Application
      </a>
 
   </div>
