@@ -1,6 +1,6 @@
-@extends('admin/dashboardheader')
-@section('page_title','Appication')
-@section('with_select','active')
+@extends('maintain/dashboardheader')
+@section('page_title','Maintain Panel')
+@section('withdraw_select','active')
 @section('content')
 
   <div class="row mt-4 mb-3">
@@ -19,51 +19,6 @@
           </div> 
     </div> 
 
-
-  <!-- Modal Add -->
-   <div class="modal fade" id="AddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-     <div class="modal-dialog">
-       <div class="modal-content">
-         <div class="modal-header">
-           <h5 class="modal-title" id="staticBackdropLabel"> Add</h5>
-           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-
-   <form method="post" id="add_form" enctype="multipart/form-data" >
-      <div class="modal-body">
-            <ul class="alert alert-warning d-none"  id="add_form_errlist"></ul>
-
-    
-
-     <div class="form-group  my-2">
-	      	<label><b>Withdraw Amount (TK)</b></label>
-	        <input name="withdraw_amount" id="withdraw_amount" type="number"   class="form-control"  required/>
-          <p class="text-danger err_withdraw_amount"></p>
-     </div>
-
-     
-	  
-
-    
-      <div class="loader">
-                  <img src="{{ asset('images/abc.gif') }}" alt="" style="width: 50px;height:50px;">
-			 </div><br>
-	 
-    
-     <button type="submit"  id="add_btn"   class=" btn btn-success">Submit</button>
-
-   </div>
-   </form> 
-
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>   
-
- <!-- Modal Add  End-->
 
 
 
@@ -145,13 +100,17 @@
  <table class="table table-bordered" id="employee_data">
  <thead>
        <tr>
-       <th  width="10%">Id</th>
-       <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Withdraw Amount
-            <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
-        <th  width="10%"> Withdraw Submitted time</th>
-        <th  width="10%">Withdraw time</th>
-		    <th  width="10%">Withdraw Status</th>
-
+        <th  width="10%">Id</th>
+        <th  width="10%">Admin Name</th>
+        <th  width="10%">Bank Informaation</th>
+        <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Withdraw Amount
+          <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
+         <th  width="10%"> Withdraw Submitted time</th>
+         <th  width="10%">Current Balance</th>
+         <th  width="10%">Withdraw time</th>
+		     <th  width="10%">Withdraw Status</th>
+         <th  width="10%">Withdraw Type</th>
+         <th  width="10%">Withdraw Info</th>
 		    <th  width="10%">Action</th>
       </tr>
     </thead>
@@ -186,7 +145,7 @@ $(document).ready(function(){
          function fetch(){
             $.ajax({
              type:'GET',
-             url:'/admin/withdraw_fetch',
+             url:'/maintain/withdraw_fetch',
              datType:'json',
              success:function(response){
                     $('tbody').html('');
@@ -203,7 +162,7 @@ $(document).ready(function(){
                  {
                    $.ajax({
                    type:'DELETE',
-                   url:'/admin/withdraw_delete/'+delete_id,
+                   url:'/maintain/withdraw_delete/'+delete_id,
                    success:function(response){    
                        //console.log(response); 
                        $('#success_message').html("");
@@ -223,47 +182,7 @@ $(document).ready(function(){
 
 
 
-$(document).on('submit', '#add_form', function(e){ 
-        e.preventDefault();
-        
-         let formData=new FormData($('#add_form')[0]);
-       
-         $.ajax({
-             type:'POST',
-             url:'/admin/withdraw',
-             data:formData,
-             contentType: false,
-             processData:false,
-             beforeSend : function()
-               {
-               $('.loader').show();
-               $("#add_btn").prop('disabled', true)
-               },
-             success:function(response){
-              //console.log(response);
-             if(response.status == 700 ){
-                   $('.err_withdraw_amount').text(response.message.dureg);
-              }else if(response.status == 300){
-                   $('.err_withdraw_amount').text(response.message);
-               }else if(response.status == 200){
-                    //console.log(response.message);
-                    $('#add_form_errlist').html("");
-                    $('#add_form_errlist').addClass('d-none');
-                    $('#success_message').html("");
-                    $('#success_message').addClass('alert alert-success');
-                    $('#success_message').text(response.message)
-                    $('#AddModal').modal('hide');
-                    $("#add_form")[0].reset();
-                    $('.err_withdraw_amount').text('');
-                    fetch();
-                 }  
-                 $('.loader').hide();
-                 $("#add_btn").prop('disabled', false)
-             }
-
-          });
-      
-    });  
+   
 
 
 

@@ -4,9 +4,10 @@ use Illuminate\Http\Request;
 use App\Models\Maintain;
 use App\Models\Admin;
 use App\Models\Onlinepayment;
-use DB;
+use App\Models\Withdraw;
 use Hash;
-use Session;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use PDF;
 use App\Exports\UserExport;
 use App\Imports\UserImport;
@@ -225,16 +226,13 @@ public function admininsert(request $request){
      $admin->subscribe= $subscribe;
      $admin->version_type=$request->input('version_type');
      $admin->save();
-
-               
-
+           
    return redirect()->back()->with('success','Admin Added Successfuly');
 
 }
 
    public function webinsert(request $request){
              
-
         $validator=\Validator::make($request->all(),[  
             'name' => 'required',
             'nameen' => 'required',
@@ -577,7 +575,98 @@ public function adminstatus($type,$status,$id){
           Excel::import(new UsersImport,request()->file('file'));
                 
           return back()->with('status','Import Successful'); 
-      } 
+      }
+      
+      
+
+
+      public function withdraw_index(){
+           return view('maintain.withdraw');
+       }
+
+  public function withdraw_fetch(){
+        $data=Withdraw::orderBy('id', 'desc')->paginate(15);
+          return view('maintain.withdraw_data',compact('data'));
+      
+   }
+
+
+
+   function withdraw_fetch_data(Request $request,$admin_category)
+   {
+   if($request->ajax())
+   {
+    
+    $sort_by = $request->get('sortby');
+    $sort_type = $request->get('sorttype'); 
+          $search = $request->get('search');
+          $search = str_replace(" ", "%", $search);
+    $data = Withdraw::where(function($query) use ($search) {
+                $query->orwhere('admin_name', 'like', '%'.$search.'%');
+                $query->orWhere('bank_account', 'like', '%'.$search.'%');
+                $query->orWhere('bank_name', 'like', '%'.$search.'%');
+                $query->orWhere('bank_info', 'like', '%'.$search.'%');
+                })->orderBy($sort_by, $sort_type)->paginate(15);
+         return view('maintain.app_data', compact('data'))->render();          
+      }
+
+  }
+
+
+  public function withdraw_status($operator,$status,$id){
+    
+    if($operator=='status'){  
+         if($status=='deactive'){
+                $type=0;
+                $payment_time=date('2010-10-10 10:10:10');
+                $payment_type='';
+           }else{
+                $type=1;
+                $payment_time=date('Y-m-d H:i:s');
+                $payment_type='Admin';
+           }
+
+           $payment_month= date('n');
+           $payment_year= date('Y');
+
+           $model=Withdraw::find($id);
+           $model->withdraw_status=$type; 
+           $model->withdraw_type=$payment_type; 
+           $model->withdraw_time=$payment_time;
+           $model->withdraw_year=$payment_year; 
+           $model->withdraw_month=$payment_month;  
+           $model->update();
+
+
+           $admin= Admin::where('admin_name',$model->admin_name)->first();
+           if($model->withdraw_status==1){
+              $online_cur_amount=$admin->online_cur_amount-$model->withdraw_amount;
+              $online_withdraw=$admin->online_withdraw+$model->withdraw_amount;
+           }else if($model->withdraw_status==0){
+             $online_cur_amount=$admin->online_cur_amount+$model->withdraw_amount;
+             $online_withdraw=$admin->online_withdraw-$model->withdraw_amount;
+           }
+
+           DB::update("update admins set online_cur_amount ='$online_cur_amount', online_withdraw ='$online_withdraw' where admin_name = '$admin->admin_name'");
+
+         return back()->with('success','Status update Successfull');        
+      }
+      else if($operator=='verify'){
+           if($status=='deactive'){
+                $type=0;
+           }else{
+                $type=1;
+            }
+         return back()->with('success','Status update Successfull');     
+            
+    }else{ return back()->with('fail','Something Rong');}
+
+
+      //}catch (Exception $e) { return  'something is Rong'; }
+    }
+
+
+
     
         
          

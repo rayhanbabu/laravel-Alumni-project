@@ -3,7 +3,6 @@
                   <td>{{ $row->id}}</td>
                   <td>{{ $row->withdraw_amount}}</td>
                   <td>{{ $row->withdraw_submited_time}}</td>
-                  <td> @if($row->withdraw_status==1){{ $row->current_balance}} @else @endif</td>
                   <td> @if($row->withdraw_status==1){{ $row->withdraw_time}} @else @endif</td>
                   <td>
            @if($row->withdraw_status == 1)

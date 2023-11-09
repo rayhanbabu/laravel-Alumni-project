@@ -333,12 +333,9 @@ public function delete(Request $request) {
     }
 
 
-
-
          public function webcontact() {
-
-          return view('web.contact');
-         }
+              return view('web.contact');
+          }
 
     
        public function admin_name($admin_name) {
@@ -370,13 +367,72 @@ public function delete(Request $request) {
                   $logu = Magazine::where('category','Slide')->where('text4','Logu')->where('admin_name',$admin->admin_name)->first();
                   $logu = Magazine::where('category','Slide')->where('text4','HeaderLogu')->where('admin_name',$admin->admin_name)->first();
                   
-                  $homecount=[
-                     'lifemember'=>356,
-                     'member'=>23,
-                     'exicutive'=>12,
-                     'other'=>13,
-                 ];
-                 
+
+  
+               $category=App::where('admin_name',$admin->admin_name)->where('admin_category','Member')->orderBy('id','asc')->get();
+
+                     if($category[0]){
+                        $count1=DB::table('members')->where('admin_name',$admin->admin_name)->where('category_id',$category[0]['id'])->count();
+                        $row1=[
+                           'category'=>$category[0]['category'],
+                           'count'=>$count1
+                        ];
+                      }else{
+                        $row1=[
+                           'category'=>"NA",
+                           'count'=>0
+                         ];
+                      }
+
+                      if($category[1]){
+                        $count2=DB::table('members')->where('admin_name',$admin->admin_name)->where('category_id',$category[1]['id'])->count();
+                        $row2=[
+                           'category'=>$category[1]['category'],
+                           'count'=>$count2
+                        ];
+                      }else{
+                        $row2=[
+                           'category'=>"NA",
+                           'count'=>0
+                         ];
+                      }
+
+
+                      if($category[2]){
+                        $count3=DB::table('members')->where('admin_name',$admin->admin_name)->where('category_id',$category[2]['id'])->count();
+                        $row3=[
+                           'category'=>$category[2]['category'],
+                           'count'=>$count3
+                        ];
+                      }else{
+                        $row3=[
+                           'category'=>"NA",
+                           'count'=>0
+                         ];
+                      }
+
+                      if($category[3]){
+                        $count4=DB::table('members')->where('admin_name',$admin->admin_name)->where('category_id',$category[3]['id'])->count();
+                        $row4=[
+                           'category'=>$category[3]['category'],
+                           'count'=>$count4
+                        ];
+                      }else{
+                        $row4=[
+                           'category'=>"NA",
+                           'count'=>0
+                         ];
+                      }
+
+
+                     $homecount=[
+                      'row1'=>$row1,
+                      'row2'=>$row2,
+                      'row3'=>$row3,
+                      'row4'=>$row4,
+                  ];
+
+               
                    return response()->json([
                        'admin'=>$admin,'slide'=>$slide,'slide1'=>$slide1,
                        'welcome'=>$welcome,'test'=>$test,'logu'=>$logu,'homecount'=>$homecount
@@ -388,8 +444,8 @@ public function delete(Request $request) {
              public function apinotice($username,$category) {
               $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
                    'mobile','admin_name','header_size','resheader_size')->first();
-             $data = Notice::where('admin_name',$admin->admin_name)->where('category',$category)->get();
-             $logu = Magazine::where('category','Slide')->where('text4','HeaderLogu')->where('admin_name',$admin->admin_name)->first();
+              $data = Notice::where('admin_name',$admin->admin_name)->where('category',$category)->get();
+              $logu = Magazine::where('category','Slide')->where('text4','HeaderLogu')->where('admin_name',$admin->admin_name)->first();
                 
                  return response()->json([
                       'admin'=>$admin 

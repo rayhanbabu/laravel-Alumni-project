@@ -154,7 +154,6 @@ class InvoiceController extends Controller
       $payment_year = date('Y', strtotime($success['date_processed']));
 
     
-
       $model = Invoice::find($success['opt_a']);
       $model->payment_status = 1;
       $model->payment_type = 'Online';
@@ -167,9 +166,9 @@ class InvoiceController extends Controller
       $model->update();
 
       $admin = Admin::where('admin_name', $success['opt_c'])->first();
-      $online_amount=$admin->online_amount;
-      $total_amount=$online_amount+$model->amount;
-      DB::update("update admins set online_amount ='$total_amount' where admin_name = '$admin->admin_name'");
+      $online_cur_amount=$admin->online_cur_amount;
+      $total_amount=$online_cur_amount+$model->amount;
+      DB::update("update admins set online_cur_amount ='$total_amount' where admin_name = '$admin->admin_name'");
 
   
       return view('web.payment_success', ["web_link" => $success['opt_b']]);
@@ -230,6 +229,7 @@ class InvoiceController extends Controller
     } else {
       return view('admin.invoice_search', ["data" =>$data]);
      }
+     
     } catch (Exception $e) {
       return "Something Error. please try again";
     }

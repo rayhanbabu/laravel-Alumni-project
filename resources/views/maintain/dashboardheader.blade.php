@@ -163,6 +163,13 @@
       <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
             Sms View
     </a>
+
+
+  <a class="nav-link @yield('withdraw_select') " href="{{url('maintain/withdraw')}}">
+     <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+       Withdraw  View
+  </a>
+
 	
 
 <a class="nav-link @yield('export_select') " href="{{url('maintain/adminexport')}}">

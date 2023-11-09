@@ -39,7 +39,7 @@ class WithdrawController extends Controller
            'message'=>$validator->messages(),
          ]);
    }else{
-          if($admin->online_cur_amount-$request->withdraw_amount>500){
+          if($admin->online_cur_amount>$request->withdraw_amount){
               $app= new Withdraw;
               $app->withdraw_amount=$request->input('withdraw_amount');
               $app->bank_route=$admin->bank_route;
@@ -56,7 +56,7 @@ class WithdrawController extends Controller
             }else{
                 return response()->json([
                      'status'=>300,  
-                     'message'=>'Withdraw Amount than than current amount. 500 taka Must be reserved ',
+                     'message'=>'Withdraw Amount than than current amount. ',
                   ]);
             }
        }
@@ -88,7 +88,7 @@ class WithdrawController extends Controller
     $sort_type = $request->get('sorttype'); 
           $search = $request->get('search');
           $search = str_replace(" ", "%", $search);
-    $data = App::where('admin_name',$admin->admin_name)
+    $data = Withdraw::where('admin_name',$admin->admin_name)
             ->where('admin_category',$admin_category)
             ->where(function($query) use ($search) {
                 $query->orwhere('category', 'like', '%'.$search.'%');

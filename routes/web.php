@@ -94,12 +94,19 @@ Route::middleware('MaintainIs')->group(function(){
       Route::get('maintain/sms',[SmsController::class,'index']);
       Route::get('/maintain/sms/fetchall',[SmsController::class,'fetchAll']);
       Route::post('/maintain/sms/store',[SmsController::class,'store']);
-      Route::get('/maintain/sms/edit',[SmsController::class, 'edit']);
-      Route::post('/maintain/sms/update',[SmsController::class, 'update']);
-      Route::delete('/maintain/sms/delete',[SmsController::class, 'delete']);
+      Route::get('/maintain/sms/edit',[SmsController::class,'edit']);
+      Route::post('/maintain/sms/update',[SmsController::class,'update']);
+      Route::delete('/maintain/sms/delete',[SmsController::class,'delete']);
       Route::post('/maintain/smspayment',[SmsController::class,'smspayment']);
       Route::get('/maintain/sms/{type}/{status}/{id}',[SmsController::class,'smsstatus']);
       Route::post('onlinesmspdf',[SmsController::class,'onlinesmspdf']);
+     
+
+      //withdraw
+      Route::get('/maintain/withdraw/',[MaintainController::class,'withdraw_index']);
+      Route::get('/maintain/withdraw_fetch/',[MaintainController::class,'withdraw_fetch']);
+      Route::get('/maintain/withdraw/fetch_data/',[MaintainController::class,'withdraw_fetch_data']);
+      Route::get('/maintain/withdraw/{operator}/{status}/{id}', [MaintainController::class,'withdraw_status']);
 
 });
 

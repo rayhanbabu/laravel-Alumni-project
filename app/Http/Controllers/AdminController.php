@@ -54,8 +54,9 @@ class AdminController extends Controller
     function dashboard(){
         if(Session::has('admin')){
             $admin=Session::get('admin');
+            $data= Admin::find($admin->id);
         }
-        return view('admin.dashboard',['admin'=>$admin]); 
+        return view('admin.dashboard',['admin'=>$data]); 
     }
 
 
