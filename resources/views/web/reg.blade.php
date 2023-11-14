@@ -31,7 +31,7 @@
   </style>
 
 	</head>
-	<a href="{{url('/web/contact')}}" class="btn btn-sm btn-primary rounded-pill" id="fixedmyBtn">Contact Us</a>
+
 	<body>
 	<section class="ftco-section">
 		<div class="container">
@@ -71,7 +71,7 @@
                 </div>
 
 			  <div class="col-lg-12 my-3">
-                   <label for="roll">UserName[Username will be website URL]<span style="color:red;"> * </span></label>
+                   <label for="roll">UserName<span style="color:red;"> * </span></label>
                    <input type="text"  name="username" id="username" class="form-control" placeholder="" >
 				   <p class="text-danger err_username"></p>
               </div>
@@ -122,8 +122,8 @@
 
 				<div class="col-lg-12 my-2 d-md-flex">
 						<div class="w-100 text-md-left">
-							    <br>
-						     	<a href="{{url('/')}}">Go to home page now</a>
+							   
+						     	
 					   </div>
 	            </div>
 				

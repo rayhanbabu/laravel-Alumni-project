@@ -258,10 +258,10 @@ if($validator->fails()){
              } 
             }  
             $testimonial->update();   
-      return response()->json([
-          'status'=>400,
-        'message'=>'Data Updated'
-      ]);
+       return response()->json([
+           'status'=>400,
+           'message'=>' Data  Updated'
+       ]);
   }else{
       return response()->json([
           'status'=>404,  

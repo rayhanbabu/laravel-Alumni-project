@@ -149,6 +149,7 @@ Route::middleware('AdminIs')->group(function(){
     Route::post('/admin/member_update', [AdminController::class, 'member_update']);
     Route::get('/admin/member/{operator}/{status}/{id}', [AdminController::class, 'memberstatus']);
     Route::get('/admin/member_delete/{id}', [AdminController::class, 'member_delete']);
+    Route::post('/member/export',[AdminController::class,'member_export']); 
 
     Route::get('admin/dataview',[AdminController::class,'dataview']);
     Route::post('admin/dataedit',[AdminController::class,'dataedit']);
@@ -206,7 +207,7 @@ Route::middleware('AdminIs')->group(function(){
          Route::post('/finance/update', [FinanceController::class, 'update']);
 
          Route::post('/financepdf', [FinanceController::class,'financepdf']);
-             Route::get('/invoiceprint/{id}',[FinanceController::class,'invoiceprint']);
+         Route::get('/invoiceprint/{id}',[FinanceController::class,'invoiceprint']);
 
 
            //Online Payment

@@ -25,15 +25,17 @@ use App\Http\Controllers\InvoiceController;
   });
 
     
-      //member api
+         //member api
        Route::post('/{username}/application_memebr',[MemberController::class,'application_memebr']);
        Route::get('/email_verify/{emailmd5}',[MemberController::class,'email_verify']);
 
-        Route::get('{username}/forget_password/{email}', [MemberController::class, 'forget_password']);
-         Route::middleware('ForgetToken')->group(function(){
-             Route::get('{username}/forget_code/{forget_code}', [MemberController::class, 'forget_code']);
-             Route::post('{username}/confirm_password/{forget_code}', [MemberController::class, 'confirm_password']);
-         });
+       Route::get('{username}/forget_password/{email}', [MemberController::class, 'forget_password']);
+
+         
+          Route::middleware('ForgetToken')->group(function(){
+              Route::get('{username}/forget_code/{forget_code}', [MemberController::class, 'forget_code']);
+              Route::post('{username}/confirm_password/{forget_code}', [MemberController::class, 'confirm_password']);
+          });
 
        Route::post('/{username}/member_login',[MemberController::class,'member_login']);
 
@@ -45,7 +47,8 @@ use App\Http\Controllers\InvoiceController;
             Route::post('{username}/member_password_update', [MemberController::class, 'password_update']);
             Route::post('{username}/invoice_create', [MemberController::class, 'invoice_create']);
             Route::get('{username}/invoice_view', [MemberController::class, 'invoice_view']);
-            Route::get('{username}/invoice_pdf/{id}', [MemberController::class, 'invoice_pdf']);     
+            Route::get('{username}/invoice_delete/{id}', [MemberController::class, 'invoice_delete']);
+            Route::get('{username}/invoice_pdf/{id}', [MemberController::class, 'invoice_pdf']); 
             Route::post('{username}/payment_create', [InvoiceController::class,'payment_create']);
            
        });

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\validator;
+use App\Exports\UserExport;
 use App\Models\Member;
 use Hash;
 use PDF;
@@ -281,9 +281,9 @@ public function member($category_id){
       function member_fetch_data(Request $request)
       {
       
-        if(Session::has('admin')){
-            $admin=Session::get('admin');
-        }
+          if(Session::has('admin')){
+              $admin=Session::get('admin');
+           }
 
        if($request->ajax())
          {
@@ -340,10 +340,16 @@ public function member($category_id){
 
 
           public function member_update(Request $request ){
+
+            if(Session::has('admin')){
+              $admin=Session::get('admin');
+           }
+
             $validator=\Validator::make($request->all(),[    
                     'phone'=>'required|unique:members,phone,'.$request->input('edit_id'),
                     'email'=>'required|unique:members,email,'.$request->input('edit_id'),
                     'member_card'=>'required|unique:members,member_card,'.$request->input('edit_id'),
+                    'member_card' => 'required|unique:members,member_card,'.$request->input('edit_id') . 'NULL,id,admin_name,' . $admin->admin_name,
                     'serial'=>'required'
              ],
              [
@@ -572,6 +578,14 @@ public function member($category_id){
     $admin->update();
     return redirect()->back()->with('success','Token Setup Update Successfuly');
 
+  }
+
+
+  public function member_export(Request $request)
+  { 
+         $admin_name=Session::get('admin')->admin_name;
+         $category_id=$request->input('category_id');
+        return (new UserExport($admin_name,$category_id))->download('Member_list.csv');   
   }
 
 

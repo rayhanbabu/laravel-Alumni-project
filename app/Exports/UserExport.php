@@ -1,7 +1,7 @@
 <?php
 namespace App\Exports;
 
-use App\Models\Admin;
+use App\Models\Member;
 
 use DB;
 
@@ -13,9 +13,10 @@ class UserExport implements FromQuery
 {
     use Exportable;
 
-    public function __construct(int $status)
+    public function __construct($admin_name ,int $category_id)
     {
-        $this->status = $status;
+        $this->category_id = $category_id;
+        $this->admin_name = $admin_name;
       
     }
 
@@ -24,9 +25,27 @@ class UserExport implements FromQuery
     public function query()
     {
         //return Invoice::query()->where('invoice_year', $this->year);
-        return Admin::query()->select(['name','email','mobile','admin_name','admin_password','role'])->where('status', $this->status);
+        return Member::query()->select([
+            'name',
+            'email',
+            'member_card',
+            'category_id',
+            'phone',
+            'degree_category',
+            'gender',
+            'blood',
+            'country',
+            'city',
+            'occupation',
+            'organization',
+            'designation',
+            'affiliation',
+            'training',
+            'expertise',
+            ])
+        ->where('category_id', $this->category_id)->where('admin_name', $this->admin_name);
         //return Invoice::all();
-       // $data= DB::table('Invoices')->where('invoice_year', $this->year)->get();
-       // return $data;
+        // $data= DB::table('Invoices')->where('invoice_year', $this->year)->get();
+        // return $data;
     }
 }

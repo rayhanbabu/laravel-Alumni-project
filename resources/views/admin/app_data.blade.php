@@ -1,5 +1,5 @@
 @foreach($data as $row)
-      <tr>
+           <tr>
                  <td>{{ $row->id}}</td>
                   <td>{{ $row->category}}</td>
                   <td>{{ $row->amount}}</td>

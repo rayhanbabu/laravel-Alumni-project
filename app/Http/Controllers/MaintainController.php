@@ -36,7 +36,7 @@ class MaintainController extends Controller
        if($maintain){
         if($request->maintain_password==$maintain->maintain_password){
             $request->session()->put('maintain',$maintain);
-            return redirect('/maintain/dashboard');
+            return redirect('/maintain/dashboard'); 
         }else{
             return back()->with('fail','Incorrect Password');
         }

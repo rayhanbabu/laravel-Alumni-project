@@ -380,14 +380,13 @@ class MemberController extends Controller
     
 
     public function member_profile(Request $request){
-
-        $member_id=$request->header('member_id');
-        $member=Member::where('id',$member_id)->first();
-        return response()->json([
-            'status'=>200,
-            'data'=>$member,
-        ]); 
-    }
+          $member_id=$request->header('member_id');
+          $member=Member::where('id',$member_id)->first();
+            return response()->json([
+               'status'=>200,
+               'data'=>$member,
+           ]); 
+      }
 
 
     public function member_update(Request $request){
@@ -572,6 +571,7 @@ class MemberController extends Controller
              $model->member_id=$member_id;
              $model->category_id=$request->category_id;
              $model->amount=$category->amount;
+             $model->payment_status=0;
              $model->getway_fee=$admin->getway_fee;
              $model->total_amount=$total_amount;
              $model->save();
@@ -619,14 +619,11 @@ class MemberController extends Controller
          'mobile','admin_name','header_size','resheader_size','getway_fee','token1','token2'
          ,'token3','token4','token5','token6')->first();
 
-        // $data=Invoice::where('member_id',$member_id)->where('category_id',$id)
-        //  ->leftjoin('apps','apps.id','=','invoices.category_id')
-        // ->leftjoin('members','members.id','=','invoices.member_id')
-        // ->get();
 
         $data=Invoice::leftjoin('members','members.id','=','invoices.member_id')
         ->leftjoin('apps','apps.id','=','invoices.category_id')
-        ->where('invoices.member_id',$member_id)->where('invoices.category_id',$id)
+        ->where('invoices.member_id',$member_id)->where('invoices.id',$id)
+        ->where('invoices.payment_status',1)
         ->select('members.member_card','members.name','apps.category','invoices.*')->get();
      
          if($data){
@@ -642,7 +639,17 @@ class MemberController extends Controller
          ]); 
          }
          
-    }
+       } 
+
+
+     public function invoice_delete(request $request,$username,$id){
+        $member_id=$request->header('member_id'); 
+        $data=Invoice::where('id',$id)->where('member_id',$member_id)->delete();
+        return response()->json([
+           'status'=>200,
+           'message'=>"Invoice deleted successfully"
+        ]); 
+      }
   
     
 
