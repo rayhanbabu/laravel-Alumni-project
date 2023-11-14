@@ -199,7 +199,7 @@ class MemberController extends Controller
 
             $email=$request->email;
             $rand=rand(11111,99999);
-            $email_exist=Member::where('email',$email)->count('email');
+            $email_exist=Member::where('email',$email)->where('admin_name',$request->username)->count('email');
            if($email_exist>=1){
                DB::update(
                   "update members set forget_code ='$rand' where email = '$email'"
@@ -333,7 +333,7 @@ class MemberController extends Controller
               ]);
          }else{
           $status=1;
-          $member=Member::where('email',$request->email)->first();
+          $member=Member::where('email',$request->email)->where('admin_name',$request->username)->first();
           if($member){
                    if($member->member_password==$request->member_password){
                       if($member->status==$status){
@@ -350,7 +350,7 @@ class MemberController extends Controller
                     }else{
                       return response()->json([
                          'status'=>900,
-                         'message'=> 'Invalid Email',
+                         'message'=> 'Invalid Email Address',
                       ]); 
                    }   
                            
@@ -602,7 +602,7 @@ class MemberController extends Controller
 
       public function invoice_view(request $request,$username){
            $member_id=$request->header('member_id');
-           $data=Invoice::where('member_id',$member_id)
+           $data=Invoice::where('member_id',$member_id)->where('incoices.admin_name',$username)
            ->leftjoin('apps','apps.id','=','invoices.category_id')
            ->select('apps.category','invoices.*')->get();
 
