@@ -644,7 +644,7 @@ class MemberController extends Controller
 
      public function invoice_delete(request $request,$username,$id){
         $member_id=$request->header('member_id'); 
-        $data=Invoice::where('id',$id)->where('member_id',$member_id)->get();
+        $data=Invoice::where('id',$id)->where('member_id',$member_id)->first();
 
         if($data->payment_status==1){
           return response()->json([
