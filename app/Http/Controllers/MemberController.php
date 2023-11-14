@@ -602,7 +602,7 @@ class MemberController extends Controller
 
       public function invoice_view(request $request,$username){
            $member_id=$request->header('member_id');
-           $data=Invoice::where('member_id',$member_id)->where('incoices.admin_name',$username)
+           $data=Invoice::where('member_id',$member_id)->where('invoices.admin_name',$username)
            ->leftjoin('apps','apps.id','=','invoices.category_id')
            ->select('apps.category','invoices.*')->get();
 
