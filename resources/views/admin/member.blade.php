@@ -4,7 +4,6 @@
 @section('content')
 
 
-
 <div class="row mt-3 mb-0 mx-2">
                 <div class="col-sm-3 my-2"> <h5 class="mt-0"><?php if($category->category){ echo $category->category;}else{ echo "";}?> View </h5></div>
                      
@@ -606,9 +605,6 @@
   </div>
 
   
-
-
-
       </div>
 
         <div class="modal-footer">
@@ -621,8 +617,6 @@
 </div>
 
 {{-- add new employee modal end --}}
-
-
 
 
 

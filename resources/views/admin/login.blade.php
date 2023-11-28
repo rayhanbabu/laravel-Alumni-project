@@ -29,9 +29,9 @@
 			<div class="row justify-content-center">
 				<div class="col-md-7 col-lg-5">
 					<div class="login-wrap p-4 p-md-5">
-		         <a target="_blank" href="http://ancovabd.com/"><img src="{{ asset('images/ancovabr.png') }}" alt="Denim Jeans" width="150" style="margin-top:-20px;"></a>
+		       
 				<h5></h5>
-		      	<h3 class="text-center mb-4">Admin Sign In</h3>
+		      	<h3 class="text-center mb-4">Admin Login In</h3>
 				  <form method="post" action="{{url('admin/login')}}"  class="myform"  enctype="multipart/form-data" >
                          {!! csrf_field() !!}
 		      		<div class="form-group">

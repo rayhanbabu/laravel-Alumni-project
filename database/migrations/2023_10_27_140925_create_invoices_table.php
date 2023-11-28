@@ -21,14 +21,14 @@ return new class extends Migration
                ->cascadeOnUpdate();
 
             $table->foreign('category_id')->references('id')->on('apps')->restrictOnDelete()
-              ->cascadeOnUpdate();
+               ->cascadeOnUpdate();
 
             $table->float('amount');
             $table->float('getway_fee');
             $table->float('total_amount');
             $table->string('tran_id')->unique();
             $table->string('payment_status')->default(0);
-            $table->enum('payment_type',['Online','Offline',])->nullable();
+            $table->enum('payment_type',['Online','Offline'])->nullable();
             $table->timestamp('payment_time')->nullable();
             $table->string('payment_method')->nullable();
             $table->date('payment_date')->nullable();

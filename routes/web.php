@@ -17,6 +17,7 @@ use App\Http\Controllers\ExpreController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\WithdrawController;
+use App\Http\Controllers\HomepageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +79,15 @@ Route::middleware('MaintainIs')->group(function(){
    Route::post('/maintain/adminexport',[MaintainController::class,'adminexport']);
    Route::get('/maintain/adminimport',[MaintainController::class,'adminimportview']);
    Route::post('/maintain/adminimport',[MaintainController::class,'adminimport']);
+
+
+        //Testinomial
+        Route::get('/homepage/index', [HomepageController::class,'index']);
+        Route::post('/homepage/store', [HomepageController::class,'store']);
+        Route::get('/homepage/fetchall', [HomepageController::class,'fetchAll']);
+        Route::delete('/homepage/delete', [HomepageController::class,'delete']);
+        Route::get('/homepage/edit', [HomepageController::class,'edit']);
+        Route::post('/homepage/update', [HomepageController::class,'update']);
 
      //Data defoult data view
    
@@ -275,10 +285,15 @@ Route::middleware('AdminIs')->group(function(){
 
 
     //registration
-    Route::get('/', [MaintainController::class, 'reg']);
+    Route::get('/', [HomepageController::class, 'homepage']);
+    Route::get('/application', [MaintainController::class, 'reg']);
+    Route::get('/policy', [HomepageController::class, 'policy']);
+    Route::get('/term', [HomepageController::class, 'term']);
     Route::post('/web/insert', [MaintainController::class, 'webinsert']);
     Route::get('/email_verify/{email2}', [MaintainController::class, 'email_verify']);
    
+
+
       /* 
    Route::get('/testimonial', [TestimonialController::class, 'testimonial']);
    Route::get('/langhome', [TestimonialController::class, 'langhome']);

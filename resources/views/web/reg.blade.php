@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('dashboardfornt\css\login.css')}}">
-   <link rel="icon" type="image/png" href="{{ asset('images/ancovabr.png') }}">
+   <link rel="icon" type="image/png" href="{{ asset('homefront/assets/images/amaderthikana.png') }}">
    <script src="{{asset('dashboardfornt\js\jquery-3.5.1.js')}}"></script>
    <meta name="csrf-token" content="{{ csrf_token() }}">
    <script src="{{asset('dashboardfornt/js/sweetalert.min.js')}}"></script>
@@ -40,7 +40,7 @@
 					<div class="login-wrap p-4 p-md-5">
                    
 		
-		<h3 class="text-center mb-4"> Registration Form</h3>
+		<h3 class="text-center mb-4"> Application Form</h3>
 			<form method="post" id="add_employee_form" class="myform"  enctype="multipart/form-data" >
                  
 

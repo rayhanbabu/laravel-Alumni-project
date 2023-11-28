@@ -170,6 +170,12 @@
        Withdraw  View
   </a>
 
+
+  <a class="nav-link @yield('homepage_select') " href="{{url('homepage/index')}}">
+     <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+       Homepage View
+  </a>
+
 	
 
 <a class="nav-link @yield('export_select') " href="{{url('maintain/adminexport')}}">

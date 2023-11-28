@@ -180,7 +180,6 @@ class InvoiceController extends Controller
   public function amarpay_fail(Request $request)
   {
     try {
-
       $fail = $request;
       return view('web.payment_fail', ["web_link" => $fail['opt_b']]);
     } catch (Exception $e) {
