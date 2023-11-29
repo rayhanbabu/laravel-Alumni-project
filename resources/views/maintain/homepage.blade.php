@@ -54,6 +54,7 @@
                          <option value="FooterLink2">FooterLink2</option> 
                          <option value="Term">Term</option> 
                          <option value="Policy">Policy</option> 
+                         <option value="Refund">Refund</option> 
                    </select>
               </div>
           </div>
@@ -145,6 +146,7 @@
                           <option value="FooterLink2">FooterLink2</option> 
                           <option value="Term">Term</option> 
                           <option value="Policy">Policy</option> 
+                          <option value="Refund">Refund</option> 
                     </select>
             </div>
           </div>

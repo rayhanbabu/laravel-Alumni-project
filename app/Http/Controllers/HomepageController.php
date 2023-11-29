@@ -243,6 +243,18 @@ public function update(Request $request ){
    }
 
 
+   public function refund(Request $request){
+      $term=Homepage::where('babu','Refund')->orderBy('serial','asc')->get();
+      $FooterContact=Homepage::where('babu','FooterContact')->orderBy('serial','asc')->first();
+      $FooterLink1=Homepage::where('babu','FooterLink1')->orderBy('serial','asc')->first();
+      $FooterLink2=Homepage::where('babu','FooterLink2')->orderBy('serial','asc')->first();
+
+       return view('home.refund',['term'=>$term ,'FooterContact'=>$FooterContact,
+               'FooterLink1'=>$FooterLink1,'FooterLink2'=>$FooterLink2]);
+  }
+
+
+
 
 
 

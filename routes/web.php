@@ -289,6 +289,7 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('/application', [MaintainController::class, 'reg']);
     Route::get('/policy', [HomepageController::class, 'policy']);
     Route::get('/term', [HomepageController::class, 'term']);
+    Route::get('/refund', [HomepageController::class, 'refund']);
     Route::post('/web/insert', [MaintainController::class, 'webinsert']);
     Route::get('/email_verify/{email2}', [MaintainController::class, 'email_verify']);
    
