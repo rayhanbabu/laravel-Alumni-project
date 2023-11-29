@@ -55,6 +55,7 @@
                          <option value="Term">Term</option> 
                          <option value="Policy">Policy</option> 
                          <option value="Refund">Refund</option> 
+                         <option value="Cancel">Cancel</option>
                    </select>
               </div>
           </div>
@@ -147,6 +148,7 @@
                           <option value="Term">Term</option> 
                           <option value="Policy">Policy</option> 
                           <option value="Refund">Refund</option> 
+                          <option value="Cancel">Cancel</option>
                     </select>
             </div>
           </div>

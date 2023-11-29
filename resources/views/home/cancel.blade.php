@@ -81,7 +81,7 @@ https://templatemo.com/tm-565-onix-digital
 
 <div class="container">
     <div class="row p-3">
-          @foreach($term as $item)
+          @foreach($cancel as $item)
                {!!$item->text!!}
 
           @endforeach	 
@@ -121,8 +121,8 @@ https://templatemo.com/tm-565-onix-digital
             <ul>
                  <li><a href="{{url('/policy')}}">Privacy Policy</a></li>
                  <li><a href="{{url('/cancel')}}">Cancellation Policy</a></li>
-                <li><a href="{{$FooterLink1->link2}}">{{$FooterLink1->name}}</a></li>
-                <li><a href="{{$FooterLink1->link3}}">{{$FooterLink1->text}}</a></li>
+                 <li><a href="{{$FooterLink1->link2}}">{{$FooterLink1->name}}</a></li>
+                 <li><a href="{{$FooterLink1->link3}}">{{$FooterLink1->text}}</a></li>
             </ul>
           </div>
         </div>
@@ -131,7 +131,7 @@ https://templatemo.com/tm-565-onix-digital
              <h4>Necessary link</h4>
             <ul>
                <li><a href="{{url('/term')}}">Terms and Conditions</a></li>
-               <li><a href="{{url('/refund')}}">Return & Refund Policy</a></li>
+               <li><a href="{{url('/refund')}}">Refund Policy</a></li>
                <li><a href="{{$FooterLink2->link2}}">{{$FooterLink2->name}}</a></li>
                <li><a href="{{$FooterLink2->link3}}">{{$FooterLink2->text}}</a></li>
             </ul>
