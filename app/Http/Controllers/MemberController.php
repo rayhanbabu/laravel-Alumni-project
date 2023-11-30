@@ -644,8 +644,10 @@ class MemberController extends Controller
 
      public function invoice_delete(request $request,$username,$id){
         $member_id=$request->header('member_id'); 
-        $data=Invoice::where('id',$id)->where('member_id',$member_id)->first();
+        $data=Invoice::where('id',$id)->where('member_id',$member_id)->where('admin_category','Event')->first();
 
+
+        if($data){
         if($data->payment_status==1){
           return response()->json([
             'status'=>300,
@@ -658,6 +660,16 @@ class MemberController extends Controller
            'message'=>"Invoice Delete Successfull",
          ]);
         }
+
+      }else{
+         return response()->json([
+            'status'=>300,
+            'message'=>"This invoice cannot be deleted",
+         ]);
+      }
+
+
+
        
       }
   

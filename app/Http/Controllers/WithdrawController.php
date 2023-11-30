@@ -56,7 +56,7 @@ class WithdrawController extends Controller
             }else{
                 return response()->json([
                      'status'=>300,  
-                     'message'=>'Withdraw Amount than than current amount. ',
+                     'message'=>'Withdraw Amount gather than current amount. ',
                   ]);
             }
        }
@@ -88,7 +88,7 @@ class WithdrawController extends Controller
     $sort_type = $request->get('sorttype'); 
           $search = $request->get('search');
           $search = str_replace(" ", "%", $search);
-    $data = Withdraw::where('admin_name',$admin->admin_name)
+      $data = Withdraw::where('admin_name',$admin->admin_name)
             ->where('admin_category',$admin_category)
             ->where(function($query) use ($search) {
                 $query->orwhere('category', 'like', '%'.$search.'%');
@@ -98,7 +98,7 @@ class WithdrawController extends Controller
                   ->paginate(15);
                   return view('admin.app_data', compact('data'))->render();
                  
-   }
-  }
+        }
+      }
  
 }

@@ -12,7 +12,7 @@
 <div class="container mt-4">
 <div class="row">
   <div class="col-sm-6 p-3 shadow"> 
-             <p class="text-end"><a class="btn btn-primary" href="{{url($web_link.'dashbord')}}" role="button">Back Invoice Download Page</a>  </p>     
+             <p class="text-end"><a class="btn btn-primary" href="{{url($web_link.'dashboard')}}" role="button">Back Invoice Download Page</a>  </p>     
     <div class="card">
          <div class="card-body">
              <h1 class="text-center text-success">

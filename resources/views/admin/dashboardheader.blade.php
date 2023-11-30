@@ -267,8 +267,6 @@
   </div>
  </div>
                    
- 
- 
 <div class="sb-sidenav-footer">
      <div class="small">Developed By:</div>
           ANCOVA
@@ -281,8 +279,6 @@
 <main>
 
 <div class="container-fluid px-3">
-
-  
 
       <div>
         @if($admin->version_type=='free')

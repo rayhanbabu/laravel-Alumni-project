@@ -21,8 +21,13 @@ class InvoiceController extends Controller
     try {
       $invoice = Invoice::where('admin_name', $username)->where('tran_id', $tran_id)->first();
       if ($invoice) {
-        $admin = Admin::where('admin_name', $username)->select('other_link')->first();
-        return view('web.amarpay_epay', ['tran_id' => $invoice->tran_id, 'web_link' => $admin->other_link]);
+        $admin = Admin::where('admin_name', $username)->select('other_link','senior_size')->first();
+        if($admin->senior_size==1){
+             return view('web.amarpay_epay', ['tran_id' => $invoice->tran_id, 'web_link' => $admin->other_link]);
+           }else{
+              return "Online payment getway No Access Available";
+          }
+
       } else {
         return "Invalid Url";
       }
@@ -39,14 +44,14 @@ class InvoiceController extends Controller
     try {
       $invoice = Invoice::where('tran_id', $tran_id)->first();
       $member = Member::where('id', $invoice->member_id)->first();
-      $admin = Admin::where('admin_name', $invoice->admin_name)->select('other_link')->first();
+      $admin = Admin::where('admin_name', $invoice->admin_name)->select('other_link','senior_size')->first();
+
+   
+
       $tran_id = $tran_id;  //unique transection id for every transection 
       $currency = "BDT"; //aamarPay support Two type of currency USD & BDT  
 
-      $amount = $invoice->total_amount;   //10 taka is the minimum amount for show card option in aamarPay payment gateway
-
-
-
+      $amount = $invoice->total_amount;   // 10 taka is the minimum amount for show card option in aamarPay payment gateway
 
       //For live Store Id & Signature Key please mail to support@aamarpay.com
       $store_id = "aamarpaytest";
@@ -110,6 +115,8 @@ class InvoiceController extends Controller
       } else {
         echo $response;
       }
+
+    
     } catch (Exception $e) {
       return "Something Error. please try again";
     }

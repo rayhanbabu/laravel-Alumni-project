@@ -276,10 +276,10 @@ class MagazineController extends Controller
 
             if($model->category=='Link'){
 
-                $filePath = public_path('uploads/admin') . '/' . $model->image;
-                 if (file_exists($filePath)) {
-                       unlink($filePath);
-                   }
+                   $filePath = public_path('uploads/admin') . '/' . $model->image;
+                   if(File::exists($filePath)){
+                        File::delete($filePath);
+                    }
               $image= $request->file('image'); 
               $new_name = rand() . '.' .$image->getClientOriginalExtension();
               $image->move(public_path('uploads/admin'),$new_name);
@@ -293,9 +293,9 @@ class MagazineController extends Controller
                if($w<1930 && $h<1090){
 
                 $filePath = public_path('uploads/admin') . '/' . $model->image;
-                 if (file_exists($filePath)) {
-                      unlink($filePath);
-                   }
+                        if(File::exists($filePath)){
+                           File::delete($filePath);
+                          }
                    $uploadedFile = $request->file('image');
                    $fileName = time() . '.' .$uploadedFile->getClientOriginalExtension();
                    $uploadedFile->move(public_path('uploads/admin'),$fileName);
@@ -315,9 +315,9 @@ class MagazineController extends Controller
              $h=$hw[1];	 
                 if($w<310 && $h<310){
                   $filePath = public_path('uploads/admin') . '/' . $model->image;
-                  if (file_exists($filePath)) {
-                      unlink($filePath);
-                   }
+                   if(File::exists($filePath)){
+                        File::delete($filePath);
+                    }
                  $image = $request->file('image');
                  $new_name = rand() . '.' . $image->getClientOriginalExtension();
                  $image->move(public_path('uploads/admin'), $new_name);
@@ -347,13 +347,13 @@ class MagazineController extends Controller
      }
 
 
-    public function delete(Request $request) {
-         $model=Magazine::find($request->input('id'));
-         $filePath = public_path('uploads/admin') . '/' . $model->image;
-         if (file_exists($filePath)) {
-              unlink($filePath);
-           }
-         $model->delete();
+     public function delete(Request $request) {
+          $model=Magazine::find($request->input('id'));
+          $filePath = public_path('uploads/admin') . '/' . $model->image;
+             if(File::exists($filePath)){
+                   File::delete($filePath);
+              }
+          $model->delete();
        return response()->json([
           'status'=>200,  
           'message'=>'Deleted Data',

@@ -188,11 +188,11 @@ $(document).ready(function(){
 
     function fetch_data(page, sort_type="", sort_by="", search=""){
         $.ajax({
-        url:"/admin/withdraw/fetch_data?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
-        success:function(data)
+           url:"/admin/withdraw/fetch_data?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
+           success:function(data)
         {
-        $('tbody').html('');
-        $('.x_content tbody').html(data);
+           $('tbody').html('');
+           $('.x_content tbody').html(data);
         }
         });
          }

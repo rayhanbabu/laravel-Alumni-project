@@ -152,14 +152,8 @@
              <label for="avatar">Select Image(300*300)</label>
              <input type="file" name="image"  id="image" class="form-control" >
           </div>
-
-
      @endif
           
-          
-        
-
-  
           <div class="loader">
             <img src="{{ asset('images/abc.gif') }}" alt="" style="width: 50px;height:50px;">
           </div>
