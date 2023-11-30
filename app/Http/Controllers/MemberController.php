@@ -130,7 +130,11 @@ class MemberController extends Controller
            'body1'=>$body1,
            'name'=>$name,
          ];
-          //Mail::to($email)->send(new \App\Mail\RegMail($details));
+
+         if($admin->welcome_size==1){
+              Mail::to($email)->send(new \App\Mail\RegMail($details));
+          }
+          
           $total_amount=$app->amount+($app->amount*$admin->getway_fee)/100;
           $invoice= new Invoice;
           $invoice->admin_name=$app->admin_name;
@@ -317,10 +321,9 @@ class MemberController extends Controller
 
 
     public function member_login(Request $request){
-
         $validator=\Validator::make($request->all(),[    
-            'email'=>'required',
-            'member_password'=>'required',
+               'email'=>'required',
+               'member_password'=>'required',
           ],
            [
             'member_password.required'=>'Password is required',
