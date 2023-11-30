@@ -421,14 +421,20 @@
          </div> 
 
          <div class="form-group col-sm-6  my-2">
-               <label class=""><b>Senior Size</b></label>
-               <input type="text" id="edit_senior_size"  name="senior_size" class="form-control" required>
+               <label class=""><b>Online Payment Access</b></label>
+               <select class="form-select" name="senior_size" id="edit_senior_size"  aria-label="Default select example">
+                   <option value="1">Yes</option>
+                   <option value="0">No</option>
+               </select>
          </div> 
 
-         <div class="form-group col-sm-6  my-2">
-               <label class=""><b>General Size</b></label>
-               <input type="text" id="edit_general_size"  name="general_size" class="form-control" required>
-         </div> 
+          <div class="form-group col-sm-6  my-2">
+               <label class=""><b>Offline Payment Access</b></label>
+                  <select class="form-select" name="general_size" id="general_size"  aria-label="Default select example">
+                      <option value="1">Yes</option>
+                      <option value="0">No</option>
+                 </select>
+          </div> 
 
          <div class="form-group col-sm-6  my-2">
                <label class=""><b>Notice Size</b></label>
