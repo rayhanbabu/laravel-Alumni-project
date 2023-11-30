@@ -27,11 +27,10 @@ use App\Http\Controllers\InvoiceController;
     
          //member api
        Route::post('/{username}/application_memebr',[MemberController::class,'application_memebr']);
-       Route::get('/email_verify/{emailmd5}',[MemberController::class,'email_verify']);
+       Route::get('/{username}/email_verify/{emailmd5}',[MemberController::class,'email_verify']);
 
        Route::get('{username}/forget_password/{email}', [MemberController::class, 'forget_password']);
 
-         
           Route::middleware('ForgetToken')->group(function(){
               Route::get('{username}/forget_code/{forget_code}', [MemberController::class, 'forget_code']);
               Route::post('{username}/confirm_password/{forget_code}', [MemberController::class, 'confirm_password']);

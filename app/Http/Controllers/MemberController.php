@@ -172,30 +172,29 @@ class MemberController extends Controller
 
 
 
-      public function email_verify(Request $request,$emailmd5){
+      public function email_verify(Request $request,$username,$emailmd5){
         $data=Member::where('emailmd5',$emailmd5)->first();
-       if($data){
-        $status=1;
-        if($data->email_verify==1){
+        if($data){
+         $status=1;
+         if($data->email_verify==1){
               return response()->json([
                  'status'=>400,  
                  'message'=>'E-mail already verified',
                ]);
-           }else{
-               DB::update(
-                "update members set email_verify ='$status' where emailmd5 ='$emailmd5'"
-               );
-               return response()->json([
-                'status'=>200,  
-                'message'=>'E-mail verify Successfull',
-              ]);
-          }
-        }else{
+            }else{
+               DB::update("update members set email_verify ='$status' where emailmd5 ='$emailmd5'");
+                  return response()->json([
+                     'status'=>200,  
+                     'message'=>'E-mail verify Successfull',
+                  ]);
+             }
+         }else{
               return response()->json([
-                'status'=>600,  
-                'message'=>"Invalid Email",
-              ]);
+                  'status'=>600,  
+                  'message'=>"Invalid Email",
+               ]);
             }
+
      }  
      
      
