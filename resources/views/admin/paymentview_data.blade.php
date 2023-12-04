@@ -6,7 +6,9 @@
                   <td>{{ $row->tran_id}}</td>
                   
                   <td> 
-                      <p>   <?php echo URL::to('epay/'.$row->admin_name.'/'.$row->tran_id)  ?></p>
+                    
+                      <a  target="_blank"  href="<?php echo URL::to('epay/'.$row->admin_name.'/'.$row->tran_id) ?>">
+                      <?php echo URL::to('epay/'.$row->admin_name.'/'.$row->tran_id) ?></a> 
                     
                   </td>
                   <td>{{ $row->member_card}}</td>
