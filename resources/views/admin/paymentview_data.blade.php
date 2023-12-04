@@ -1,6 +1,14 @@
+<?php
+ use Illuminate\Support\Facades\URL;
+?>
 @foreach($data as $row)
       <tr>
                   <td>{{ $row->tran_id}}</td>
+                  
+                  <td> 
+                      <p>   <?php echo URL::to('epay/'.$row->admin_name.'/'.$row->tran_id)  ?></p>
+                    
+                  </td>
                   <td>{{ $row->member_card}}</td>
                   <td>{{ $row->name}}</td>
                   <td>{{ $row->category}}</td>
@@ -15,9 +23,10 @@
                
           <td> <button type="button" id="{{ $row->id}}" class="delete_id btn btn-danger btn-sm">Delete</button> </td>
          
-
+   
      
       </tr>
+ 
  @endforeach
 
       <tr class="pagin_link">
@@ -25,3 +34,6 @@
         {!! $data->links() !!}
        </td>
       </tr>  
+
+    
+     

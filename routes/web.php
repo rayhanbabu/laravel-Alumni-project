@@ -275,11 +275,10 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('epay/{username}/{tran_id}',[InvoiceController::class,'amarpay_epay'])->name('amarpay_epay');
  
     Route::get('amarpay_payment/{tran_id}',[InvoiceController::class,'amarpay_payment'])->name('amarpay_payment');
-   //You need declear your success & fail route in "app\Middleware\VerifyCsrfToken.php"
+    //You need declear your success & fail route in "app\Middleware\VerifyCsrfToken.php"
     Route::post('amarpay_success',[InvoiceController::class,'amarpay_success'])->name('amarpay_success');
     Route::post('amarpay_fail',[InvoiceController::class,'amarpay_fail'])->name('amarpay_fail');
     Route::get('amarpay_cancel',[InvoiceController::class,'amarpay_cancel'])->name('amarpay_cancel');
-
     Route::get('payment',[InvoiceController::class,'payment'])->name('payment');
 
 
@@ -293,6 +292,7 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('/cancel', [HomepageController::class, 'cancel']);
     Route::post('/web/insert', [MaintainController::class, 'webinsert']);
     Route::get('/email_verify/{email2}', [MaintainController::class, 'email_verify']);
+   
    
 
 

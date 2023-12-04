@@ -231,10 +231,10 @@ class MemberController extends Controller
                       'message'=> 'Recovery code send your E-mail',
                   ]); 
             }else{
-                return response()->json([
+                 return response()->json([
                     'status'=>600,
                      'message'=> 'Invalid  Email ',
-               ]); 
+                ]); 
             }   
 
          }

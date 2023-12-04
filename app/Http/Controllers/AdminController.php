@@ -379,8 +379,8 @@ public function member($category_id){
                   $model->blood_status=$request->input('blood_status');
                   $model->update();   
                   return response()->json([
-                     'status'=>200,
-                     'message'=>' Updated Successfull'
+                      'status'=>200,
+                      'message'=>' Updated Successfull'
                  ]);
                }else{
                   return response()->json([

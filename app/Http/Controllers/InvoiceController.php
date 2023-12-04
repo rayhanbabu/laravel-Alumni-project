@@ -12,20 +12,27 @@ use App\Models\Maintain;
 use App\Models\Admin;
 use App\Models\Member;
 use Exception;
+use App\Models\App;
+
 
 class InvoiceController extends Controller
 {
 
   public function amarpay_epay($username, $tran_id)
   {
+
     try {
-      $invoice = Invoice::where('admin_name', $username)->where('tran_id', $tran_id)->first();
+           $invoice = Invoice::where('admin_name', $username)->where('tran_id', $tran_id)
+            ->select('tran_id','member_id','payment_status','created_at','category_id','total_amount')->first();
       if ($invoice) {
-        $admin = Admin::where('admin_name', $username)->select('other_link','senior_size')->first();
+           $admin = Admin::where('admin_name', $username)->select('other_link','senior_size','nameen'
+            ,'address','phone')->first();
+            $member = Member::where('id', $invoice->member_id)->select('name','email','phone')->first();
+            $category = App::where('id', $invoice->category_id)->select('category')->first();
         if($admin->senior_size==1){
-             return view('web.amarpay_epay', ['tran_id' => $invoice->tran_id, 'web_link' => $admin->other_link]);
+               return view('web.invoicePayment', ['invoice' => $invoice, 'admin' => $admin,'member' => $member,'category'=>$category ]);
            }else{
-              return "Online payment getway No Access Available";
+               return "Online payment getway No Access Available";
           }
 
       } else {
@@ -34,9 +41,8 @@ class InvoiceController extends Controller
     } catch (Exception $e) {
       return "Something Error. please try again";
     }
+
   }
-
-
 
 
   public function amarpay_payment($tran_id)

@@ -66,6 +66,8 @@
        <tr>
        <th width="10%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer" >Invoice ID
                 <span id="id_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
+
+       <th  width="20%">Copy Payment Link </th>
        <th width="10%" class="sorting" data-sorting_type="asc" data-column_name="member_card" style="cursor: pointer">Member Card
                   <span id="member_card_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
       <th  width="20%">Name</th>
