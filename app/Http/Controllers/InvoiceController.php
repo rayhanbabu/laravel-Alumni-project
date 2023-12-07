@@ -228,7 +228,7 @@ class InvoiceController extends Controller
       $url = $success_url."?request_id=$tran_id&store_id=$store_id&signature_key=$signature_key&type=json";
  
        //return $url;
-     // die();
+      // die();
       $curl = curl_init();
 
       curl_setopt_array($curl, array(

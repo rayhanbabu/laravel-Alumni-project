@@ -437,12 +437,15 @@
           </div> 
 
          <div class="form-group col-sm-6  my-2">
-               <label class=""><b>Notice Size</b></label>
-               <input type="text" id="edit_notice_size"  name="notice_size" class="form-control" required>
+               <label class=""><b>  Application than Invoice Create  </b></label>
+               <select class="form-select" name="notice_size" id="edit_notice_size"  aria-label="Default select example">
+                      <option value="1">Yes</option>
+                      <option value="0">No</option>
+                 </select>
          </div> 
 
          <div class="form-group col-sm-6  my-2">
-               <label class=""><b>application than Email Send </b></label>
+               <label class=""><b>Application than Email Send </b></label>
                <select class="form-select" name="welcome_size" id="edit_welcome_size"  aria-label="Default select example">
                       <option value="1">Yes</option>
                       <option value="0">No</option>

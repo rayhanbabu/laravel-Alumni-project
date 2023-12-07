@@ -132,19 +132,21 @@ class MemberController extends Controller
          ];
 
          if($admin->welcome_size==1){
-              Mail::to($email)->send(new \App\Mail\RegMail($details));
+             Mail::to($email)->send(new \App\Mail\RegMail($details));
           }
           
-          $total_amount=$app->amount+($app->amount*$admin->getway_fee)/100;
-          $invoice= new Invoice;
-          $invoice->admin_name=$app->admin_name;
-          $invoice->tran_id=Str::random(8);
-          $invoice->member_id=$model->id;
-          $invoice->category_id=$app->id;
-          $invoice->amount=$app->amount;
-          $invoice->getway_fee=$admin->getway_fee;
-          $invoice->total_amount=$total_amount;
-          $invoice->save();
+        if($admin->notice_size==1){  
+             $total_amount=$app->amount+($app->amount*$admin->getway_fee)/100;
+             $invoice= new Invoice;
+             $invoice->admin_name=$app->admin_name;
+             $invoice->tran_id=Str::random(8);
+             $invoice->member_id=$model->id;
+             $invoice->category_id=$app->id;
+             $invoice->amount=$app->amount;
+             $invoice->getway_fee=$admin->getway_fee;
+             $invoice->total_amount=$total_amount;
+             $invoice->save();
+         }
 
          return response()->json([
                'status'=>200,  

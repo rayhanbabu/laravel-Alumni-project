@@ -99,8 +99,8 @@
         $(document).on('click','.view',function(){
              var invoice_id_view = $(this).attr("id");  
              var statuspay = $(this).data("status");  
-             $('#viewmodal').modal('show');
-            
+              $('#viewmodal').modal('show');
+      
               $('#invoice_id_view').val(invoice_id_view);
               $('#statuspay').val(statuspay);
 
