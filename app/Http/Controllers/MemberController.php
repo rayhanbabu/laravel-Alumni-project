@@ -116,11 +116,11 @@ class MemberController extends Controller
          $email=$request->input('email');
          $rand=rand(11111,99999);
          $subject='Verify your Email';  
-         $title='Dear,  '.$request->input('name');
+         $title='Dear , '.$request->input('name');
          $body='Please Click URL and verify your email to complete your account setup.';
          $link=$admin->other_link.'email_verify/'.md5($request->input('email'));
          $body1='Alternatively, paste the following URL into your browser:';
-         $name='DUCAA , developed by ancovabd.com';  
+         $name=$admin->admin_name.', developed by ancovabd.com';  
          $details = [
            'subject'=> $subject,
            'title'=>$title,
