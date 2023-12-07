@@ -21,6 +21,7 @@
     <div class="card">
          <div class="card-body">
    
+
          <h3>Pay Now</h3>
          <p class="text-center">
          <div>
@@ -33,6 +34,8 @@
                    <img src="{{ asset('images/amarpay.png') }}" alt="" >  
                </a>
           </div>
+
+          
         
        </p>
     

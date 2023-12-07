@@ -110,6 +110,10 @@ border-bottom: 1px solid #c8ced3
 </table>
 
 <div>
+
+  @if($invoice->payment_status==1)
+    
+    @else 
          <input type="checkbox" id="myCheck" onclick="myFunction()">
                   <label for="required">I Agree  <a href="https://amaderthikana.com/policy">Privacy Policy</a> & 
                     <a href="https://amaderthikana.com/term"> Terms and Conditions</a>  </label>
@@ -125,6 +129,10 @@ border-bottom: 1px solid #c8ced3
                     Pay Now
                </a>
           </div>
+
+          
+          
+          @endif
 
 
 </div>
