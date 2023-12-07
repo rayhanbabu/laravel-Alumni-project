@@ -53,6 +53,7 @@ class InvoiceController extends Controller
       $admin = Admin::where('admin_name', $invoice->admin_name)->select('other_link','senior_size')->first();
 
    
+     
 
       $tran_id = $tran_id;  //unique transection id for every transection 
       $currency = "BDT"; //aamarPay support Two type of currency USD & BDT  
@@ -60,9 +61,14 @@ class InvoiceController extends Controller
       $amount = $invoice->total_amount;   // 10 taka is the minimum amount for show card option in aamarPay payment gateway
 
       //For live Store Id & Signature Key please mail to support@aamarpay.com
-      $store_id = "aamarpaytest";
-      $signature_key = "dbb74894e82415a2f7ff0ec3a97e4183";
-      $url = "https://​sandbox​.aamarpay.com/jsonpost.php"; // for Live Transection use "https://secure.aamarpay.com/jsonpost.php"
+      //$store_id = "aamarpaytest";
+      // $signature_key = "dbb74894e82415a2f7ff0ec3a97e4183";
+      //$url = "https://​sandbox​.aamarpay.com/jsonpost.php"; // for Live Transection use "https://secure.aamarpay.com/jsonpost.php"
+
+        $url =env('MERCHANT_URL');
+        $store_id =env('STORE_ID');
+        $signature_key =env('SIG_KEY');
+  
 
       $curl = curl_init();
 
@@ -135,8 +141,11 @@ class InvoiceController extends Controller
     try {
       $request_id = $request->mer_txnid;
       //verify the transection using Search Transection API 
+      $success_url =env('SUCCESS_URL');
+      $store_id =env('STORE_ID');
+      $signature_key =env('SIG_KEY');
 
-      $url = "http://sandbox.aamarpay.com/api/v1/trxcheck/request.php?request_id=$request_id&store_id=aamarpaytest&signature_key=dbb74894e82415a2f7ff0ec3a97e4183&type=json";
+      $url = $success_url."?request_id=$request_id&store_id=$store_id&signature_key=$signature_key&type=json";
 
       //For Live Transection Use "http://secure.aamarpay.com/api/v1/trxcheck/request.php"
 
@@ -211,10 +220,12 @@ class InvoiceController extends Controller
   {
     try {
       $tran_id = $request->tran_id;
-      $store_id = "aamarpaytest";
-      $signature_key = "dbb74894e82415a2f7ff0ec3a97e4183";
+    
+      $success_url =env('SUCCESS_URL');
+      $store_id =env('STORE_ID');
+      $signature_key =env('SIG_KEY');
 
-      $url = "http://sandbox.aamarpay.com/api/v1/trxcheck/request.php?request_id=$tran_id&store_id=$store_id&signature_key=$signature_key&type=json";
+      $url = $success_url."?request_id=$tran_id&store_id=$store_id&signature_key=$signature_key&type=json";
  
        //return $url;
      // die();
