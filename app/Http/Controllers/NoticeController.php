@@ -61,23 +61,36 @@ class NoticeController extends Controller
 
     public function store(Request $request) {
 
-       $text = $request->text;
+
+        $validated = $request->validate([
+            'date'=>'required',
+            'text'=>'required',
+            'image' =>'image|mimes:jpeg,png,jpg|max:512000',
+            'title'=>'required',
+        ]);
+
 
        if(Session::has('admin')){
              $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
         }
 
+        $model= new Notice;
+        $model->serial=1;
+        $model->date=$request->input('date');
+        $model->category=$request->input('category');
+        $model->admin_name=$admin->admin_name;
+        $model->title=$request->input('title');
+        $model->text=$request->input('text');
 
-    Notice::create([
-        'serial' => '1',
-        'date' => $request->date,
-        'category' => $request->category,
-        'admin_name' => $admin->admin_name,
-        'title' => $request->title,
-        'text' => $text
-    ]);
+        if($request->hasfile('image')){
+            $image= $request->file('image');
+            $file_name = 'image'.rand() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/admin'), $file_name);
+            $model->image=$file_name;
+         }
+        $model->save();
 
-    return redirect('/admin/notice')->with('success','Data Added  successfully');
+        return redirect()->back()->with('success','Data Added Successfuly');
        
      }
 
@@ -98,18 +111,33 @@ class NoticeController extends Controller
      public function update(Request $request, $id)
      {
 
-       $notice = Notice::find($id);
-       $text = $request->text;
-      
-       $notice->update([
-        'date' => $request->date,
-        'category' => $request->category,
-        'title' => $request->title,
-        'text' => $text
-      ]);
+        $validated = $request->validate([
+            'date'=>'required',
+            'text'=>'required',
+            'image' =>'image|mimes:jpeg,png,jpg|max:512000',
+            'title'=>'required',
+        ]);
 
-      return redirect('/admin/notice')->with('success','Data Updated  successfully');
+        $model = Notice::find($id);
+        $model->serial=1;
+        $model->date=$request->input('date');
+        $model->category=$request->input('category');
+        $model->title=$request->input('title');
+        $model->text=$request->input('text');
 
+        if($request->hasfile('image')){
+            $path=public_path('uploads/admin/').$model->image;
+            if(File::exists($path)){
+             File::delete($path);
+             }
+             $image= $request->file('image');
+             $file_name = 'image'.rand() . '.' . $image->getClientOriginalExtension();
+             $image->move(public_path('uploads/admin'), $file_name);
+             $model->image=$file_name;
+         }
+        $model->save();
+
+        return redirect()->back()->with('success','Data Updated Successfuly');
    }
 
 

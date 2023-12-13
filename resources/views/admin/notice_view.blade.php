@@ -17,13 +17,16 @@
         </div> 
  </div> 
 
+
+
  <div class="container p-4 ">
     <div class="row justify-content-md-center">
         <div class="col-md-12">
             <div class="text-center">
               category: <b> {{$data->category}}</b>
               Date:<b> {{$data->date}}</b>
-              Title:<b> {{$data->title}}</b>
+              Title:<b> {{$data->title}}</b><br>
+              <img src="{{ asset('/uploads/admin/'.$data->image) }}" width="100" class="img-thumbnail" alt="Image">
            
             </div>
           

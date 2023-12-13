@@ -17,17 +17,39 @@
         </div> 
  </div> 
 
+ <div class="form-group  mx-2 my-2">
+                           @if(Session::has('fail'))
+                   <div  class="alert alert-danger"> {{Session::get('fail')}}</div>
+                                @endif
+                             </div>
+
+                             <div class="form-group  mx-2 my-2">
+                           @if(Session::has('success'))
+                   <div  class="alert alert-success"> {{Session::get('success')}}</div>
+                                @endif
+                             </div>
+
+ @if ($errors->any())
+      <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+      </div>
+  @endif
+
  <div class="container shadow p-4">
-      <form method="POST" action="{{url('admin/notice_update/'.$data->id)}}">
+      <form method="POST" action="{{url('admin/notice_update/'.$data->id)}}" enctype="multipart/form-data">
         @csrf
   
       <div class="row">
-          <div class="col-sm-6 my-2">
+          <div class="col-sm-4 my-2">
               <label for="name">Date<span style="color:red;"> * </span></label>
              <input type="date" name="date" id="name"  value="{{$data->date}}"class="form-control" placeholder=""  required>
           </div>
 
-          <div class="col-sm-6 my-2">
+        <div class="col-sm-4 my-2">
              <label for="lname">Category<span style="color:red;"> * </span></label>
                  <select class="form-select" name="category" id="category" aria-label="Default select example"  required >
                       <option value="{{$data->category}}" selected>{{$data->category}}</option>
@@ -42,6 +64,11 @@
                       <option value="Dashboard">Dashboard</option>
                       <option value="Membership">Membership</option>
                  </select>
+          </div>
+
+          <div class="col-sm-4 my-2">
+              <label for="name">Image Optional (Max Size:400KB)</label>
+             <input type="file" name="image" id="image"  value=""class="form-control" placeholder=""  >
           </div>
 
 
