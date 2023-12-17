@@ -18,7 +18,9 @@
          </td>
 
             <td>{{ $row->withdraw_type}}</td>
-            <td>{{ $row->withdraw_info}}</td>
+            <td>{{ $row->withdraw_info}}, {{ $row->withdraw_info_update}}</td>
+            <td> <img src="{{ asset('/uploads/admin/'.$row->image) }}" width="100" class="img-thumbnail" alt="Image"></td>
+            <td> <button type="button"  data-withdraw_id="{{$row->id}}"  data-withdraw_info="{{$row->withdraw_info}}"  class="edit btn btn-info btn-sm">Edit </button> </td>
 
        <td>
         @if($row->withdraw_status == 5)

@@ -56,6 +56,7 @@
          <th width="30%" class="sorting" data-sorting_type="asc" data-column_name="title" style="cursor: pointer">Title
             <span id="title_icon"><i class="fas fa-sort-amount-up-alt"></span></th>          
        
+            <th  width="10%">Image</th>
 		      <th  width="10%">View</th>
 		      <th  width="10%"></th>
           <th  width="10%"></th>

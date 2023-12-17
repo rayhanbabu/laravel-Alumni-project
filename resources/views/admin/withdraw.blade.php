@@ -146,13 +146,14 @@
  <thead>
        <tr>
        <th  width="10%">Id</th>
-       <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Withdraw Amount
+       <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer"> Withdraw Amount
             <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
         <th  width="10%"> Withdraw Submitted time</th>
-        <th  width="10%">Withdraw time</th>
-		    <th  width="10%">Withdraw Status</th>
-
-		    <th  width="10%">Action</th>
+        <th  width="10%"> Withdraw time</th>
+		    <th  width="10%"> Withdraw Status</th>
+        <th  width="10%"> Withdraw Infomation</th>
+        <th  width="10%"> Attached File </th>
+		    <th  width="10%"> Action</th>
       </tr>
     </thead>
     <tbody>

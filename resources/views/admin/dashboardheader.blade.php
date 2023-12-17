@@ -246,7 +246,7 @@
 
      <a class="nav-link " href="{{url('admin/app/Event')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             Event Category
+             Event Create
      </a>
 
      <a class="nav-link @yield('paymentview_select')" href="{{url('admin/paymentview')}}">

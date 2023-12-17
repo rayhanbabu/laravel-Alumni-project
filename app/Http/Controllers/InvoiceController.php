@@ -21,7 +21,7 @@ class InvoiceController extends Controller
   public function amarpay_epay($username, $tran_id)
   {
 
-    try {
+   // try {
            $invoice = Invoice::where('admin_name', $username)->where('tran_id', $tran_id)
             ->select('tran_id','member_id','payment_status','created_at','category_id','total_amount')->first();
       if ($invoice) {
@@ -38,9 +38,9 @@ class InvoiceController extends Controller
       } else {
         return "Invalid Url";
       }
-    } catch (Exception $e) {
-      return "Something Error. please try again";
-    }
+    // } catch (Exception $e) {
+    //   return "Something Error. please try again";
+    // }
 
   }
 

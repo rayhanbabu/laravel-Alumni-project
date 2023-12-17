@@ -117,6 +117,7 @@ Route::middleware('MaintainIs')->group(function(){
       Route::get('/maintain/withdraw_fetch/',[MaintainController::class,'withdraw_fetch']);
       Route::get('/maintain/withdraw/fetch_data/',[MaintainController::class,'withdraw_fetch_data']);
       Route::get('/maintain/withdraw/{operator}/{status}/{id}', [MaintainController::class,'withdraw_status']);
+      Route::post('/maintain/withdraw_update',[MaintainController::class,'withdraw_update']);
 
 });
 

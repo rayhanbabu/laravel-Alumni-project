@@ -164,6 +164,9 @@
 
 <script type="text/javascript">
            $(document).ready(function(){
+
+
+
                 $(document).on('click','.edit',function(){
                    var id = $(this).attr("id");  
                    var name = $(this).data("name");
@@ -238,6 +241,9 @@
                      $('#edit_bank_route').val(bank_route);
                      $('#updatemodal').modal('show');
                 });
+
+
+                
 
            });
 

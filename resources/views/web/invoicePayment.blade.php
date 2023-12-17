@@ -42,10 +42,9 @@ border-bottom: 1px solid #c8ced3
 <div>
 <div class="card">
 <div class="card-header">
-     <h4>Amaderthikana</h4>
-     <p>Alumni Management System</p>
-      Organization: <strong>{{$admin->nameen}}</strong><br>
-      Address: {{$admin->address}}
+      <br>
+      <strong>{{$admin->nameen}}</strong><br>
+       {{$admin->address}}
     </p>
    
 

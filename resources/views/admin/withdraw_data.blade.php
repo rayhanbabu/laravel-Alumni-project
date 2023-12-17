@@ -13,6 +13,10 @@
              <a href="#"  class="btn btn-warning btn-sm"> Pending<a>
           @endif
          </td>
+
+         <td>{{ $row->withdraw_info}}</td>
+         <td> <img src="{{ asset('/uploads/admin/'.$row->image) }}" width="100" class="img-thumbnail" alt="Image"></td>
+
          @if($row->withdraw_status == 5 OR $row->withdraw_status ==1) 
               <td></td>
          @else

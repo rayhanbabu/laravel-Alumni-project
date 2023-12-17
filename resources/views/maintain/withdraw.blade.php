@@ -104,13 +104,15 @@
         <th  width="10%">Admin Name</th>
         <th  width="10%">Bank Informaation</th>
         <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Withdraw Amount
-          <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
+         <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
          <th  width="10%"> Withdraw Submitted time</th>
          <th  width="10%">Current Balance</th>
          <th  width="10%">Withdraw time</th>
 		     <th  width="10%">Withdraw Status</th>
          <th  width="10%">Withdraw Type</th>
          <th  width="10%">Withdraw Info</th>
+         <th  width="10%">Image</th>
+         <th  width="10%">Edit</th>
 		    <th  width="10%">Action</th>
       </tr>
     </thead>
@@ -242,12 +244,71 @@ $(document).ready(function(){
 
 
     
-       
-    
+          $(document).on('click','.edit',function(){
+                  
+                  
+                    var withdraw_info = $(this).data("withdraw_info");
+                    var withdraw_id = $(this).data("withdraw_id");
+            
+                     $('#edit_withdraw_info').val(withdraw_info);
+                     $('#edit_withdarw_id').val(withdraw_id);
 
+                
+                     $('#updatemodal').modal('show');
+
+                  
+                });
+    
 
 });  
 </script>   
+
+
+
+  
+
+<!-- Modal Edit -->
+<div class="modal fade" id="updatemodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"> Edit</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+      <form method="post" action="{{url('maintain/withdraw_update')}}"  class="myform"  enctype="multipart/form-data" >
+         {!! csrf_field() !!}
+
+            <input type="hidden" id="edit_withdarw_id" name="id" class="form-control">
+
+         <div class="row px-3">
+
+            <div class="form-group col-sm-12  my-2">
+                <label class=""><b>Withdraw Information</b></label>
+                <input type="text" name="withdraw_info" id="edit_withdraw_info" class="form-control" required>
+            </div> 
+
+            <div class="form-group col-sm-6  my-2">
+               <label class=""><b>Bank  Document Image (max:500px)</b></label>
+               <input type="file" name="image"  class="form-control" >
+            </div>       
+
+    </div>
+
+     <br>
+      <input type="submit"   id="insert" value="Update" class="btn btn-success" />
+	  
+              
+   </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 

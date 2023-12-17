@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\validator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\File;
 
 class MaintainController extends Controller
 {
@@ -664,6 +665,36 @@ public function adminstatus($type,$status,$id){
 
       //}catch (Exception $e) { return  'something is Rong'; }
     }
+
+
+    public function withdraw_update(Request $request)
+    {
+
+       $validated = $request->validate([
+            'image' =>'image|mimes:jpeg,png,jpg|max:512000',
+            'withdraw_info'=>'required',
+        ]);
+
+       $model = Withdraw::find($request->input('id'));
+       $model->withdraw_info=$request->input('withdraw_info');
+       $model->withdraw_info_update="Admin";
+
+       if($request->hasfile('image')){
+           $path=public_path('uploads/admin/').$model->image;
+           if(File::exists($path)){
+            File::delete($path);
+            }
+            $image= $request->file('image');
+            $file_name = 'image'.rand() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/admin'), $file_name);
+            $model->image=$file_name;
+        }
+       $model->save();
+
+       return redirect()->back()->with('success','Data Updated Successfuly');
+  }
+
+
 
 
 
