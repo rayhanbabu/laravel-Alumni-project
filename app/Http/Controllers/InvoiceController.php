@@ -60,21 +60,11 @@ class InvoiceController extends Controller
 
       $amount = $data->total_amount;   // 10 taka is the minimum amount for show card option in aamarPay payment gateway
 
-      //For live Store Id & Signature Key please mail to support@aamarpay.com
-      //$store_id = "aamarpaytest";
-      // $signature_key = "dbb74894e82415a2f7ff0ec3a97e4183";
-      //$url = "https://​sandbox​.aamarpay.com/jsonpost.php"; // for Live Transection use "https://secure.aamarpay.com/jsonpost.php"
-
-        // $url =env('MERCHANT_URL');
-        // $store_id =env('STORE_ID');
-        // $signature_key =env('SIG_KEY');
 
          $url ='https://secure.aamarpay.com/jsonpost.php';
          $store_id ='amaderthikana';
          $signature_key ='e270a2a831529d4e89721ee48d3d8499';
   
-  
-
       $curl = curl_init();
 
       curl_setopt_array($curl, array(
@@ -145,17 +135,13 @@ class InvoiceController extends Controller
   {
     try {
       $request_id = $request->mer_txnid;
-        //verify the transection using Search Transection API 
-        // $success_url =env('SUCCESS_URL');
-        // $store_id =env('STORE_ID');
-        // $signature_key =env('SIG_KEY');
+       
 
       $success_url ='https://secure.aamarpay.com/api/v1/trxcheck/request.php';
       $store_id ='amaderthikana';
       $signature_key ='e270a2a831529d4e89721ee48d3d8499';
 
       $url = $success_url."?request_id=$request_id&store_id=$store_id&signature_key=$signature_key&type=json";
-
       //For Live Transection Use "http://secure.aamarpay.com/api/v1/trxcheck/request.php"
 
       $curl = curl_init();
