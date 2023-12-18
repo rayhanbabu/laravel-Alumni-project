@@ -47,18 +47,18 @@ class InvoiceController extends Controller
 
   public function amarpay_payment($tran_id)
   {
-    try {
-      $invoice = Invoice::where('tran_id', $tran_id)->first();
-      $member = Member::where('id', $invoice->member_id)->first();
-      $admin = Admin::where('admin_name', $invoice->admin_name)->select('other_link','senior_size')->first();
-
-   
+    //try {
      
+      $data=Invoice::leftjoin('members','members.id','=','invoices.member_id')
+        ->where('invoices.tran_id',$tran_id)
+        ->select('members.member_card','members.name','members.phone','members.email'
+       ,'members.city','members.country','invoices.*')->first();
 
+  
       $tran_id = $tran_id;  //unique transection id for every transection 
       $currency = "BDT"; //aamarPay support Two type of currency USD & BDT  
 
-      $amount = $invoice->total_amount;   // 10 taka is the minimum amount for show card option in aamarPay payment gateway
+      $amount = $data->total_amount;   // 10 taka is the minimum amount for show card option in aamarPay payment gateway
 
       //For live Store Id & Signature Key please mail to support@aamarpay.com
       //$store_id = "aamarpaytest";
@@ -91,19 +91,19 @@ class InvoiceController extends Controller
         "amount": "' . $amount . '",
         "currency": "' . $currency . '",
         "signature_key": "' . $signature_key . '",
-        "desc": "' . $invoice->category_id . '",
-        "cus_name": "' . $member->name . '",
-        "cus_email": "' . $member->email . '",
-        "cus_add1": "' . $member->id . '",
-        "cus_add2": "Mohakhali DOHS",
-        "cus_city": "' . $member->city . '",
-        "cus_state": "' . $member->city . '",
+        "desc": "' . $data->category_id . '",
+        "cus_name": "' . $data->name . '",
+        "cus_email": "' . $data->email . '",
+        "cus_add1": "' . $data->member_card . '",
+        "cus_add2": "DU",
+        "cus_city": "' . $data->city . '",
+        "cus_state": "' . $data->city . '",
         "cus_postcode": "1206",
-        "cus_country": "' . $member->country . '",
-        "cus_phone": "' . $member->phone . '",
-        "opt_a":"' . $invoice->id . '" ,
-        "opt_b":"' . $admin->other_link . '" ,
-        "opt_c":"' . $invoice->admin_name . '" ,
+        "cus_country": "' . $data->country . '",
+        "cus_phone": "' . $data->phone . '",
+        "opt_a":"' . $data->id . '" ,
+        "opt_b":"' . $data->web_link . '" ,
+        "opt_c":"' . $data->admin_name . '" ,
         "type": "json"
     }',
         CURLOPT_HTTPHEADER => array(
@@ -129,9 +129,9 @@ class InvoiceController extends Controller
       }
 
     
-    } catch (Exception $e) {
-      return "Something Error. please try again";
-    }
+    // } catch (Exception $e) {
+    //   return "Something Error. please try again";
+    // }
   }
 
 

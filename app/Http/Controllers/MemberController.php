@@ -145,6 +145,7 @@ class MemberController extends Controller
              $invoice->amount=$app->amount;
              $invoice->getway_fee=$admin->getway_fee;
              $invoice->total_amount=$total_amount;
+             $model->web_link=$admin->other_link;
              $invoice->save();
          }
 
@@ -473,7 +474,7 @@ class MemberController extends Controller
 
 
     public function member_logout(){
-      //->cookie('TOKEN_LOGIN','',-1)
+         //->cookie('TOKEN_LOGIN','',-1)
             return response()->json([
                 'status'=>200,
                 'message'=> 'Member Logout',
@@ -555,7 +556,7 @@ class MemberController extends Controller
             ]);
        }else{
          $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
-        'mobile','admin_name','header_size','resheader_size','getway_fee')->first();
+        'mobile','admin_name','header_size','resheader_size','getway_fee','other_link')->first();
           $category=App::where('admin_name',$username)->where('admin_category','Event')->where('status',1)->where('id',$request->category_id)->first();
           if($category){
             $verify= Member::where('member_verify',1)->where('id',$member_id)->count('id');
@@ -578,6 +579,7 @@ class MemberController extends Controller
              $model->payment_status=0;
              $model->getway_fee=$admin->getway_fee;
              $model->total_amount=$total_amount;
+             $model->web_link=$admin->other_link;
              $model->save();
 
             return response()->json([
