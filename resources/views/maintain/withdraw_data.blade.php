@@ -32,6 +32,9 @@
                 @endif
         </td>
         @endif
+
+        <td>{{ $row->updated_by}}</td>
+        <td>{{ $row->updated_by_time}}</td>
                
       </tr>
  @endforeach

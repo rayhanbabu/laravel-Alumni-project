@@ -114,6 +114,8 @@
          <th  width="10%">Image</th>
          <th  width="10%">Edit</th>
 		    <th  width="10%">Action</th>
+        <th  width="10%">Updated By</th>
+        <th  width="10%">Updated By Time</th>
       </tr>
     </thead>
     <tbody>

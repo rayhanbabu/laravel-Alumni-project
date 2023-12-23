@@ -84,6 +84,8 @@
          <th width="15%" >Getway Fee </th>
 	   <th width="15%" >Username</th>
          <th width="15%" >Password</th>
+         <th width="5%" >Updated By </th>
+         <th width="5%" >Updated By Time</th>
          <th width="5%" >Email verify</th>
          <th width="5%" >Status</th>
          <th width="5%" >Edit</th>
@@ -104,6 +106,8 @@
         <td>{{$item->getway_fee}}</td>
         <td>{{$item->admin_name}}</td>
         <td>{{$item->admin_password}}</td>
+        <td>{{$item->updated_by}}</td>
+        <td>{{$item->updated_by_time}}</td>
        
    <td>
      @if($item->email_verify == 1)         

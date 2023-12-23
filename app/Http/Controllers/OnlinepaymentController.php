@@ -114,11 +114,11 @@ class OnlinepaymentController extends Controller
        if($status==1){
            $status1=0;
            $paymenttime=date('2010-10-10 10:10:10');
-           $paymenttype='';
+           $paymenttype=admin_access()->maintain_name;
         }else{
            $status1=1;
            $paymenttime=date('Y-m-d H:i:s');
-           $paymenttype='Admin';
+           $paymenttype=admin_access()->maintain_name;
         }
       $payment_date= date('Y-m-d');
       $payment_day= date('d');

@@ -437,6 +437,8 @@ public function adminedit(request $request){
     $admin->bank_name=$request->input('bank_name');
     $admin->bank_account=$request->input('bank_account');
     $admin->bank_route=$request->input('bank_route');
+    $admin->updated_by=admin_access()->maintain_name;
+    $admin->updated_by_time=date('Y-m-d H:i:s');
     $admin->update();
     return redirect()->back()->with('success','Admin Update Successfuly');
 }
@@ -625,7 +627,7 @@ public function adminstatus($type,$status,$id){
            }else{
                 $type=1;
                 $payment_time=date('Y-m-d H:i:s');
-                $payment_type='Admin';
+                $payment_type=admin_access()->maintain_name;
            }
 
            $payment_month= date('n');
@@ -636,7 +638,9 @@ public function adminstatus($type,$status,$id){
            $model->withdraw_type=$payment_type; 
            $model->withdraw_time=$payment_time;
            $model->withdraw_year=$payment_year; 
-           $model->withdraw_month=$payment_month;  
+           $model->withdraw_month=$payment_month;
+           $model->updated_by=admin_access()->maintain_name;
+           $model->updated_by_time=date('Y-m-d H:i:s');  
            $model->update();
 
 
@@ -648,8 +652,11 @@ public function adminstatus($type,$status,$id){
              $online_cur_amount=$admin->online_cur_amount+$model->withdraw_amount;
              $online_withdraw=$admin->online_withdraw-$model->withdraw_amount;
            }
-
-           DB::update("update admins set online_cur_amount ='$online_cur_amount', online_withdraw ='$online_withdraw' where admin_name = '$admin->admin_name'");
+           $updated_by=admin_access()->maintain_name;
+           $updated_by_time=date('Y-m-d H:i:s');
+           DB::update("update admins set online_cur_amount ='$online_cur_amount', 
+           online_withdraw ='$online_withdraw', updated_by ='$updated_by' 
+           , updated_by_time ='$updated_by_time' where admin_name = '$admin->admin_name'");
 
          return back()->with('success','Status update Successfull');        
       }
@@ -679,6 +686,8 @@ public function adminstatus($type,$status,$id){
        $model = Withdraw::find($request->input('id'));
        $model->withdraw_info=$request->input('withdraw_info');
        $model->withdraw_info_update="Admin";
+       $model->updated_by=admin_access()->maintain_name;
+       $model->updated_by_time=date('Y-m-d H:i:s');
 
        if($request->hasfile('image')){
            $path=public_path('uploads/admin/').$model->image;
