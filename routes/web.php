@@ -67,58 +67,100 @@ Route::middleware('MaintainIs')->group(function(){
    Route::get('/maintain/password',[MaintainController::class,'password']);
    Route::post('maintain/password',[MaintainController::class,'passwordedit']);
 
-  
-    //admin
-   Route::get('maintain/adminview',[MaintainController::class,'adminview']);
-   Route::post('maintain/admininsert',[MaintainController::class,'admininsert']);
-   Route::post('maintain/adminedit',[MaintainController::class,'adminedit']);
-   Route::get('maintain/admindelete/{id}',[MaintainController::class,'admindelete']);
-   Route::get('/maintain/adminlist/{type}/{status}/{id}',[MaintainController::class,'adminstatus']);
-   Route::post('/maintain/adminpdf',[MaintainController::class,'adminpdf']);
-   Route::get('/maintain/adminexport',[MaintainController::class,'adminexportview']);
-   Route::post('/maintain/adminexport',[MaintainController::class,'adminexport']);
-   Route::get('/maintain/adminimport',[MaintainController::class,'adminimportview']);
-   Route::post('/maintain/adminimport',[MaintainController::class,'adminimport']);
+    
+
+     //Only Supper Admin Access 
+     Route::middleware('AdminAccess')->group(function(){
+            //maintain people add
+           Route::get('maintain/maintainview',[MaintainController::class,'maintainview']);
+           Route::post('/maintain/store',[MaintainController::class,'store']);
+           Route::get('/maintain/fetchAll',[MaintainController::class,'fetchAll']);
+           Route::get('/maintain/edit',[MaintainController::class,'edit']);
+           Route::post('/maintain/update',[MaintainController::class,'update']);
+
+          //Data defoult data view
+          Route::get('maintain/dataview',[MaintainController::class,'dataview']);
+          Route::post('maintain/dataedit',[MaintainController::class,'dataedit']);
 
 
-        //Testinomial
-        Route::get('/homepage/index', [HomepageController::class,'index']);
-        Route::post('/homepage/store', [HomepageController::class,'store']);
-        Route::get('/homepage/fetchall', [HomepageController::class,'fetchAll']);
-        Route::delete('/homepage/delete', [HomepageController::class,'delete']);
-        Route::get('/homepage/edit', [HomepageController::class,'edit']);
-        Route::post('/homepage/update', [HomepageController::class,'update']);
+          //SMS information
+          Route::get('maintain/sms',[SmsController::class,'index']);
+          Route::get('/maintain/sms/fetchall',[SmsController::class,'fetchAll']);
+          Route::post('/maintain/sms/store',[SmsController::class,'store']);
+          Route::get('/maintain/sms/edit',[SmsController::class,'edit']);
+          Route::post('/maintain/sms/update',[SmsController::class,'update']);
+          Route::delete('/maintain/sms/delete',[SmsController::class,'delete']);
+          Route::post('/maintain/smspayment',[SmsController::class,'smspayment']);
+          Route::get('/maintain/sms/{type}/{status}/{id}',[SmsController::class,'smsstatus']);
+          Route::post('onlinesmspdf',[SmsController::class,'onlinesmspdf']);
 
-     //Data defoult data view
+         //Testinomial
+         Route::get('/homepage/index', [HomepageController::class,'index']);
+         Route::post('/homepage/store', [HomepageController::class,'store']);
+         Route::get('/homepage/fetchall', [HomepageController::class,'fetchAll']);
+         Route::delete('/homepage/delete', [HomepageController::class,'delete']);
+         Route::get('/homepage/edit', [HomepageController::class,'edit']);
+         Route::post('/homepage/update', [HomepageController::class,'update']);
+
+
+     });
+
+     //admin View Access
+     Route::middleware('AdminViewAccess')->group(function(){
+          Route::get('maintain/adminview',[MaintainController::class,'adminview']);
+      });
+
+     //admin Edit Access
+     Route::middleware('AdminEditAccess')->group(function(){
+         Route::post('maintain/admininsert',[MaintainController::class,'admininsert']);
+         Route::post('maintain/adminedit',[MaintainController::class,'adminedit']);
+         Route::get('maintain/admindelete/{id}',[MaintainController::class,'admindelete']);
+         Route::get('/maintain/adminlist/{type}/{status}/{id}',[MaintainController::class,'adminstatus']);
+         Route::post('/maintain/adminpdf',[MaintainController::class,'adminpdf']);
+         Route::get('/maintain/adminexport',[MaintainController::class,'adminexportview']);
+         Route::post('/maintain/adminexport',[MaintainController::class,'adminexport']);
+         Route::get('/maintain/adminimport',[MaintainController::class,'adminimportview']);
+         Route::post('/maintain/adminimport',[MaintainController::class,'adminimport']);
+    });
    
-     Route::get('maintain/dataview',[MaintainController::class,'dataview']);
-     Route::post('maintain/dataedit',[MaintainController::class,'dataedit']);
-
-      //Payment information
-      Route::get('maintain/payment',[OnlinepaymentController::class,'paymentview']);
-      Route::post('/onlinepaymentstatus',[OnlinepaymentController::class,'onlinepaymentstatus']);
-      Route::post('maintain/paymentedit',[OnlinepaymentController::class,'paymentedit']);
-      Route::post('onlinepaymentpdf',[OnlinepaymentController::class,'onlinepaymentpdf']);
-
-      //SMS information
-      Route::get('maintain/sms',[SmsController::class,'index']);
-      Route::get('/maintain/sms/fetchall',[SmsController::class,'fetchAll']);
-      Route::post('/maintain/sms/store',[SmsController::class,'store']);
-      Route::get('/maintain/sms/edit',[SmsController::class,'edit']);
-      Route::post('/maintain/sms/update',[SmsController::class,'update']);
-      Route::delete('/maintain/sms/delete',[SmsController::class,'delete']);
-      Route::post('/maintain/smspayment',[SmsController::class,'smspayment']);
-      Route::get('/maintain/sms/{type}/{status}/{id}',[SmsController::class,'smsstatus']);
-      Route::post('onlinesmspdf',[SmsController::class,'onlinesmspdf']);
      
+    // Issue View Access
+     Route::middleware('IssueViewAccess')->group(function(){
+       
+     });
 
-      //withdraw
-      Route::get('/maintain/withdraw/',[MaintainController::class,'withdraw_index']);
-      Route::get('/maintain/withdraw_fetch/',[MaintainController::class,'withdraw_fetch']);
-      Route::get('/maintain/withdraw/fetch_data/',[MaintainController::class,'withdraw_fetch_data']);
-      Route::get('/maintain/withdraw/{operator}/{status}/{id}', [MaintainController::class,'withdraw_status']);
-      Route::post('/maintain/withdraw_update',[MaintainController::class,'withdraw_update']);
 
+      // Issue Edit Access
+     Route::middleware('IssueEditAccess')->group(function(){
+       
+     });
+
+
+      // Payment  View Access
+      Route::middleware('PaymentViewAccess')->group(function(){
+
+         //Payment information
+        Route::get('maintain/payment',[OnlinepaymentController::class,'paymentview']);
+        //withdraw
+         Route::get('/maintain/withdraw/',[MaintainController::class,'withdraw_index']);
+         Route::get('/maintain/withdraw_fetch/',[MaintainController::class,'withdraw_fetch']);
+         Route::get('/maintain/withdraw/fetch_data/',[MaintainController::class,'withdraw_fetch_data']);
+      });
+ 
+      // Payment  Edit Access
+      Route::middleware('PaymentEditAccess')->group(function(){
+          //withdraw
+           Route::get('/maintain/withdraw/{operator}/{status}/{id}', [MaintainController::class,'withdraw_status']);
+           Route::post('/maintain/withdraw_update',[MaintainController::class,'withdraw_update']); 
+
+             //Payment information
+           Route::post('/onlinepaymentstatus',[OnlinepaymentController::class,'onlinepaymentstatus']);
+           Route::post('maintain/paymentedit',[OnlinepaymentController::class,'paymentedit']);
+           Route::post('onlinepaymentpdf',[OnlinepaymentController::class,'onlinepaymentpdf']);
+     
+      });
+ 
+        
 });
 
 

@@ -53,6 +53,13 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $middlewareAliases = [
+        'AdminAccess' => \App\Http\Middleware\AdminAccess::class,
+        'AdminViewAccess' => \App\Http\Middleware\AdminViewAccess::class,
+        'AdminEditAccess' => \App\Http\Middleware\AdminEditAccess::class,
+        'IssueViewAccess' => \App\Http\Middleware\IssueViewAccess::class,
+        'IssueEditAccess' => \App\Http\Middleware\IssueEditAccess::class,
+        'PaymentViewAccess' => \App\Http\Middleware\PaymentViewAccess::class,
+        'PaymentEditAccess' => \App\Http\Middleware\PaymentEditAccess::class,
         'ForgetTokenExist' => \App\Http\Middleware\ForgetTokenExist::class,
         'ForgetToken' => \App\Http\Middleware\ForgetToken::class,
         'MaintainTokenExist' => \App\Http\Middleware\MaintainTokenExist::class,

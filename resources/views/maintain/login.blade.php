@@ -32,12 +32,12 @@
 
 		         <a target="_blank" href="http://ancovabd.com/"><img src="{{ asset('images/ancovabr.png') }}" alt="Denim Jeans" width="150" style="margin-top:-20px;"></a>
 				<h5></h5>
-		      	<h3 class="text-center mb-4"> Sign In</h3>
-				  @lang('home.name')
+		      	<h3 class="text-center mb-4"> AMS Maintin Login</h3>
+				  
 				  <form method="post" action="{{url('maintain/login')}}"  class="myform"  enctype="multipart/form-data" >
                          {!! csrf_field() !!}
 		      		<div class="form-group">
-		      			<input type="text" class="form-control rounded-left" autocomplete="off"  name="maintain_name" placeholder="Username" required>
+		      			<input type="text" class="form-control rounded-left" autocomplete="off"  name="maintain_phone" placeholder="Phone Number" required>
 		      		</div>
 	           
 				 <div class="form-group ">

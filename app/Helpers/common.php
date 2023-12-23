@@ -97,5 +97,14 @@ function get_balance() {
       }
 
 
+   function admin_access(){
+     if(Session::has('maintain')){
+          $maintain=DB::table('maintains')->where('id','=',Session::get('maintain')->id)->first();
+          return $maintain;
+       }
+   }
+      
+
+
 
       

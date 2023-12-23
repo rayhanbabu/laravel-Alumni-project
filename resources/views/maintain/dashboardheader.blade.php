@@ -32,7 +32,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-light bg-primary text-white">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3 text-white"  href="index.html"  >ANCOVA Software</a>
+            <a class="navbar-brand ps-3 text-white"  href="#"  >ANCOVA Software</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-5 me-lg-0 text-white" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -77,8 +77,75 @@
         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
           Dashboard
      </a>
-												
- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+
+		 @if(admin_access()->role=='Admin')				
+        <a class="nav-link @yield('maintain_select') " href="{{url('maintain/maintainview')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+           Maintain  View
+        </a>
+       
+        <a class="nav-link @yield('dataview_select') " href="{{url('maintain/dataview')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+          Data View
+        </a>
+
+        <a class="nav-link" href="{{url('maintain/sms')}}">
+      <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+            Sms View
+    </a>
+
+      <a class="nav-link @yield('homepage_select') " href="{{url('homepage/index')}}">
+        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+          Homepage View
+     </a>
+
+
+  <a class="nav-link @yield('export_select') " href="{{url('maintain/adminexport')}}">
+     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+      Admin Export
+   </a>
+				
+  <a class="nav-link @yield('import_select') " href="{{url('maintain/adminimport')}}">
+    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+     Admin Import
+  </a>
+      @else @endif
+
+
+				
+      
+       @if(admin_access()->admin_view=='Yes' || admin_access()->role=='Admin')							
+         <a class="nav-link @yield('admin_select')" href="{{url('maintain/adminview')}}">
+            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+          Admin View
+         </a>
+       @else @endif
+
+  
+       @if(admin_access()->payment_view=='Yes' || admin_access()->role=='Admin')		
+        <a class="nav-link @yield('payment_select') " href="{{url('maintain/payment')}}">
+              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+           Payment View
+         </a>
+       @else @endif
+
+
+    @if(admin_access()->issue_view=='Yes' || admin_access()->role=='Admin')		
+        <a class="nav-link @yield('withdraw_select') " href="{{url('maintain/withdraw')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              Withdraw  View
+         </a>
+     @else @endif    
+
+
+  
+
+	
+
+
+
+
+<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
          Layouts
      <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -140,53 +207,6 @@
    </div>
   </nav>
  </div>
-
- <a class="nav-link @yield('dataview_select') " href="{{url('maintain/dataview')}}">
-     <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-   Data View
-</a>
-							
-							
- <a class="nav-link @yield('admin_select') " href="{{url('maintain/adminview')}}">
-     <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-   Admin View
-</a>
-
-  
-
-<a class="nav-link @yield('payment_select') " href="{{url('maintain/payment')}}">
-     <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-   Payment View
-</a>
-
-<a class="nav-link" href="{{url('maintain/sms')}}">
-      <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-            Sms View
-    </a>
-
-
-  <a class="nav-link @yield('withdraw_select') " href="{{url('maintain/withdraw')}}">
-     <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-       Withdraw  View
-  </a>
-
-
-  <a class="nav-link @yield('homepage_select') " href="{{url('homepage/index')}}">
-     <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-       Homepage View
-  </a>
-
-	
-
-<a class="nav-link @yield('export_select') " href="{{url('maintain/adminexport')}}">
-  <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-  Admin Export
-</a>
-				
-<a class="nav-link @yield('import_select') " href="{{url('maintain/adminimport')}}">
-  <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-  Admin Import
-</a>
 
 
   </div>

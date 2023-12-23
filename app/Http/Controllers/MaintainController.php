@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\validator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class MaintainController extends Controller
 {
@@ -29,15 +30,15 @@ class MaintainController extends Controller
 
     public function login(Request $request){
         $request->validate([
-            'maintain_name'=>'required',
+            'maintain_phone'=>'required',
             'maintain_password'=>'required',
-       ]);
+         ]);
 
-       $maintain=DB::table('maintains')->where('maintain_name','=',$request->maintain_name)->first();
+       $maintain=DB::table('maintains')->where('phone','=',$request->maintain_phone)->first();
        if($maintain){
         if($request->maintain_password==$maintain->maintain_password){
-            $request->session()->put('maintain',$maintain);
-            return redirect('/maintain/dashboard'); 
+              $request->session()->put('maintain',$maintain);
+              return redirect('/maintain/dashboard'); 
         }else{
             return back()->with('fail','Incorrect Password');
         }
@@ -295,13 +296,13 @@ public function admininsert(request $request){
             $admin->header_size=$maintain->header_size;
             $admin->resheader_size=$maintain->resheader_size;
             $admin->executive_size=$maintain->executive_size;
-             $admin->senior_size=$maintain->senior_size;
+            $admin->senior_size=$maintain->senior_size;
             $admin->general_size=$maintain->general_size;
             $admin->notice_size=$maintain->notice_size;
             $admin->welcome_size=$maintain->welcome_size;
             $admin->testimonial_size=$maintain->testimonial_size;
-             $admin->slide_size=$maintain->slide_size;
-             $admin->version_type='free';
+            $admin->slide_size=$maintain->slide_size;
+            $admin->version_type='free';
             $admin->save();
 
 
@@ -694,6 +695,210 @@ public function adminstatus($type,$status,$id){
        return redirect()->back()->with('success','Data Updated Successfuly');
   }
 
+
+
+   
+  public function maintainview() {
+    return view('maintain.maintainview');
+ }
+
+
+public function store(Request $request){
+$validator=\Validator::make($request->all(),[    
+   'name'=>'required',
+   'phone'=>'required|unique:maintains,phone',
+   'email'=>'required|unique:maintains,email',
+   'password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+   'image' => 'image|mimes:jpeg,png,jpg|max:400',
+  ],
+   [
+    'password.regex'=>'password minimum six characters including one uppercase letter, 
+     one lowercase letter and one number '
+  ]);
+if($validator->fails()){
+    return response()->json([
+      'status'=>700,
+      'message'=>$validator->messages(),
+   ]);
+}else{           
+   $model= new Maintain;
+   $model->role='Maintain';
+   $model->status=1;
+   $model->maintain_password=$request->input('password');
+   $model->name=$request->input('name');
+   $model->maintain_name=Str::slug(substr($request->input('name'),0,8),'_');
+   $model->email=$request->input('email');
+   $model->phone=$request->input('phone');
+   if($request->hasfile('image')){
+      $imgfile='maintain-';
+      $size = $request->file('image')->getsize(); 
+      $file=$_FILES['image']['tmp_name'];
+      $hw=getimagesize($file);
+      $w=$hw[0];
+      $h=$hw[1];	 
+          if($w<310 && $h<310){
+           $image= $request->file('image'); 
+           $new_name = $imgfile.rand() . '.' . $image->getClientOriginalExtension();
+           $image->move(public_path('uploads'), $new_name);
+           $model->image=$new_name;
+              }else{
+                return response()->json([
+                   'status'=>300,  
+                   'message'=>'Image size must be 300*300px',
+                 ]);
+              }
+      }
+     $model->save();
+        return response()->json([
+          'status'=>200,  
+          'message'=>'Data Added Successfull',
+       ]);       
+   }
+}
+
+
+
+public function fetchAll() {
+
+$data= maintain::where('role','maintain')->get();
+
+
+$output = '';
+if ($data->count()> 0) {
+$output.=' <h5 class="text-success"> Total Row : '.$data->count().' </h5>';	
+ $output .= '<table class="table table-bordered table-sm text-start align-middle">
+ <thead>
+    <tr>
+      <th>Image </th>
+      <th>Name </th>
+      <th>Phone </th>
+      <th>Email </th>
+      <th>Passsword </th>
+      <th>Status </th>
+      <th>Action </th>
+    </tr>
+ </thead>
+ <tbody>';
+ foreach ($data as $row){
+  if(!$row->image){$image="";}else{$image='<i class="fa fa-download"></i>';}
+  if($row->status==1){
+   $status='<a href="#"class="btn btn-success btn-sm">Active</a>';
+  }else{  $status='<a href="#"class="btn btn-danger btn-sm">Inactive</a>';}
+  
+   $output .= '<tr>
+      <td> <a href=/uploads/'.$row->image.' download id="' . $row->id . '" class="text-success mx-1">'.$image.' </a></td>
+      <td>'.$row->name.'</td>
+      <td>'.$row->phone.'</td>
+      <td>'.$row->email.'</td>
+      <td>'.$row->maintain_password.'</td>
+      <td>'.$status.'</td>
+       <td>
+          <a href="#" id="' . $row->id . '"class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editEmployeeModal"><i class="bi-pencil-square h4"></i>Edit</a>
+          <a href="#" id="' .$row->id . '"class="text-danger mx-1 deleteIcon"><i class="bi-trash h4"></i>Delete</a>
+       </td>
+  </tr>';
+}
+ $output .= '</tbody></table>';
+ echo $output;
+} else {
+ echo '<h1 class="text-center text-secondary my-5">No record present in the database!</h1>';
+}
+}  
+
+
+public function edit(Request $request) {
+$id = $request->id;
+$data = Maintain::find($id);
+return response()->json([
+  'status'=>200,  
+  'data'=>$data,
+ ]);
+}
+
+
+public function update(Request $request ){
+$validator=\Validator::make($request->all(),[    
+'name'=>'required',
+'phone'=>'required|unique:maintains,phone,'.$request->input('edit_id'),
+'email'=>'required|unique:maintains,email,'.$request->input('edit_id'),
+'password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+'image' => 'image|mimes:jpeg,png,jpg|max:400',
+],
+[
+ 'password.regex'=>'password minimum six characters including one uppercase letter, 
+  one lowercase letter and one number '
+]);
+
+if($validator->fails()){
+   return response()->json([
+     'status'=>700,
+     'message'=>$validator->messages(),
+  ]);
+}else{
+$model=Maintain::find($request->input('edit_id'));
+if($model){
+$model->maintain_password=$request->input('password');
+$model->name=$request->input('name');
+$model->maintain_name=Str::slug(substr($request->input('name'),0,8),'_');
+$model->email=$request->input('email');
+$model->phone=$request->input('phone');
+$model->status=$request->input('status');
+
+$model->issue_view=$request->input('issue_view');
+$model->issue_edit=$request->input('issue_edit');
+$model->payment_view=$request->input('payment_view');
+$model->payment_edit=$request->input('payment_edit');
+$model->admin_view=$request->input('admin_view');
+$model->admin_edit=$request->input('admin_edit');
+
+  if($request->hasfile('image')){
+    $imgfile='maintain-';
+    $size = $request->file('image')->getsize(); 
+    $file=$_FILES['image']['tmp_name'];
+    $hw=getimagesize($file);
+    $w=$hw[0];
+    $h=$hw[1];	 
+         if($w<310 && $h<310){
+           $path=public_path('uploads/'.$model->image);
+            if(File::exists($path)){
+                File::delete($path);
+             }
+          $image = $request->file('image');
+          $new_name = $imgfile.rand() . '.' . $image->getClientOriginalExtension();
+          $image->move(public_path('uploads'), $new_name);
+          $model->image=$new_name;
+         }else{
+           return response()->json([
+               'status'=>300,  
+              'message'=>'Image size must be 300*300px',
+            ]);
+           }
+       }
+  
+    $model->update();   
+      return response()->json([
+         'status'=>200,
+         'message'=>'Data Updated Successfull'
+      ]);
+
+   } 
+}
+}
+
+
+public function delete(Request $request) { 
+   $model=Maintain::find($request->input('id'));
+   $path=public_path('uploads/'.$model->image);
+   if(File::exists($path)){
+         File::delete($path);
+    }
+    $model->delete();
+    return response()->json([
+       'status'=>200,  
+       'message'=>'Data Deleted Successfully',
+   ]);
+
+}  
 
 
 
