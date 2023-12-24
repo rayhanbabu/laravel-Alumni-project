@@ -127,13 +127,19 @@
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
            Payment View
          </a>
+
+         <a class="nav-link @yield('withdraw_select') " href="{{url('maintain/withdraw')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              Withdraw  View
+         </a>
+
        @else @endif
 
 
     @if(admin_access()->issue_view=='Yes' || admin_access()->role=='Admin')		
-        <a class="nav-link @yield('withdraw_select') " href="{{url('maintain/withdraw')}}">
+        <a class="nav-link @yield('issue_select') " href="{{url('maintain/issue')}}">
           <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-              Withdraw  View
+              Payment Issue
          </a>
      @else @endif    
 

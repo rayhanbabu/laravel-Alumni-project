@@ -18,6 +18,7 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\WithdrawController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\FeedbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,14 +127,16 @@ Route::middleware('MaintainIs')->group(function(){
      
     // Issue View Access
      Route::middleware('IssueViewAccess')->group(function(){
+       Route::get('/maintain/issue/',[FeedbackController::class,'issue_index']);
+       Route::get('/maintain/issue_fetch/',[FeedbackController::class,'issue_fetch']);
+       Route::get('/maintain/issue/fetch_data/',[FeedbackController::class,'issue_fetch_data']);
        
      });
-
 
       // Issue Edit Access
-     Route::middleware('IssueEditAccess')->group(function(){
-       
-     });
+    Route::middleware('IssueEditAccess')->group(function(){
+          Route::post('/maintain/issue_update',[FeedbackController::class,'issue_update']); 
+    });
 
 
       // Payment  View Access
@@ -181,6 +184,8 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('/admin/dashboard',[adminController::class,'dashboard']);
     Route::get('/admin/password',[AdminController::class,'password']);
     Route::post('admin/password',[AdminController::class,'passwordedit']);
+
+
 
   
 
@@ -277,7 +282,7 @@ Route::middleware('AdminIs')->group(function(){
             Route::post('school/smsbuy', [SmsController::class,'smsbuyinsert']); 
 
 
-      //Expreseodent
+        //Expreseodent
         Route::get('/expre/index', [ExpreController::class,'index']);
         Route::post('/expre/store', [ExpreController::class,'store']);
         Route::get('/expre/fetchall', [ExpreController::class,'fetchAll']);
@@ -295,20 +300,26 @@ Route::middleware('AdminIs')->group(function(){
         Route::post('/admin/payment_category',[AdminController::class,'payment_category']);
         
         
-         //Form Customize
+        //Form Customize
         Route::get('/form/customize', [FormController::class,'customize']);
         Route::post('/form/customize_update', [FormController::class,'customize_update']);
         Route::get('/form/data', [FormController::class,'form_data']);
-         Route::post('/form/form_update', [FormController::class,'form_update']);
+        Route::post('/form/form_update', [FormController::class,'form_update']);
         Route::get('admin/form_delete/{id}', [FormController::class,'form_delete']);
 
 
-            //Withdraw 
-    Route::get('/admin/withdraw/',[WithdrawController::class,'index']);
-    Route::post('/admin/withdraw',[WithdrawController::class,'store']);
-    Route::get('/admin/withdraw_fetch/',[WithdrawController::class,'fetch']);
-    Route::get('/admin/withdraw/fetch_data/',[WithdrawController::class,'fetch_data']);
-    Route::delete('/admin/withdraw_delete/{id}',[WithdrawController::class,'destroy']);
+         //Withdraw 
+        Route::get('/admin/withdraw/',[WithdrawController::class,'index']);
+        Route::post('/admin/withdraw',[WithdrawController::class,'store']);
+        Route::get('/admin/withdraw_fetch/',[WithdrawController::class,'fetch']);
+        Route::get('/admin/withdraw/fetch_data/',[WithdrawController::class,'fetch_data']);
+        Route::delete('/admin/withdraw_delete/{id}',[WithdrawController::class,'destroy']);
+
+
+         // Admin view 
+         Route::get('/admin/issue/',[FeedbackController::class,'issue_index_admin']);
+         Route::get('/admin/issue_fetch/',[FeedbackController::class,'issue_fetch']);
+         Route::get('/admin/issue/fetch_data/',[FeedbackController::class,'issue_fetch_data']);
 
 
    });
@@ -338,9 +349,7 @@ Route::middleware('AdminIs')->group(function(){
     Route::post('/web/insert', [MaintainController::class, 'webinsert']);
     Route::get('/email_verify/{email2}', [MaintainController::class, 'email_verify']);
    
-   
-
-
+    
       /* 
    Route::get('/testimonial', [TestimonialController::class, 'testimonial']);
    Route::get('/langhome', [TestimonialController::class, 'langhome']);

@@ -50,6 +50,8 @@ use App\Http\Controllers\InvoiceController;
             Route::get('{username}/invoice_delete/{id}', [MemberController::class, 'invoice_delete']);
             Route::get('{username}/invoice_pdf/{id}', [MemberController::class, 'invoice_pdf']); 
             Route::post('{username}/payment_create', [InvoiceController::class,'payment_create']);
+            Route::post('{username}/issue_create', [MemberController::class,'issue_create']);
+            Route::get('{username}/issue_view', [MemberController::class,'issue_view']);
            
        });
 
@@ -58,8 +60,6 @@ use App\Http\Controllers\InvoiceController;
        Route::post('payment_ipn', [InvoiceController::class,'payment_ipn']);
 
       
-        
-
          //public APi
         Route::get('/{username}', [TestimonialController::class,'apiusername']);
         Route::get('/{username}/home', [TestimonialController::class,'apihome']);
@@ -69,9 +69,7 @@ use App\Http\Controllers\InvoiceController;
           // member=Executive , Life_Member, Member
        Route::get('/{username}/member/{member}', [TestimonialController::class, 'apimember']);
        Route::get('/{username}/viewmember/{id}', [TestimonialController::class,'apiviewmember']);
-
        Route::get('/{username}/membersearch', [TestimonialController::class,'apimembersearch']);
-
        Route::get('/{username}/member_category', [TestimonialController::class,'apimembercategory']);
 
        

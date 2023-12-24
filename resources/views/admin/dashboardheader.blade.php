@@ -201,7 +201,40 @@
      </a>
 
 
-   <a class="nav-link @yield('bloodsearch_select')" href="{{url('/bloodsearch')}}">
+  
+
+     <a class="nav-link " href="{{url('admin/app/Member')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+             Member Category
+     </a>
+
+     <a class="nav-link " href="{{url('admin/app/Event')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+             Event Create
+     </a>
+
+     <a class="nav-link @yield('paymentview_select')" href="{{url('admin/paymentview')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+             Payment View
+     </a>
+
+     <a class="nav-link @yield('dataview_select')" href="{{url('admin/dataview')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+             Token  Setup
+     </a>
+
+     <a class="nav-link @yield('withdraw_select')" href="{{url('admin/withdraw')}}">
+        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+          Withdraw Application
+     </a>
+
+     <a class="nav-link @yield('issue_select') " href="{{url('admin/issue')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              Payment Issue
+         </a>
+
+
+     <a class="nav-link @yield('bloodsearch_select')" href="{{url('/bloodsearch')}}">
        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
            Blood Search
    </a>
@@ -238,31 +271,6 @@
          Ex president / Secretary 
    </a>
 
-
-     <a class="nav-link " href="{{url('admin/app/Member')}}">
-         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             Member Category
-     </a>
-
-     <a class="nav-link " href="{{url('admin/app/Event')}}">
-         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             Event Create
-     </a>
-
-     <a class="nav-link @yield('paymentview_select')" href="{{url('admin/paymentview')}}">
-         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             Payment View
-     </a>
-
-     <a class="nav-link @yield('dataview_select')" href="{{url('admin/dataview')}}">
-         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             Token  Setup
-     </a>
-
-     <a class="nav-link @yield('withdraw_select')" href="{{url('admin/withdraw')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-          Withdraw Application
-     </a>
 
   </div>
  </div>

@@ -19,6 +19,7 @@ use App\Helpers\MaintainJWTToken;
 use App\Helpers\ForgetJWTToken;
 use Illuminate\Support\Facades\Hash;
 use App\Models\App;
+use App\Models\Feedback;
 use App\Models\Invoice;
 use Exception;
 
@@ -676,12 +677,51 @@ class MemberController extends Controller
          ]);
       }
 
-
-
-       
       }
-  
+
+
+
+      public function issue_create(request $request,$username){
+         $member_id=$request->header('member_id');
+         $validator=\Validator::make($request->all(),[    
+              'tran_id'  => 'required',
+              'subject'  => 'required',
+              'text'  => 'required',
+            ]
+       );
     
+     if($validator->fails()){
+          return response()->json([
+             'status'=>700,
+             'message'=>$validator->messages(),
+         ]);
+    }else{
+
+          $model= new Feedback;
+          $model->admin_name=$username;
+          $model->member_id=$member_id;
+          $model->tran_id=$request->tran_id;
+          $model->subject=$request->subject;
+          $model->text=$request->text;
+          $model->save();
+
+          return response()->json([
+             'status'=>200,
+             'message'=>"Payment Isssue Create Successfull. We will feedback  as soon as possible",
+          ]); 
+  
+       }
+     }
+
+
+     public function issue_view(request $request,$username){
+          $member_id=$request->header('member_id');
+          $data=Feedback::where('member_id',$member_id)->where('admin_name',$username)->get();
+          return response()->json([
+            'status'=>200,
+             'data'=>$data,
+           ]); 
+      }
 
 
 }
