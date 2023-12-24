@@ -141,14 +141,14 @@ class OnlinepaymentController extends Controller
        $amount2=  $request->input('amount2');
 
        $invoice = Onlinepayment::find($id);
-         $amount1=$invoice->amount1;
+       $amount1=$invoice->amount1;
 
      
-       $model = Onlinepayment::find($id);
-       $model->des2=$des2;
-       $model->amount2=$amount2;
-       $model->payment=$amount1+$amount2;
-       $model->update();   
+        $model = Onlinepayment::find($id);
+        $model->des2=$des2;
+        $model->amount2=$amount2;
+        $model->payment=$amount1+$amount2;
+        $model->update();   
 
        return back()->with('success','Description  Update Successfully');
 

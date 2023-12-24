@@ -3,10 +3,26 @@
 @section('dashboard_select','active')
 @section('content')
 
-                        <h4 class="mt-4">Dashboard</h4>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Dashboard</li>
-                        </ol>
+<div class="row mt-4 mb-3">
+               <div class="col-sm-3"> <h5 class="mt-0">Dashboard </h5></div>
+                        <div class="col-sm-2 p-2">
+                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                         <form action="{{url('admin/amarpay_search')}}" method="POST" enctype="multipart/form-data">
+                            {!! csrf_field() !!}  
+                        <input type="hidden" name="panel" class="form-control" value="maintain" />         
+                         <input type="text" name="tran_id" id="tran_id" class="form-control" placeholder="Search Invoice Id" >          
+                         </div>
+                     </div>
+
+                     <div class="col-sm-2 p-2">
+                         <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                           <button type="submit" name="search" class="btn btn-primary"> Submit </button> 
+					          </form>   
+                         </div>
+                     </div>
+
+            </div>
+
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">

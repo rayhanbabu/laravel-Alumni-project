@@ -215,10 +215,15 @@ class InvoiceController extends Controller
   {
     try {
       $tran_id = $request->tran_id;
+      $panel = $request->panel;
     
-      $success_url =env('SUCCESS_URL');
-      $store_id =env('STORE_ID');
-      $signature_key =env('SIG_KEY');
+      // $success_url =env('SUCCESS_URL');
+      // $store_id =env('STORE_ID');
+      // $signature_key =env('SIG_KEY');
+
+      $success_url ='https://secure.aamarpay.com/api/v1/trxcheck/request.php';
+      $store_id ='amaderthikana';
+      $signature_key ='e270a2a831529d4e89721ee48d3d8499';
 
       $url = $success_url."?request_id=$tran_id&store_id=$store_id&signature_key=$signature_key&type=json";
  
@@ -245,7 +250,12 @@ class InvoiceController extends Controller
     if ($data === null) {
         echo "JSON decoding failed.";
     } else {
-      return view('admin.invoice_search', ["data" =>$data]);
+      if($panel=='admin'){
+         return view('admin.invoice_search', ["data" =>$data]);
+      }else{
+        return view('maintain.invoice_search', ["data" =>$data]);
+      }
+      
      }
      
     } catch (Exception $e) {

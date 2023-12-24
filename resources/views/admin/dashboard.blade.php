@@ -10,7 +10,8 @@
                  <div class="col-sm-2 p-2">
                      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                          <form action="{{url('admin/amarpay_search')}}" method="POST" enctype="multipart/form-data">
-                            {!! csrf_field() !!}            
+                            {!! csrf_field() !!}  
+                        <input type="hidden" name="panel" class="form-control" value="admin"/>               
                          <input type="text" name="tran_id" id="tran_id" class="form-control" placeholder="Search Invoice Id" >          
                          </div>
                      </div>

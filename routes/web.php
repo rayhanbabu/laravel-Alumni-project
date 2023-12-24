@@ -182,7 +182,7 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('/admin/password',[AdminController::class,'password']);
     Route::post('admin/password',[AdminController::class,'passwordedit']);
 
-    Route::post('admin/amarpay_search',[InvoiceController::class,'amarpay_search']);
+  
 
     //Application 
     Route::get('/admin/app/{admin_category}',[AppController::class,'index']);
@@ -323,6 +323,8 @@ Route::middleware('AdminIs')->group(function(){
     Route::post('amarpay_fail',[InvoiceController::class,'amarpay_fail'])->name('amarpay_fail');
     Route::get('amarpay_cancel',[InvoiceController::class,'amarpay_cancel'])->name('amarpay_cancel');
     Route::get('payment',[InvoiceController::class,'payment'])->name('payment');
+
+    Route::post('admin/amarpay_search',[InvoiceController::class,'amarpay_search']);
 
 
 
