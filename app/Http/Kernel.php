@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $middlewareAliases = [
+        'DuClubToken' => \App\Http\Middleware\DuClubToken::class,
         'AdminAccess' => \App\Http\Middleware\AdminAccess::class,
         'AdminViewAccess' => \App\Http\Middleware\AdminViewAccess::class,
         'AdminEditAccess' => \App\Http\Middleware\AdminEditAccess::class,

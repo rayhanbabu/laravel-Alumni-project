@@ -7,6 +7,7 @@ use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\DuclubController;
 
 
 /*
@@ -78,6 +79,20 @@ use App\Http\Controllers\InvoiceController;
        Route::get('/{username}/expre', [TestimonialController::class, 'apiexpre']);
 
        //Payment Getway
+
+
+
+       //Du Club routes
+       Route::get('/duclub/api/product_view', [DuclubController::class,'product_view']);
+       Route::get('/duclub/api/login/{phone}', [DuclubController::class,'duclub_login']);
+       Route::get('/duclub/api/VerifyLogin/{phone}/{otp}',[DuclubController::class, 'duclub_VerifyLogin']);
+
+  Route::middleware('DuClubToken')->group(function(){ 
+       Route::get('/duclub/api/member_ledger', [DuclubController::class,'member_ledger']);
+       Route::get('/duclub/api/product_add', [DuclubController::class,'product_add']);
+       Route::get('/duclub/api/pending_product_view', [DuclubController::class,'pending_product_view']);
+       Route::get('/duclub/api/product_delete/{saleID}', [DuclubController::class,'product_delete']);
+  }); 
         
       
        
