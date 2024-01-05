@@ -14,7 +14,7 @@ class DuClubJWTToken
         $payload=[
             'iss'=>'rayhan-token',
             'iat'=>time(),
-            'exp'=>time()+60*60*48,
+            'exp'=>time()+60*60*24*365,
             'email'=>$email,
             'phone'=>$phone,
             'member_id'=>$member_id,

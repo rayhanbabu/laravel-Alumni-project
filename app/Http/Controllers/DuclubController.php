@@ -42,30 +42,54 @@ class DuclubController extends Controller
         if ($response->successful()) {
         $data = $response->json();
         if($data['status']=='success'){
-              $member= Duclub::updateOrCreate(['phone' => $phone], ['phone'=>$phone ,'otp'=>$otp
+              $member= Duclub::updateOrCreate(['phone' => $phone],['phone'=>$phone ,'otp'=>$otp
               ,'member_id'=>$data['data']['id'] ,'member_card'=>$data['data']['member_code']
               ,'name'=>$data['data']['name'] ,'designation'=>$data['data']['designation']
               ,'dept'=>$data['data']['dept'] ,'email'=>$data['data']['email']
             ]); 
              
-                    $subject='DU Club OTP';  
-                    $title='Dear ';
-                    $body='Your OTP is';
-                    $link='';
-                    $name='ANCOVA';  
-                    $details = [
-                     'subject' => $subject,
-                     'title' => $title,
-                     'otp_code' => $otp,
-                     'link' => $link,
-                     'body' => $body,
-                     'name' => $name,
-                    ];
-                 Mail::to($data['data']['email'])->send(new \App\Mail\ForgetMail($details));
+                //     $subject='DU Club OTP';  
+                //     $title='Dear ';
+                //     $body='Your OTP is';
+                //     $link='';
+                //     $name='ANCOVA';  
+                //     $details = [
+                //      'subject' => $subject,
+                //      'title' => $title,
+                //      'otp_code' => $otp,
+                //      'link' => $link,
+                //      'body' => $body,
+                //      'name' => $name,
+
+                //PLEASE ENTER YOUR MOBILE PHONE NUMBER
+                //We've sent a 4-digit one time PIN in your phone
+                //please enter 4 digit one time pin
+                //Your DU Club One-Time PIN is 32432
+                //     ];
+                //  Mail::to($data['data']['email'])->send(new \App\Mail\ForgetMail($details));
+
+             $url = 'https://www.24bulksmsbd.com/api/smsSendApi';
+             $msg="Your DU Club One-Time PIN is ".$otp;
+                $data = array(
+                  'customer_id' => 182,
+                  'api_key' => 1.7298318410087E+26,
+                  'message' =>$msg,	
+                  'mobile_no' => $phone
+                );
+                
+                $curl = curl_init($url);
+                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);     
+                $output = curl_exec($curl);
+                curl_close($curl);
+                $output;
 
                   return response()->json([
                         'status' => 'success',
-                        'message' => "4 digit Otp Send Your Phone Number ",
+                        'message' => "We've sent a 4-digit One-Time PIN in your phone ",
                    ],200);       
             }else{
                 return response()->json([
