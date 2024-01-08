@@ -180,6 +180,7 @@ class InvoiceController extends Controller
       $model->payment_year = $payment_year;
       $model->payment_month = $payment_month;
       $model->payment_day = $payment_day;
+      $model->bank_tran = $success['bank_trxid'];
       $model->problem_status = 'No';
       $model->update();
 

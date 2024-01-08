@@ -1,6 +1,6 @@
 @extends('maintain/dashboardheader')
 @section('page_title','Maintain Panel')
-@section('withdraw_select','active')
+@section('invoice_select','active')
 @section('content')
 
   <div class="row mt-4 mb-3">
