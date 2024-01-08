@@ -180,6 +180,7 @@ class InvoiceController extends Controller
       $model->payment_year = $payment_year;
       $model->payment_month = $payment_month;
       $model->payment_day = $payment_day;
+      $model->problem_status = 'No';
       $model->update();
 
       $admin = Admin::where('admin_name', $success['opt_c'])->first();

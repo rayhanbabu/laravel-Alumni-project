@@ -19,6 +19,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\WithdrawController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\InvoiceMaintainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,17 +126,24 @@ Route::middleware('MaintainIs')->group(function(){
     });
    
      
-    // Issue View Access
+       // Issue View Access
      Route::middleware('IssueViewAccess')->group(function(){
+         //issue View
        Route::get('/maintain/issue/',[FeedbackController::class,'issue_index']);
        Route::get('/maintain/issue_fetch/',[FeedbackController::class,'issue_fetch']);
        Route::get('/maintain/issue/fetch_data/',[FeedbackController::class,'issue_fetch_data']);
+
+        //Invoice View
+       Route::get('/maintain/invoice/',[InvoiceMaintainController::class,'invoice_index']);
+       Route::get('/maintain/invoice_fetch/',[InvoiceMaintainController::class,'maintain_invoice_fetch']);
+       Route::get('/maintain/invoice/fetch_data',[InvoiceMaintainController::class,'maintain_invoice_fetch_data']);
        
      });
 
       // Issue Edit Access
     Route::middleware('IssueEditAccess')->group(function(){
           Route::post('/maintain/issue_update',[FeedbackController::class,'issue_update']); 
+          Route::post('/maintain/invoice_update',[InvoiceMaintainController::class,'invoice_update']); 
     });
 
 
@@ -298,8 +306,7 @@ Route::middleware('AdminIs')->group(function(){
         Route::post('/admin/payment_status',[AdminController::class,'payment_status']);
         Route::post('/admin/payment_delete',[AdminController::class,'payment_delete']);
         Route::post('/admin/payment_category',[AdminController::class,'payment_category']);
-        
-        
+         
         //Form Customize
         Route::get('/form/customize', [FormController::class,'customize']);
         Route::post('/form/customize_update', [FormController::class,'customize_update']);

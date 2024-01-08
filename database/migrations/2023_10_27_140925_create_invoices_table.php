@@ -35,6 +35,11 @@ return new class extends Migration
             $table->integer('payment_year')->nullable();
             $table->integer('payment_month')->nullable();
             $table->integer('payment_day')->nullable();
+            $table->string('weblink')->nullable();
+            $table->string('bank_tran')->nullable();
+            $table->string('problem_status')->nullable();
+            $table->string('problem_update_time')->nullable();
+            $table->string('problem_update_by')->nullable();
             $table->timestamps();
         });
     }
