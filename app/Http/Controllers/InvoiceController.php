@@ -156,7 +156,6 @@ class InvoiceController extends Controller
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'GET',
       ));
-
       $response = curl_exec($curl);
 
       curl_close($curl);

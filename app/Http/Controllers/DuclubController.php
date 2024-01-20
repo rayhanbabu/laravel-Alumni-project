@@ -125,6 +125,8 @@ class DuclubController extends Controller
                  ,$duclub->name,$duclub->phone,$duclub->email);
                  return response()->json([
                        'status' => "success",
+                       'name' => $duclub->name,
+                       'card' => $duclub->member_card,
                        'duclub_token' => $duclub_token,
                   ],200);
              }else{
