@@ -8,7 +8,7 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\DuclubController;
-
+use App\Models\Testimonial;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +83,7 @@ use App\Http\Controllers\DuclubController;
 
 
        //Du Club routes
+       Route::get('/duclub/api/homepage', [TestimonialController::class,'apidu_homepage']);
        Route::get('/duclub/api/product_view', [DuclubController::class,'product_view']);
        Route::get('/duclub/api/login/{phone}', [DuclubController::class,'duclub_login']);
        Route::get('/duclub/api/VerifyLogin/{phone}/{otp}',[DuclubController::class, 'duclub_VerifyLogin']);

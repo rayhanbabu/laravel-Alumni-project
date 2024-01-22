@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Testimonial;
-use App\Models\Text;
+use App\Models\Homepage;
 use App\Models\App;
 use App\Models\Admin;
 use App\Models\Maintain;
@@ -569,6 +569,13 @@ public function delete(Request $request) {
                   
            ]);
     }
+
+     public function apidu_homepage() {
+        $data = Homepage::where('babu','DUCLUB')->first();
+        return response()->json([
+          'data'=>$data  
+          ]);
+     }
 
 
  
