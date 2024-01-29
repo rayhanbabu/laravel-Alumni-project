@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\URL;
   @if(!empty($row->certificate_image))
   <td><a href="<?php echo URL::to('uploads/admin/'.$row->certificate_image) ?>">Certificate</a></td>
   @else <td><a href="">{{$row->certificate_image}}</a></td> @endif
+  <td>{{ $row->id}}</td>
   <td>{{ $row->member_card}}</td>
   <td>{{ $row->serial}}</td>
   <td>{{ $row->name}}</td>
