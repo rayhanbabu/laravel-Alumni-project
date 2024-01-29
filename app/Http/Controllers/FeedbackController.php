@@ -22,29 +22,28 @@ class FeedbackController extends Controller
         return view('admin.issue');
     }
 
-  public function issue_fetch(){
+  public function issue_fetch_admin(){
 
     if(Session::has('admin')){
         $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
     }
      $data=Feedback::leftjoin('members','members.id','=','feedback.member_id')
-       ->where('feedback.admin_name',$admin->admin_name)
+     ->where('feedback.admin_name',$admin->admin_name)
      ->select('members.member_card','members.name','members.phone','members.email','feedback.*')
      ->orderBy('id', 'desc')->paginate(15);
-       return view('maintain.issue_data',compact('data'));
+     return view('admin.issue_data',compact('data'));
    
    }
 
 
 
-function issue_fetch_data(Request $request)
+function issue_fetch_data_admin(Request $request)
  {
   if($request->ajax())
   {
-
-    if(Session::has('admin')){
-        $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-    }
+      if(Session::has('admin')){
+           $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+       }
     
    $sort_by = $request->get('sortby');
    $sort_type = $request->get('sorttype'); 
@@ -56,6 +55,40 @@ function issue_fetch_data(Request $request)
      $query->orwhere('tran_id', 'like', '%'.$search.'%');
      $query->orWhere('name', 'like', '%'.$search.'%');
      $query->orWhere('email', 'like', '%'.$search.'%');
+     $query->orWhere('feedback.admin_name', 'like', '%'.$search.'%');
+     $query->orWhere('feedback_status', 'like', '%'.$search.'%');
+     $query->orWhere('phone', 'like', '%'.$search.'%');
+    })
+    ->select('members.member_card','members.name','members.phone','members.email','feedback.*')
+    ->orderBy($sort_by, $sort_type)->paginate(15);
+     return view('maintain.issue_data', compact('data'))->render();          
+   }
+}
+
+
+  public function issue_fetch(){
+       $data=Feedback::leftjoin('members','members.id','=','feedback.member_id')
+       ->select('members.member_card','members.name','members.phone','members.email','feedback.*')
+       ->orderBy('id','desc')->paginate(15);
+       return view('maintain.issue_data',compact('data'));
+   }
+
+
+   function issue_fetch_data(Request $request)
+ {
+  if($request->ajax())
+  {
+    
+   $sort_by = $request->get('sortby');
+   $sort_type = $request->get('sorttype'); 
+       $search = $request->get('search');
+       $search = str_replace(" ", "%", $search);
+   $data =Feedback::leftjoin('members','members.id','=','feedback.member_id')
+    ->where(function($query) use ($search) {
+     $query->orwhere('tran_id', 'like', '%'.$search.'%');
+     $query->orWhere('name', 'like', '%'.$search.'%');
+     $query->orWhere('email', 'like', '%'.$search.'%');
+     $query->orWhere('feedback.admin_name', 'like', '%'.$search.'%');
      $query->orWhere('feedback_status', 'like', '%'.$search.'%');
      $query->orWhere('phone', 'like', '%'.$search.'%');
     })
@@ -65,6 +98,7 @@ function issue_fetch_data(Request $request)
       return view('maintain.issue_data', compact('data'))->render();          
    }
 }
+
 
 
 

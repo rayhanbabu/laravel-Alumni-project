@@ -1,6 +1,7 @@
 @foreach($data as $row)
            <tr>
                   <td>{{ $row->tran_id}}</td>
+                  <td>{{ $row->admin_name}}</td>
                   <td>{{ $row->name}}</td>
                   <td>{{ $row->phone}}</td>
                   <td>{{ $row->email}}</td>

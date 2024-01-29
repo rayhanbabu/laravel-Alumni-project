@@ -325,8 +325,8 @@ Route::middleware('AdminIs')->group(function(){
 
          // Admin view 
          Route::get('/admin/issue/',[FeedbackController::class,'issue_index_admin']);
-         Route::get('/admin/issue_fetch/',[FeedbackController::class,'issue_fetch']);
-         Route::get('/admin/issue/fetch_data/',[FeedbackController::class,'issue_fetch_data']);
+         Route::get('/admin/issue_fetch_admin/',[FeedbackController::class,'issue_fetch_admin']);
+         Route::get('/admin/issue/fetch_data_admin/',[FeedbackController::class,'fetch_data_admin']);
 
 
    });

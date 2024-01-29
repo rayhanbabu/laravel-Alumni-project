@@ -102,7 +102,8 @@
        <tr>
           <th width="10%" class="sorting" data-sorting_type="asc" data-column_name="tran_id" style="cursor: pointer">Invoice ID 
              <span id="tran_id_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
-          <th  width="10%">Member Name</th>
+          <th  width="10%">Admin Username</th>
+           <th  width="10%">Member Name</th>
           <th  width="10%">Phone </th>
           <th  width="10%">E-mail </th>
           <th  width="15%">Subject</th>

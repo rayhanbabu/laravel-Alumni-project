@@ -125,11 +125,6 @@
 
 <script>  
 $(document).ready(function(){ 
-
-   
-   
-    
-
   $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')} });
 
      $('#add').click(function(){  
@@ -142,7 +137,7 @@ $(document).ready(function(){
          function fetch(){
             $.ajax({
              type:'GET',
-             url:'/admin/issue_fetch',
+             url:'/admin/issue_fetch_admin',
              datType:'json',
              success:function(response){
                     $('tbody').html('');
@@ -185,7 +180,7 @@ $(document).ready(function(){
 
     function fetch_data(page, sort_type="", sort_by="", search=""){
         $.ajax({
-           url:"/admin/issue/fetch_data?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
+           url:"/admin/issue/fetch_data_admin?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
            success:function(data)
         {
            $('tbody').html('');
