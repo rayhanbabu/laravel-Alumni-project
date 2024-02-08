@@ -140,6 +140,8 @@
                   $("#edit_blood_status").val(response.value.blood_status);
                   $("#edit_phone_status").val(response.value.phone_status);
                   $("#edit_email_status").val(response.value.email_status);
+                  $("#avatar_image").html(
+                `<img src="/uploads/admin/${response.value.profile_image}" width="100" class="img-fluid img-thumbnail">`);
                 }
              }
              });
@@ -411,19 +413,22 @@
                      <option value="hidden">Web Hidden</option>
              </select>
             </div>
-         
-
          </div>
+
+           <div class="col-lg-12 my-2">
+                 <label for="roll"> Image (Max:300*300px)</label>
+                 <input type="file" name="image" id="image" class="form-control" placeholder="" >
+            </div>
 
 </div>
 
-            <div class="mt-2" id="avatar">
+            <div class="mt-2" id="avatar_image">
 
              </div>
 
          
           <div class="loader">
-            <img src="{{ asset('images/abc.gif') }}" alt="" style="width: 50px;height:50px;">
+              <img src="{{ asset('images/abc.gif') }}" alt="" style="width: 50px;height:50px;">
           </div>
 
         <div class="mt-4">

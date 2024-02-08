@@ -350,7 +350,8 @@ public function member($category_id){
                     'email'=>'required|unique:members,email,'.$request->input('edit_id'),
                     'member_card'=>'required|unique:members,member_card,'.$request->input('edit_id'),
                     'member_card' => 'required|unique:members,member_card,'.$request->input('edit_id') . 'NULL,id,admin_name,' . $admin->admin_name,
-                    'serial'=>'required'
+                    'serial'=>'required',
+                    'image'=>'image|mimes:jpeg,png,jpg|max:400',
              ],
              [
                      'phone.required'=>'Phone number is required',
@@ -377,6 +378,30 @@ public function member($category_id){
                   $model->email_status=$request->input('email_status');
                   $model->phone_status=$request->input('phone_status');
                   $model->blood_status=$request->input('blood_status');
+                  if ($request->hasfile('image')) {
+                     $imgfile = 'profile-';
+                     $size = $request->file('image')->getsize();
+                     $file = $_FILES['image']['tmp_name'];
+                     $hw = getimagesize($file);
+                     $w = $hw[0];
+                     $h = $hw[1];
+                     if ($w < 310 && $h < 310) {
+                        $path = public_path('uploads/admin') . '/' . $model->profile_image;
+                         if(File::exists($path)){
+                             File::delete($path);
+                          }
+                        $image = $request->file('image');
+                        $new_name = $imgfile . rand() . '.' . $image->getClientOriginalExtension();
+                        $image->move(public_path('uploads/admin'), $new_name);
+                        $model->profile_image = $new_name;
+                    } else {
+                       return response()->json([
+                           'status' =>300,
+                           'message' =>'Image size must be 300*300px',
+                       ]);
+                     }
+                 }
+
                   $model->update();   
                   return response()->json([
                       'status'=>200,
