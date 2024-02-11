@@ -408,7 +408,7 @@ public function adminedit(request $request){
     $admin->address=$request->input('address');
     $admin->email=$request->input('email');
     $admin->mobile=$request->input('mobile');
-    $admin->admin_name=$request->input('admin_name');
+    //$admin->admin_name=$request->input('admin_name');
     $admin->admin_password=$request->input('admin_password');
     $admin->role=$request->input('role');
     $admin->payment=$request->input('payment');

@@ -3,10 +3,9 @@
 @section('maintain_select','active')
 @section('content')
 
- <div class="row mt-3 mb-0 mx-2">
-                <div class="col-sm-3 my-2"> <h4 class="mt-0">Maintain View </h4></div>
+    <div class="row mt-3 mb-0 mx-2">
+                <div class="col-sm-3 my-2"> <h4 class="mt-0"> Maintain View  </h4></div>
                      
-
                  <div class="col-sm-3 my-2">
                  <div class="d-grid gap-2 d-flex justify-content-end"> 
                           <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">Add</button>  
@@ -18,9 +17,6 @@
                    
                  </div>
                 </div>
-
-
-
 
                @if(Session::has('success'))
                   <div  class="alert alert-success"> {{Session::get('success')}}</div>

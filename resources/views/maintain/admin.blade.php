@@ -378,7 +378,7 @@
 
           <div class="form-group  col-sm-6  my-2">
                <label class=""><b>Username</b></label>
-               <input type="text" id="edit_admin_name"  name="admin_name" class="form-control" required>
+               <input type="text" id="edit_admin_name"  name="admin_name" class="form-control" readonly>
           </div> 
 
           <div class="form-group  col-sm-6  my-2">

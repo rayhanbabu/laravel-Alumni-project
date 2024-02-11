@@ -36,13 +36,12 @@ class MemberController extends Controller
              'degree_category' =>'required',
              'blood' =>'required',
              'country' =>'required',
-             'city' => 'required',
              'occupation' => 'required',  
              'member_password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
              'phone' => 'required||min:8|unique:members,phone',
              'email' => 'required|unique:members,email',
              'profile_image' => 'required|image|mimes:jpeg,png,jpg|max:400',
-             'certificate_image' => 'required|mimes:jpeg,png,jpg,pdf|max:500',
+             'certificate_image' => 'mimes:jpeg,png,jpg,pdf|max:500',
             ],
             [
               'member_password.regex'=>'password minimum six characters including one uppercase letter, one lowercase letter and one number '
