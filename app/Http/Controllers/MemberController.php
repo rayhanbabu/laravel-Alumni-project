@@ -418,6 +418,7 @@ class MemberController extends Controller
         $model->name=$request->input('name'); 
         $model->gender=$request->input('gender');
         $model->country=$request->input('country');
+        $model->degree_category=$request->input('degree_category');
         $model->city=$request->input('city');
         $model->occupation=$request->input('occupation');
         $model->phone=$request->input('phone');
