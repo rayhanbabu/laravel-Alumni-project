@@ -68,6 +68,7 @@ class MemberController extends Controller
         $model->member_password=$request->input('member_password');
         $model->gender=$request->input('gender');
         $model->country=$request->input('country');
+        $model->degree_category=$request->input('degree_category');
         $model->city=$request->input('city');
         $model->occupation=$request->input('occupation');
         $model->organization=$request->input('organization');
@@ -424,6 +425,7 @@ class MemberController extends Controller
         $model->phone=$request->input('phone');
         $model->email=$request->input('email');
         $model->blood=$request->input('blood');
+        $model->passing_year=$request->input('passing_year');
 
         $model->organization=$request->input('organization');
         $model->designation=$request->input('designation');
