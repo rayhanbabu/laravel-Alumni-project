@@ -15,6 +15,7 @@ use PDF;
 use Exception;
 use App\Models\App;
 use App\Models\Invoice;
+use Illuminate\Support\Str;
 
 
 class AdminController extends Controller
@@ -55,8 +56,11 @@ class AdminController extends Controller
         if(Session::has('admin')){
             $admin=Session::get('admin');
             $data= Admin::find($admin->id);
+
+            $event_category=App::where('admin_name',$admin->admin_name)->where('admin_category','Event')->where('status',1)->get();
         }
-        return view('admin.dashboard',['admin'=>$data]); 
+
+         return view('admin.dashboard',['admin'=>$data,'event_category'=>$event_category]); 
     }
 
 
@@ -418,10 +422,11 @@ public function member($category_id){
 
 
 
-          public function paymentview(){
-            $data=APP::where('admin_name',Session::get('admin')->admin_name)->where('status',1)->orderBy('id', 'desc')->get();
-             return view('admin.paymentview',['category'=>$data]);
-          }
+      public function paymentview(){
+           $data=APP::where('admin_name',Session::get('admin')->admin_name)->where('status',1)->orderBy('id','desc')->get();
+           $member= Member::where('admin_name',Session::get('admin')->admin_name)->where('member_verify',1)->get();
+           return view('admin.paymentview',['category'=>$data,'member'=>$member]);
+        }
 
           public function fetch(){
             if(Session::has('admin')){
@@ -429,7 +434,7 @@ public function member($category_id){
               $data=Invoice::leftjoin('members','members.id','=','invoices.member_id')
                ->leftjoin('apps','apps.id','=','invoices.category_id')
                ->where('invoices.admin_name',$admin->admin_name)
-               ->select('members.member_card','members.name'
+               ->select('members.member_card','members.name','members.phone','members.id as uid'
                ,'apps.category','invoices.*')->orderBy('invoices.id', 'desc')->paginate(10);
                return view('admin.paymentview_data',compact('data'));
             }
@@ -452,9 +457,11 @@ public function member($category_id){
                              $query->orwhere('invoices.id', 'like', '%' . $search . '%');
                              $query->orwhere('members.member_card', 'like', '%' . $search . '%');
                              $query->orwhere('members.name', 'like', '%' . $search . '%');
+                             $query->orwhere('members.phone', 'like', '%' . $search . '%');
+                             $query->orwhere('members.id', 'like', '%' . $search . '%');
                              $query->orwhere('apps.category', 'like', '%' . $search . '%');
                             })
-                     ->select('members.member_card','members.name','apps.category','invoices.*')
+                     ->select('members.member_card','members.name','members.phone','members.id as uid','apps.category','invoices.*')
                             ->orderBy($sort_by, $sort_type)->paginate(10);
                  return view('admin.paymentview_data', compact('data'))->render();
                }
@@ -616,6 +623,74 @@ public function member($category_id){
 
 
 
+
+
+
+  public function admin_invoice_create(request $request){
+    $member_id=$request->input('member_id');
+    $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+    $username=$admin->admin_name;
+    $validator=\Validator::make($request->all(),[    
+      'category_id'  => 'required',
+      ]
+);
+
+if($validator->fails()){
+     return response()->json([
+        'status'=>700,
+        'message'=>$validator->messages(),
+    ]);
+}else{
+ $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
+'mobile','admin_name','header_size','resheader_size','getway_fee','other_link')->first();
+  $category=App::where('admin_name',$username)->where('admin_category','Event')->where('status',1)->where('id',$request->category_id)->first();
+  if($category){
+    $verify= Member::where('member_verify',1)->where('id',$member_id)->count('id');
+
+    $exist_category= Invoice::where('member_id',$member_id)->where('category_id',$request->category_id)->count('id');
+      if($exist_category>=1){
+          return response()->json([
+             'status'=>400,
+             'message'=>"Booking category Already Added",
+         ]);     
+    }else{
+    $total_amount=$category->amount+($category->amount*$admin->getway_fee)/100;
+    if($verify>=1){
+     $model= new Invoice;
+     $model->admin_name=$username;
+     $model->tran_id=Str::random(8);
+     $model->member_id=$member_id;
+     $model->category_id=$request->category_id;
+     $model->amount=$category->amount;
+     $model->payment_status=0;
+     $model->getway_fee=$admin->getway_fee;
+     $model->total_amount=$total_amount;
+     $model->web_link=$admin->other_link;
+     $model->save();
+
+    return response()->json([
+       'status'=>200,
+       'message'=>"Invoice Create Successfull",
+   ]); 
+
+  }else{
+    return response()->json([
+      'status'=>400,
+      'message'=>"Memebr Verify Pending . Please Contact Authority",
+  ]); 
+  }
+}
+
+  }else{
+    return response()->json([
+      'status'=>400,
+      'message'=>"Payment category Invalid",
+  ]); 
+  }
+
+}
+
+}
 
 
 

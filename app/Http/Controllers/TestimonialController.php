@@ -444,7 +444,7 @@ public function delete(Request $request) {
              public function apinotice($username,$category) {
               $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
                    'mobile','admin_name','header_size','resheader_size')->first();
-              $data = Notice::where('admin_name',$admin->admin_name)->where('category',$category)->get();
+              $data = Notice::where('admin_name',$admin->admin_name)->where('category',$category)->orderBy("id",'desc')->get();
               $logu = Magazine::where('category','Slide')->where('text4','HeaderLogu')->where('admin_name',$admin->admin_name)->first();
                 
                  return response()->json([

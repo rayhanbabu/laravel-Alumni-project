@@ -35,13 +35,11 @@ class MemberController extends Controller
              'category_id' =>'required',
              'degree_category' =>'required',
              'blood' =>'required',
-             'country' =>'required',
-             'occupation' => 'required',  
              'member_password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
-             'phone' => 'required||min:8|unique:members,phone',
+             'phone' => 'required|max:15|unique:members,phone',
              'email' => 'required|unique:members,email',
              'profile_image' => 'required|image|mimes:jpeg,png,jpg|max:400',
-             'certificate_image' => 'mimes:jpeg,png,jpg,pdf|max:500',
+             'certificate_image' =>'mimes:jpeg,png,jpg,pdf|max:400',
             ],
             [
               'member_password.regex'=>'password minimum six characters including one uppercase letter, one lowercase letter and one number '
@@ -92,17 +90,17 @@ class MemberController extends Controller
            $hw=getimagesize($file);
            $w=$hw[0];
            $h=$hw[1];	 
-              if($w<310 && $h<310){
+             // if($w<310 && $h<310){
                $image= $request->file('profile_image'); 
                $file_name = 'profile'.rand() . '.' . $image->getClientOriginalExtension();
                $image->move(public_path('uploads/admin'), $file_name);
                $model->profile_image=$file_name;
-            }else{
-              return response()->json([
-                  'status'=>600,  
-                  'message'=>'Profile Image size must be 300*300px ',
-               ]);
-              }
+            // }else{
+            //   return response()->json([
+            //       'status'=>600,  
+            //       'message'=>'Profile Image size must be 300*300px ',
+            //    ]);
+            //   }
            }
 
             if($request->hasfile('certificate_image')){
@@ -402,12 +400,9 @@ class MemberController extends Controller
         'name' => 'required',
         'degree_category' =>'required',
         'blood' =>'required',
-        'country' =>'required',
-        'city' => 'required',
-        'occupation' => 'required',
-        'phone' => 'required|min:11|unique:members,phone,'.$member_id,
+        'phone' => 'required|max:15|unique:members,phone,'.$member_id,
         'email' => 'required|unique:members,email,'.$member_id,
-        'profile_image' => 'image|mimes:jpeg,png,jpg|max:412000',
+        'profile_image' => 'image|mimes:jpeg,png,jpg|max:400',
        ],
    );
 
@@ -443,7 +438,7 @@ class MemberController extends Controller
          $hw=getimagesize($file);
          $w=$hw[0];
          $h=$hw[1];	 
-            if($w<310 && $h<310){
+           // if($w<310 && $h<310){
               $filePath = public_path('uploads/admin') . '/' . $model->profile_image;
               if (file_exists($filePath)) {
                    unlink($filePath);
@@ -452,12 +447,12 @@ class MemberController extends Controller
              $file_name = 'profile'.rand() . '.' . $image->getClientOriginalExtension();
              $image->move(public_path('uploads/admin'), $file_name);
              $model->profile_image=$file_name;
-          }else{
-            return response()->json([
-                 'status'=>600,  
-                 'message'=>'Profile Image size must be 300*300px ',
-             ]);
-            }
+         //  }else{
+         //    return response()->json([
+         //         'status'=>600,  
+         //         'message'=>'Profile Image size must be 300*300px ',
+         //     ]);
+         //    }
          }
 
        $model->save();
@@ -549,7 +544,7 @@ class MemberController extends Controller
               ]
        );
        
-        if($validator->fails()){
+      if($validator->fails()){
              return response()->json([
                 'status'=>700,
                 'message'=>$validator->messages(),

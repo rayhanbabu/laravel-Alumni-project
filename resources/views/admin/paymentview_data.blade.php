@@ -11,10 +11,10 @@
                       <?php echo URL::to('epay/'.$row->admin_name.'/'.$row->tran_id) ?></a> 
                     
                   </td>
-                  <td>{{ $row->member_card}}</td>
-                  <td>{{ $row->name}}</td>
+                  <td>{{ $row->member_card}} <br> {{ $row->uid}}</td>
+                  <td>{{ $row->name}} <br> {{ $row->phone}}</td>
                   <td>{{ $row->category}}</td>
-                  <td>{{ $row->total_amount}}</td>
+                  <td>{{ $row->amount}}</td>
             @if($row->payment_status == 1)
               <td> <button type="button" id="{{ $row->id}}" class="status_id btn btn-success btn-sm">Paid</button> </td>
             @else

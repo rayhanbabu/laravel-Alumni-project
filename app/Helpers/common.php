@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Magazine;
+use App\Models\Invoice;
 function prx($arr){
    echo "<pre>";
    print_r($arr);
@@ -103,6 +104,12 @@ function get_balance() {
           return $maintain;
        }
    }
+
+
+      function event_atten_number($admin_name,$category_id){
+          $data=Invoice::where('admin_name',$admin_name)->where('category_id',$category_id)->where('payment_status',1)->get();
+          return $data;
+       }
       
 
 

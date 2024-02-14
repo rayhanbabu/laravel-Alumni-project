@@ -306,6 +306,7 @@ Route::middleware('AdminIs')->group(function(){
         Route::post('/admin/payment_status',[AdminController::class,'payment_status']);
         Route::post('/admin/payment_delete',[AdminController::class,'payment_delete']);
         Route::post('/admin/payment_category',[AdminController::class,'payment_category']);
+        Route::post('/admin/admin_invoice_create',[AdminController::class,'admin_invoice_create']);
          
         //Form Customize
         Route::get('/form/customize', [FormController::class,'customize']);

@@ -11723,3 +11723,11 @@ body {
 		   .rounded-circle{
 		      margin:5px;  
 		   }
+
+       .loader_page{
+        display:none;
+      }
+      
+      .bazar-entry-show{
+        display:none;
+      }

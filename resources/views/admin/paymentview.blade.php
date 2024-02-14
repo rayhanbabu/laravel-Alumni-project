@@ -4,7 +4,7 @@
 @section('content')
  
 <div class="row mt-4 mb-3">
-               <div class="col-3"> <h5 class="mt-0">Payment View</h5></div>
+               <div class="col-2"> <h5 class="mt-0">Payment View</h5></div>
                      <div class="col-4">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                              <form action="{{url('admin/payment_category')}}" method="POST" enctype="multipart/form-data">
@@ -34,13 +34,64 @@
                          </div>
                      </div>
 
-                     <div class="col-1">
+                     <div class="col-2">
                          <div class="d-grid gap-2 d-md-flex ">
                        						 
-                             
+                         <button type="button" class="bazar_entry btn btn-success btn-sm"> Add Payment</button>
                          </div>
                      </div> 
              </div>
+
+
+
+  <div class="bazar-entry-show" style="background-color:aliceblue; padding:10px;">
+
+   <h4> Event Enrollment </h4>
+   <form method="post" id="add_form" enctype="multipart/form-data">
+    <div class="row">
+      <div class="col-sm-4">
+        <label>Member Card </label><br>
+        <select name="member_id" id="member_id" class="js-example-disabled-results" style="width:350px;" required>
+          <option value="">Select Member Card Or Name Or Phone Or Id</option>
+              @foreach($member as $row)
+                  <option value="{{ $row->id}}">{{ $row->member_card}}-{{ $row->name}}-{{ $row->phone}}-{{ $row->id}}</option>
+              @endforeach
+        </select>
+      </div>
+
+
+      <div class="col-sm-4">
+        <label>Event Category</label><br>
+        <select name="category_id" id="category_id" class="js-example-disabled-results" style="width:350px;" required>
+          <option value="">Select Event Category</option>
+              @foreach($category as $row)
+                 <option value="{{ $row->id}}">{{ $row->category}}({{ $row->amount}}TK)</option>
+              @endforeach
+          
+        </select>
+      </div>
+
+      <div class="col-sm-2">
+        <br>
+        <div class="loader">
+          <img src="{{ asset('images/abc.gif') }}" alt="" style="width: 50px;height:50px;">
+        </div>
+      </div>
+
+      <div class="col-sm-2">
+        <br>
+        <input type="submit" value="Submit" id="submit" class=" btn btn-success btn-sm" />
+      </div>
+    </div>
+
+      <ul class="alert alert-warning d-none" id="add_form_errlist"></ul>
+     </form>
+      <br>
+
+   </div>
+</div>
+
+
 
   
 
@@ -68,7 +119,7 @@
                 <span id="id_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
 
        <th  width="20%"> Payment Link </th>
-       <th width="10%" class="sorting" data-sorting_type="asc" data-column_name="member_card" style="cursor: pointer">Member Card
+       <th width="10%" class="sorting" data-sorting_type="asc" data-column_name="member_card" style="cursor: pointer">Member Card & Uid
                   <span id="member_card_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
       <th  width="20%">Name</th>
       <th  width="10%">Payment Category</th>
@@ -94,9 +145,7 @@
 <script>  
 $(document).ready(function(){ 
 
-   
-   
-    
+  $(".js-example-disabled-results").select2();
 
   $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')} });
 
@@ -115,6 +164,8 @@ $(document).ready(function(){
             });
          }
     
+
+
           
                 // delete employee ajax request
         $(document).on('click', '.status_id', function(e) {
@@ -191,7 +242,51 @@ $(document).ready(function(){
       });
 
 
+        
+     
 
+      $(document).on('submit', '#add_form', function(e) {
+      e.preventDefault();
+
+      let formData = new FormData($('#add_form')[0]);
+
+      $.ajax({
+        type: 'POST',
+        url: '/admin/admin_invoice_create',
+        data: formData,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+          $('.loader').show();
+        },
+        success: function(response) {
+          //console.log(response);
+          if (response.status == 700) {
+            $('#add_form_errlist').html("");
+            $('#add_form_errlist').removeClass('d-none');
+            $.each(response.message, function(key, err_values) {
+              $('#add_form_errlist').append('<li>' + err_values + '</li>');
+            });
+
+          } else if(response.status==400){
+                  Swal.fire("",response.message, "warning");      
+          }else {
+            //console.log(response.message);
+            $('#add_form_errlist').html("");
+            $('#add_form_errlist').addClass('d-none');
+            $('#success_message').html("");
+            $('#success_message').addClass('alert alert-success alert-sm');
+            $('#success_message').text(response.message)
+            $('#add_form')[0].reset();
+            $('.bazar-entry-show').hide();
+            fetch();
+          }
+          $('.loader').hide();
+
+        }
+      });
+
+    });
 
 
 
@@ -251,7 +346,12 @@ $(document).ready(function(){
           });
 
 
-    
+          $(document).on('click', '.bazar_entry', function(e) {
+      e.preventDefault();
+            console.log('Rayhan babu');
+      $('.bazar-entry-show').show();
+
+    });
        
     
 
