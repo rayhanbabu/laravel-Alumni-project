@@ -83,17 +83,17 @@ class MagazineController extends Controller
               $hw=getimagesize($file);
               $w=$hw[0];
               $h=$hw[1];	 
-              if($w<1930 && $h<1090){
+             // if($w<1930 && $h<1090){
                  $uploadedFile = $request->file('image');
                  $fileName = time() . '.' .$uploadedFile->getClientOriginalExtension();
                  $uploadedFile->move(public_path('uploads/admin'),$fileName);
                  $model->image=$fileName;
-              }else{
-                  return response()->json([
-                    'status'=>300,  
-                    'message'=>'Image size must be 1920*1080 ',
-                   ]);
-                  }
+              // }else{
+              //     return response()->json([
+              //       'status'=>300,  
+              //       'message'=>'Image size must be 1920*1080 ',
+              //      ]);
+              //     }
 
              $model->text4=$request->input('text4');
             }else{
@@ -101,17 +101,17 @@ class MagazineController extends Controller
               $hw=getimagesize($file);
               $w=$hw[0];
               $h=$hw[1];	 
-              if($w<310 && $h<310){
+             // if($w<310 && $h<310){
                  $image= $request->file('image'); 
                  $new_name = rand() . '.' .$image->getClientOriginalExtension();
                  $image->move(public_path('uploads/admin'),$new_name);
                  $model->image=$new_name;
-              }else{
-                  return response()->json([
-                    'status'=>300,  
-                    'message'=>'Image size must be 300*300 ',
-                   ]);
-                }
+              // }else{
+              //     return response()->json([
+              //       'status'=>300,  
+              //       'message'=>'Image size must be 300*300 ',
+              //      ]);
+              //   }
 
               }   
 
@@ -290,7 +290,7 @@ class MagazineController extends Controller
             $hw=getimagesize($file);
             $w=$hw[0];
             $h=$hw[1];	 
-               if($w<1930 && $h<1090){
+               //if($w<1930 && $h<1090){
 
                 $filePath = public_path('uploads/admin') . '/' . $model->image;
                         if(File::exists($filePath)){
@@ -300,20 +300,20 @@ class MagazineController extends Controller
                    $fileName = time() . '.' .$uploadedFile->getClientOriginalExtension();
                    $uploadedFile->move(public_path('uploads/admin'),$fileName);
                    $model->image=$fileName;
-                } 
-                else{
-                return response()->json([
-                   'status'=>200,  
-                   'message'=>'Image size must be 1920*1080 ',
-                 ]);
-                } 
+                //} 
+                // else{
+                // return response()->json([
+                //    'status'=>200,  
+                //    'message'=>'Image size must be 1920*1080 ',
+                //  ]);
+                // } 
 
            }else{
              $file=$_FILES['image']['tmp_name'];
              $hw=getimagesize($file);
              $w=$hw[0];
              $h=$hw[1];	 
-                if($w<310 && $h<310){
+                //if($w<310 && $h<310){
                   $filePath = public_path('uploads/admin') . '/' . $model->image;
                    if(File::exists($filePath)){
                         File::delete($filePath);
@@ -322,13 +322,13 @@ class MagazineController extends Controller
                  $new_name = rand() . '.' . $image->getClientOriginalExtension();
                  $image->move(public_path('uploads/admin'), $new_name);
                  $model->image=$new_name;
-                 } 
-                 else{
-                 return response()->json([
-                    'status'=>200,  
-                    'message'=>'Image size must be 300*300 ',
-                  ]);
-                 } 
+                //  } 
+                //  else{
+                //  return response()->json([
+                //     'status'=>200,  
+                //     'message'=>'Image size must be 300*300 ',
+                //   ]);
+                //  } 
              }
 
                 }  

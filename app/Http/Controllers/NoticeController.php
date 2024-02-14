@@ -65,7 +65,7 @@ class NoticeController extends Controller
         $validated = $request->validate([
             'date'=>'required',
             'text'=>'required',
-            'image' =>'image|mimes:jpeg,png,jpg|max:512000',
+            'image' =>'image|mimes:jpeg,png,jpg|max:500',
             'title'=>'required',
         ]);
 
@@ -114,7 +114,7 @@ class NoticeController extends Controller
         $validated = $request->validate([
             'date'=>'required',
             'text'=>'required',
-            'image' =>'image|mimes:jpeg,png,jpg|max:512000',
+            'image' =>'image|mimes:jpeg,png,jpg|max:500',
             'title'=>'required',
         ]);
 

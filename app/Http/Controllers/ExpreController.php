@@ -55,17 +55,17 @@ class ExpreController extends Controller
               $hw=getimagesize($file);
               $w=$hw[0];
               $h=$hw[1];	 
-                  if($w<310 && $h<310){
+                 // if($w<310 && $h<310){
                    $image= $request->file('image'); 
                    $new_name = rand() . '.' . $image->getClientOriginalExtension();
                    $image->move(public_path('uploads/admin'), $new_name);
                    $text->image=$new_name;
-                }else{
-                  return response()->json([
-                      'status'=>300,  
-                     'message'=>'Image size must be 300*300 ',
-                   ]);
-                  }
+                // }else{
+                //   return response()->json([
+                //       'status'=>300,  
+                //      'message'=>'Image size must be 300*300 ',
+                //    ]);
+                //   }
               }
 
              $text->save();
@@ -167,7 +167,7 @@ public function edit(Request $request) {
           $hw=getimagesize($file);
           $w=$hw[0];
           $h=$hw[1];	 
-             if($w<310 && $h<310){
+           //  if($w<310 && $h<310){
               $filePath = public_path('uploads/admin') . '/' . $text->image;
               if (file_exists($filePath)) {
                    unlink($filePath);
@@ -176,13 +176,13 @@ public function edit(Request $request) {
               $new_name = rand() . '.' . $image->getClientOriginalExtension();
               $image->move(public_path('uploads/admin'), $new_name);
               $text->image=$new_name;
-              } 
-              else{
-              return response()->json([
-                 'status'=>200,  
-                 'message'=>'Image size must be 300*300 ',
-               ]);
-              } 
+              // } 
+              // else{
+              // return response()->json([
+              //    'status'=>200,  
+              //    'message'=>'Image size must be 300*300 ',
+              //  ]);
+              // } 
              }  
         $text->update();
          

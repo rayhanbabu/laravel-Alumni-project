@@ -354,7 +354,7 @@
               </div>
 
             <div class="col-lg-12 my-2">
-                    <label> Designation of Ducaa </label>
+                    <label> Designation  </label>
                     <input name="designation"  type="text" id="edit_designation" class="form-control" value=""  />
                     <p class="text-danger edit_err_designation"></p>
               </div>
@@ -416,7 +416,7 @@
          </div>
 
            <div class="col-lg-12 my-2">
-                 <label for="roll"> Image (Max:300*300px)</label>
+                 <label for="roll"> Image (Max:300kb)</label>
                  <input type="file" name="image" id="image" class="form-control" placeholder="" >
             </div>
 
