@@ -73,7 +73,14 @@ use App\Models\Testimonial;
        Route::get('/{username}/membersearch', [TestimonialController::class,'apimembersearch']);
        Route::get('/{username}/member_category', [TestimonialController::class,'apimembercategory']);
 
-       
+
+       //HomePage Booking 
+       Route::get('/{username}/membercard/{membercard}',[MemberController::class,'apimembercard']);
+       Route::get('/{username}/booking_category/',[MemberController::class,'apibooking_category']);
+       Route::post('/{username}/home_invoice_create/',[MemberController::class,'apihome_invoice_create']);
+       Route::get('/{username}/home_invoice_view/{member_id}',[MemberController::class,'apihome_invoice_view']);
+       Route::get('/{username}/home_invoice_delete/{id}',[MemberController::class,'apihome_invoice_delete']);
+      
        //category =Gallery
        Route::get('/{username}/magazine/{category}', [TestimonialController::class, 'apimagazine']);
        Route::get('/{username}/expre', [TestimonialController::class, 'apiexpre']);
