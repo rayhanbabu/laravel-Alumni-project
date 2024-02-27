@@ -87,6 +87,12 @@ class MemberController extends Controller
                $model->email_verify = 0;
                $model->member_verify = 0;
                $model->status = 1;
+               $model->division_id = $request->input('division_id');
+               $model->district_id = $request->input('district_id');
+               $model->upazilla_id = $request->input('upazilla_id');
+               $model->union_id = $request->input('union_id');
+               $model->word_id = $request->input('word_id');
+               $model->village = $request->input('village');
 
 
                if ($request->hasfile('profile_image')) {

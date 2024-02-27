@@ -446,11 +446,12 @@ public function delete(Request $request) {
                    'mobile','admin_name','header_size','resheader_size')->first();
               $data = Notice::where('admin_name',$admin->admin_name)->where('category',$category)->orderBy("id",'desc')->get();
               $logu = Magazine::where('category','Slide')->where('text4','HeaderLogu')->where('admin_name',$admin->admin_name)->first();
-                
+              
                  return response()->json([
                       'admin'=>$admin 
                       ,'logu'=>$logu
                       ,'data'=>$data
+                      
                       
                   ]);
             }
@@ -570,6 +571,43 @@ public function delete(Request $request) {
            ]);
     }
 
+
+    public function apidivisions($username){
+       $divisions = DB::table('divisions')->orderBy('id', 'asc')->get();
+         return response()->json([
+             'status'=>'success'
+            ,'divisions'=>$divisions  
+         ],200); 
+     }
+
+     public function apidistricts($username,$division_id){
+      $districts = DB::table('districts')->where('division_id',$division_id)->orderBy('id', 'asc')->get();
+        return response()->json([
+            'status'=>'success'
+            ,'districts'=>$districts  
+        ],200); 
+    }
+
+    
+    public function apiupazilas($username,$district_id){
+      $upazilas = DB::table('upazilas')->where('district_id',$district_id)->orderBy('id', 'asc')->get();
+        return response()->json([
+            'status'=>'success'
+            ,'upazilas'=>$upazilas  
+        ],200); 
+    }
+
+
+    public function apiunions($username,$upazilla_id){
+        $upazilas = DB::table('unions')->where('upazilla_id',$upazilla_id)->orderBy('id','asc')->get();
+         return response()->json([
+             'status'=>'success'
+             ,'upazilas'=>$upazilas  
+          ],200); 
+     }
+
+
+
      public function apidu_homepage() {
         $data = Homepage::where('babu','DUCLUB')->first();
         return response()->json([
@@ -578,6 +616,8 @@ public function delete(Request $request) {
      }
 
 
+
+    
  
 
   

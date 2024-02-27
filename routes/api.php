@@ -81,6 +81,12 @@ use App\Models\Testimonial;
        Route::get('/{username}/home_invoice_view/{member_id}',[MemberController::class,'apihome_invoice_view']);
        Route::get('/{username}/home_invoice_delete/{id}',[MemberController::class,'apihome_invoice_delete']);
       
+      // Geolocation
+      Route::get('/{username}/divisions', [TestimonialController::class, 'apidivisions']);
+      Route::get('/{username}/districts/{division_id}', [TestimonialController::class, 'apidistricts']);
+      Route::get('/{username}/upazilas/{district_id}', [TestimonialController::class, 'apiupazilas']);
+      Route::get('/{username}/unions/{upazilla_id}', [TestimonialController::class, 'apiunions']);
+       
        //category =Gallery
        Route::get('/{username}/magazine/{category}', [TestimonialController::class, 'apimagazine']);
        Route::get('/{username}/expre', [TestimonialController::class, 'apiexpre']);
