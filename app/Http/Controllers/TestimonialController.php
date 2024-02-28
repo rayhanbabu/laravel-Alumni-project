@@ -504,7 +504,7 @@ public function delete(Request $request) {
       $data = Member::leftjoin('apps','apps.id','=','members.category_id')
       ->where('members.id',$id)->where('members.admin_name',$username)
       ->where('member_verify',1)->orderBy('serial','asc')->
-       select('members.id','members.admin_name','category_id','name','email'
+       select('members.id','members.admin_name','category_id','name','email','member_card'
            ,'members.phone','degree_category','passing_year','profile_image'
            ,'gender','birth_date','blood','country','city','occupation','organization','designation'
            ,'blood_status','phone_status','email_status','fb_link','web_link','affiliation'
@@ -520,8 +520,15 @@ public function delete(Request $request) {
         $search = str_replace(" ", "%", $search);
         $data=Member::Where('admin_name',$username)->where('member_verify',1)->where(function($query) use ($search) {
           $query->where('name', 'like', '%'.$search.'%')
+            ->orWhere('email', 'like', '%'.$search.'%')
+            ->orWhere('phone', 'like', '%'.$search.'%')
+            ->orWhere('member_card', 'like', '%'.$search.'%')
             ->orWhere('email', 'like', '%'.$search.'%');
-       })->orderBy('id','asc')->paginate(30);
+       })->select('members.id','members.admin_name','category_id','name','email','member_card'
+           ,'members.phone','degree_category','passing_year','profile_image'
+           ,'gender','birth_date','blood','country','city','occupation','organization','designation'
+           ,'blood_status','phone_status','email_status','fb_link','web_link','affiliation'
+           ,'training','expertise')->orderBy('id','asc')->paginate(20);
 
        return response()->json([
         'status'=>200,  

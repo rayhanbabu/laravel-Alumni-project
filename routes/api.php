@@ -94,7 +94,6 @@ use App\Models\Testimonial;
        //Payment Getway
 
 
-
        //Du Club routes
        Route::get('/duclub/api/homepage', [TestimonialController::class,'apidu_homepage']);
        Route::get('/duclub/api/product_view', [DuclubController::class,'product_view']);
