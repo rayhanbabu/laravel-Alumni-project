@@ -765,6 +765,7 @@ class MemberController extends Controller
          'id',
          'category_id',
          'name',
+         'member_card',
          'email',
          'phone',
          'admin_name'
