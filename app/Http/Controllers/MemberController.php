@@ -94,6 +94,15 @@ class MemberController extends Controller
                $model->word_id = $request->input('word_id');
                $model->village = $request->input('village');
 
+               $model->expertise = $request->input('expertise');
+               $model->training = $request->input('training');
+               $model->affiliation = $request->input('affiliation');
+               $model->bn_name = $request->input('bn_name');
+               $model->mother_name = $request->input('mother_name');
+               $model->father_name = $request->input('father_name');
+               $model->nid = $request->input('nid');
+               $model->about_self = $request->input('about_self');
+
 
                if ($request->hasfile('profile_image')) {
                   $file = $_FILES['profile_image']['tmp_name'];
@@ -443,6 +452,20 @@ class MemberController extends Controller
          $model->affiliation = $request->input('affiliation');
          $model->training = $request->input('training');
          $model->expertise = $request->input('expertise');
+
+         $model->division_id = $request->input('division_id');
+         $model->district_id = $request->input('district_id');
+         $model->upazilla_id = $request->input('upazilla_id');
+         $model->union_id = $request->input('union_id');
+         $model->word_id = $request->input('word_id');
+         $model->village = $request->input('village');
+
+
+         $model->bn_name = $request->input('bn_name');
+         $model->mother_name = $request->input('mother_name');
+         $model->father_name = $request->input('father_name');
+         $model->nid = $request->input('nid');
+         $model->about_self = $request->input('about_self');
 
 
 
