@@ -7,7 +7,7 @@
                <div class="col-2"> <h5 class="mt-0">Payment View</h5></div>
                      <div class="col-4">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                             <form action="{{url('admin/payment_category')}}" method="POST" enctype="multipart/form-data">
+                             <form action="{{url('pdf/payment_category')}}" method="POST" enctype="multipart/form-data">
                                   {!! csrf_field() !!}
                                   <select class="form-control" name="category" required>
                                     <option value="">Select Payment Category </option>
@@ -109,17 +109,17 @@
    </div>
 
 
-   <div class="card-block table-border-style">                     
+<div class="card-block table-border-style">                     
  <div class="table-responsive">
- <div class="x_content">
- <table class="table table-bordered" id="employee_data">
- <thead>
+   <div class="x_content">
+   <table class="table table-bordered" id="employee_data">
+   <thead>
        <tr>
        <th width="10%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer" >Invoice ID
                 <span id="id_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
 
        <th  width="20%"> Payment Link </th>
-       <th width="10%" class="sorting" data-sorting_type="asc" data-column_name="member_card" style="cursor: pointer">Member Card & Uid
+       <th width="10%" class="sorting" data-sorting_type="asc" data-column_name="member_card" style="cursor: pointer">Membership & Uid
                   <span id="member_card_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
       <th  width="20%">Name</th>
       <th  width="10%">Payment Category</th>

@@ -26,10 +26,10 @@ class SmsController extends Controller
     public function smsbuy()
     {
       if(Session::has('admin')){
-       $admin=Admin::where('admin_name',Session::get('admin')->admin_name)->first();  
-       $smsbuy=DB::table('eiin_sms')->where('admin_name',$admin->admin_name)->get();
-       $activesms=DB::table('eiin_sms')->where('admin_name',$admin->admin_name)->where('verify_status',1)
-       ->where('status',1)->sum('smsno');
+          $admin=Admin::where('admin_name',Session::get('admin')->admin_name)->first();  
+          $smsbuy=DB::table('eiin_sms')->where('admin_name',$admin->admin_name)->get();
+          $activesms=DB::table('eiin_sms')->where('admin_name',$admin->admin_name)->where('verify_status',1)
+         ->where('status',1)->sum('smsno');
        return view('admin.smsbuy',['admin'=>$admin ,'smsbuy'=>$smsbuy,'activesms'=>$activesms]);
       }
     }
@@ -48,6 +48,9 @@ class SmsController extends Controller
 
   public function smsinsert(Request $request)
   {
+
+
+   
     if (Session::has('admin')) {
       $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
       $smsavailable = $admin->available_sms;
@@ -57,18 +60,21 @@ class SmsController extends Controller
           $text = $request->input('text');
           $phone = $request->input('phone');
           $phonearr = $phone;
-          $textinfo = $text;
+          $textinfo = $text.'. '.strtoupper($admin->admin_name);
+          $characterCount = strlen($textinfo);
           $smscount = 1;
           $balancedata = json_decode(get_balance());
-          $getsms = (int)($balancedata->balance / .25);
+          $getsms = (int)($balancedata->balance /.25);
           if ($getsms < $smscount) {
-            return back()->with('danger', 'SMS API Server Problem. Please Contact Service provider');
-          } else if ($smsavailable < $smscount) {
-            return back()->with('danger', '	Balance Validity Not Available');
-          } else {
+              return back()->with('danger','SMS API Server Problem. Please Contact Service provider');
+           } else if ($smsavailable < $smscount) {
+              return back()->with('danger','Balance Validity Not Available');
+           } else if ($characterCount>150) {
+              return back()->with('danger','Character must be 150');
+           } else {
             sms_send($phonearr, $textinfo);
             $current_sms = $smsavailable - $smscount;
-            DB::update("update admins set  available_sms='$current_sms'  where admin_name ='$admin->admin_name'");
+            DB::update("update admins set available_sms='$current_sms'  where admin_name ='$admin->admin_name'");
 
             $model = new Sms;
             $model->admin_name = $admin->admin_name;
@@ -82,26 +88,38 @@ class SmsController extends Controller
           $category = $request->input('category');
           $fromserial = $request->input('fromserial');
           $toserial = $request->input('toserial');
-          if ($toserial -$fromserial<0  OR  $toserial -$fromserial>80) {
+          $membership = $request->input('membership');
+          $data = Member::where('category_id', $category)
+          ->whereBetween('serial', [$fromserial, $toserial])->where('admin_name', $admin->admin_name)->where('member_verify',1)->get();
+          $smscount = $data->count();
+          if ($smscount>80) {
             return back()->with('danger', 'Invalid Range Or Range geather 80 ');
           }
-          $data = Member::where('category', $category)
-            ->whereBetween('serial', [$fromserial, $toserial])->where('admin_name', $admin->admin_name)->where('member_verify',1)->get();
-          $smscount = $data->count();
-          $textinfo = $text;
+         
+         
+          $text = $text;
+          $characterCount = strlen($text);
 
           $balancedata = json_decode(get_balance());
           $getsms = (int)($balancedata->balance / .25);
-          if ($getsms < $smscount) {
-            return back()->with('danger', 'SMS API Server Problem. Please Contact Service provider');
-          } else if ($smsavailable < $smscount OR empty($smscount) ) {
-            return back()->with('danger', '	Balance Validity Not Available OR Database  Empty ');
-          } else {
+          if($getsms < $smscount) {
+            return back()->with('danger','SMS API Server Problem. Please Contact Service provider');
+          }else if ($smsavailable < $smscount OR empty($smscount) ) {
+            return back()->with('danger','Balance Validity Not Available OR Database Empty');
+          }else if ($characterCount>100) {
+            return back()->with('danger','Character must be 100');
+          }else {
             foreach ($data as $row) {
-              $phonearr = $row->phone;
-                sms_send($phonearr, $textinfo);
-              $current_sms = $smsavailable - $smscount;
-              DB::update("update admins set available_sms='$current_sms'  where admin_name ='$admin->admin_name'");
+                $phonearr = $row->phone;
+                if(empty($membership)){
+                    $card="";
+                }else{
+                   $card= "Your Membership No : ". $row->member_card." . ";
+                }
+                $textinfo= $card.$text.". ".strtoupper($row->admin_name) ;  
+                 sms_send($phonearr, $textinfo);
+                $current_sms = $smsavailable - $smscount;
+                DB::update("update admins set available_sms='$current_sms'  where admin_name ='$admin->admin_name'");
             }
 
             $sms_others="serial(".$fromserial." to ".$toserial.")";

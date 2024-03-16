@@ -149,22 +149,21 @@ Route::middleware('MaintainIs')->group(function(){
 
       // Payment  View Access
       Route::middleware('PaymentViewAccess')->group(function(){
-
-         //Payment information
-        Route::get('maintain/payment',[OnlinepaymentController::class,'paymentview']);
-        //withdraw
-         Route::get('/maintain/withdraw/',[MaintainController::class,'withdraw_index']);
-         Route::get('/maintain/withdraw_fetch/',[MaintainController::class,'withdraw_fetch']);
-         Route::get('/maintain/withdraw/fetch_data/',[MaintainController::class,'withdraw_fetch_data']);
+          //Payment information
+          Route::get('maintain/payment',[OnlinepaymentController::class,'paymentview']);
+          //withdraw
+          Route::get('/maintain/withdraw/',[MaintainController::class,'withdraw_index']);
+          Route::get('/maintain/withdraw_fetch/',[MaintainController::class,'withdraw_fetch']);
+          Route::get('/maintain/withdraw/fetch_data/',[MaintainController::class,'withdraw_fetch_data']);
       });
  
-      // Payment  Edit Access
+          // Payment  Edit Access
       Route::middleware('PaymentEditAccess')->group(function(){
           //withdraw
            Route::get('/maintain/withdraw/{operator}/{status}/{id}', [MaintainController::class,'withdraw_status']);
            Route::post('/maintain/withdraw_update',[MaintainController::class,'withdraw_update']); 
 
-             //Payment information
+           //Payment information
            Route::post('/onlinepaymentstatus',[OnlinepaymentController::class,'onlinepaymentstatus']);
            Route::post('maintain/paymentedit',[OnlinepaymentController::class,'paymentedit']);
            Route::post('onlinepaymentpdf',[OnlinepaymentController::class,'onlinepaymentpdf']);
@@ -175,11 +174,11 @@ Route::middleware('MaintainIs')->group(function(){
 });
 
 
-Route::middleware('AdminAlready')->group(function(){
+ Route::middleware('AdminAlready')->group(function(){
 
-       Route::get('/admin/login',[AdminController::class,'loginview']);
-       Route::post('admin/login',[AdminController::class,'login']);
-});  
+        Route::get('/admin/login',[AdminController::class,'loginview']);
+        Route::post('admin/login',[AdminController::class,'login']);
+  });  
 
 Route::get('admin/forget',[AdminController::class,'forget']); 
 Route::post('admin/forget',[AdminController::class,'forgetemail']); 
@@ -192,10 +191,6 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('/admin/dashboard',[adminController::class,'dashboard']);
     Route::get('/admin/password',[AdminController::class,'password']);
     Route::post('admin/password',[AdminController::class,'passwordedit']);
-
-
-
-  
 
     //Application 
     Route::get('/admin/app/{admin_category}',[AppController::class,'index']);
@@ -250,8 +245,6 @@ Route::middleware('AdminIs')->group(function(){
         Route::post('/magazine/update', [MagazineController::class,'update']);
 
       
-
-
        //Text
       Route::get('/text/index', [TextController::class,'index']);
       Route::post('/text/store', [TextController::class,'store']);
@@ -305,7 +298,7 @@ Route::middleware('AdminIs')->group(function(){
         Route::get('/admin/payment/fetch_data',[AdminController::class,'fetch_data']);
         Route::post('/admin/payment_status',[AdminController::class,'payment_status']);
         Route::post('/admin/payment_delete',[AdminController::class,'payment_delete']);
-        Route::post('/admin/payment_category',[AdminController::class,'payment_category']);
+       
         Route::post('/admin/admin_invoice_create',[AdminController::class,'admin_invoice_create']);
          
         //Form Customize
@@ -315,7 +308,6 @@ Route::middleware('AdminIs')->group(function(){
         Route::post('/form/form_update', [FormController::class,'form_update']);
         Route::get('admin/form_delete/{id}', [FormController::class,'form_delete']);
 
-
          //Withdraw 
         Route::get('/admin/withdraw/',[WithdrawController::class,'index']);
         Route::post('/admin/withdraw',[WithdrawController::class,'store']);
@@ -323,11 +315,14 @@ Route::middleware('AdminIs')->group(function(){
         Route::get('/admin/withdraw/fetch_data/',[WithdrawController::class,'fetch_data']);
         Route::delete('/admin/withdraw_delete/{id}',[WithdrawController::class,'destroy']);
 
-
          // Admin view 
          Route::get('/admin/issue/',[FeedbackController::class,'issue_index_admin']);
          Route::get('/admin/issue_fetch_admin/',[FeedbackController::class,'issue_fetch_admin']);
          Route::get('/admin/issue/fetch_data_admin/',[FeedbackController::class,'fetch_data_admin']);
+
+         //Pdf Reports
+         Route::post('/pdf/payment_category',[AdminController::class,'payment_category']);
+         Route::post('/pdf/payment_report',[AdminController::class,'payment_report']);
 
 
    });

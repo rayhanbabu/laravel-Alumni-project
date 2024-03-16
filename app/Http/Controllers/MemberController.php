@@ -29,7 +29,6 @@ class MemberController extends Controller
 
    public function application_memebr(Request $request)
    {
-
       $admin = Admin::where('admin_name', $request->username)->first();
       $validator = \Validator::make(
          $request->all(),
@@ -184,7 +183,6 @@ class MemberController extends Controller
          ]);
       }
    }
-
 
 
    public function email_verify(Request $request, $username, $emailmd5)
@@ -433,9 +431,7 @@ class MemberController extends Controller
             'message' => $validator->messages(),
          ]);
       } else {
-
          $model = Member::find($member_id);
-
          $model->name = $request->input('name');
          $model->gender = $request->input('gender');
          $model->country = $request->input('country');
@@ -460,14 +456,11 @@ class MemberController extends Controller
          $model->word_id = $request->input('word_id');
          $model->village = $request->input('village');
 
-
          $model->bn_name = $request->input('bn_name');
          $model->mother_name = $request->input('mother_name');
          $model->father_name = $request->input('father_name');
          $model->nid = $request->input('nid');
          $model->about_self = $request->input('about_self');
-
-
 
          if ($request->hasfile('profile_image')) {
             $file = $_FILES['profile_image']['tmp_name'];
@@ -486,7 +479,7 @@ class MemberController extends Controller
             //  }else{
             //    return response()->json([
             //         'status'=>600,  
-            //         'message'=>'Profile Image size must be 300*300px ',
+            //         'message'=>'Profile Image size must be 300*300px',
             //     ]);
             //    }
          }

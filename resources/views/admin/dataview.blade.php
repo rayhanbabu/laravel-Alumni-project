@@ -4,14 +4,11 @@
 @section('content')
 
 <div class="row mt-4 mb-3">
-               <div class="col-3"> <h4 class="mt-0">Token Setup</h4></div>
-                    
+               <div class="col-3"> <h4 class="mt-0">Token Setup</h4></div> 
                      </div> 
-             </div>  
+               </div>  
              
-  
-
-                     <div class="form-group  mx-2 my-2">
+                   <div class="form-group  mx-2 my-2">
                            @if(Session::has('fail'))
                    <div  class="alert alert-danger"> {{Session::get('fail')}}</div>
                                 @endif

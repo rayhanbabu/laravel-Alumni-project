@@ -5,7 +5,7 @@
 
 <div class="row mt-4 mb-3">
     <div class="col-sm-3">
-        <h5 class="mt-0">Dashboard </h5>
+        <h5 class="mt-0">  </h5>
     </div>
 
 
@@ -209,6 +209,48 @@
 
 
   </div>
+
+
+  <br>
+   <h4> Report Summary </h4>
+      <div class="row">
+       <div class="col-xl-4 col-md-6 p-2">
+          <div class="card bg-light shadow">
+            <div class="mx-3 my-2">
+                <b class="text-center">Range Wise Payment Report </b>
+            </div>
+            <form action="{{ url('pdf/payment_report') }}" method="post" enctype="multipart/form-data">
+                {!! csrf_field() !!}
+                <div class="justify-content-end p-3">
+                     <label> Payment Type</label>
+                      <select class="form-control form-control-sm" name="payment_type" id="payment_type" aria-label="Default select example" required>
+                           <option value="">Select Section </option>
+                           <option value="Offline">Offline</option>
+                           <option value="Online">Online</option>
+                     </select>
+                </div>
+
+                <div class="form-group  mx-3 my-1">
+                    <label> From date </label>
+                    <input type="date" name="date1" class="form-control form-control-sm" value="" required/>
+                </div> 
+
+                <div class="form-group  mx-3 my-3">
+                   <label> To date </label>
+                    <input type="date" name="date2" class="form-control form-control-sm" value="" required/>
+                </div>    
+
+                <div class="form-group  mx-3 my-3">
+                    <input type="submit" value="Submit" class="btn btn-primary waves-effect waves-light btn-sm">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+   
+
+         </div>
 
 
 

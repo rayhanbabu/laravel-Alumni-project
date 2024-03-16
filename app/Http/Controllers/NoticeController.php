@@ -23,44 +23,42 @@ class NoticeController extends Controller
     }
 
     public function fetch(){
-      if(Session::has('admin')){
-      $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-      $data=DB::table('notices')->where('admin_name',$admin->admin_name)->orderBy('id', 'desc')->paginate(10);
-      return view('admin.notice_data',compact('data'));
-      }
-   }
-
-
+       if(Session::has('admin')){
+          $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+          $data=DB::table('notices')->where('admin_name',$admin->admin_name)->orderBy('id','desc')->paginate(10);
+          return view('admin.notice_data',compact('data'));
+        }
+     }
 
     function fetch_data(Request $request)
     {
-     if($request->ajax())
-     {
-      $sort_by = $request->get('sortby');
-      $sort_type = $request->get('sorttype'); 
-            $search = $request->get('search');
-            $search = str_replace(" ", "%", $search);
-      $data = DB::table('notices')
-                    ->where('serial', 'like', '%'.$search.'%')
-                    ->orWhere('title', 'like', '%'.$search.'%')
-                    ->orWhere('text', 'like', '%'.$search.'%')
-                    ->orderBy($sort_by, $sort_type)
-                    ->paginate(10);
-      return view('admin.notice_data', compact('data'))->render();
+       if($request->ajax())
+        {
+          $sort_by = $request->get('sortby');
+          $sort_type = $request->get('sorttype'); 
+             $search = $request->get('search');
+             $search = str_replace(" ", "%", $search);
+         $data=DB::table('notices')->where('admin_name',Session::get('admin')->admin_name)
+           ->where(function($query) use ($search) {
+              $query->orwhere('serial', 'like', '%'.$search.'%');
+              $query->orWhere('title', 'like', '%'.$search.'%');
+              $query->orWhere('text', 'like', '%'.$search.'%');
+              $query->orWhere('category', 'like', '%'.$search.'%');
+              $query->orWhere('date', 'like', '%'.$search.'%');
+           })->orderBy($sort_by, $sort_type)->paginate(10);
+
+          return view('admin.notice_data', compact('data'))->render();
+        }
      }
-    }
-
-
 
 
     public function notice_create ()
-    {
+      {
         return view('admin.notice_create');
-    }
+      }
 
 
     public function store(Request $request) {
-
 
         $validated = $request->validate([
             'date'=>'required',
@@ -70,9 +68,9 @@ class NoticeController extends Controller
         ]);
 
 
-       if(Session::has('admin')){
-             $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-        }
+         if(Session::has('admin')){
+              $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+          }
 
         $model= new Notice;
         $model->serial=1;
