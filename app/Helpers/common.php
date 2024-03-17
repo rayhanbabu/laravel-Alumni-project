@@ -16,7 +16,7 @@ function prx($arr){
   }
 
   function countinfo($table,$admin_name,$category){
-      $count=DB::table($table)->where('admin_name',$admin_name)->where('category',$category)->count();
+      $count=DB::table($table)->where('admin_name',$admin_name)->where('member_verify',1)->where('category',$category)->count();
      return $count;
   }
 

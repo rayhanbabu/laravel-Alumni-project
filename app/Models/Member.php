@@ -25,6 +25,7 @@ class Member extends Model
         'affiliation',
         'training',
         'expertise',
+        'serial',
     ];
 
 }

@@ -229,7 +229,7 @@ class AdminController extends Controller
         if ($category) {
           $verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin->admin_name)->where('member_verify', $status)->count('id');
           $not_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin->admin_name)->where('member_verify', $status1)->count('id');
-          $email_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin->admin_name)->where('member_verify', $status1)->count('id');
+          $email_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin->admin_name)->where('email_verify', $status1)->count('id');
           return view('admin.member', ['category' => $category, 'category_id' => $category_id, 'verify' => $verify, 'not_verify' => $not_verify, 'email_verify' => $email_verify]);
         } else {
           return "Something Error occurred";

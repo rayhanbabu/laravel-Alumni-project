@@ -29,6 +29,7 @@ class UserExport implements FromQuery
             'name',
             'email',
             'member_card',
+            'serial',
             'category_id',
             'phone',
             'degree_category',

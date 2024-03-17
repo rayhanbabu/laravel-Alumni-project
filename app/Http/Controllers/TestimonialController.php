@@ -359,7 +359,7 @@ public function delete(Request $request) {
 
           public function apihome($username){
                   $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
-                     'mobile','admin_name','header_size','resheader_size')->first();
+                     'mobile','admin_name','header_size','resheader_size','text1','text2','text3')->first();
                   $slide = Magazine::where('category','Slide')->where('text4','Slide')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
                   $slide1 = Magazine::where('category','Slide')->where('text4','Slide')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->first();
                   $welcome = Magazine::where('category','Welcome')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
@@ -368,7 +368,6 @@ public function delete(Request $request) {
                   $logu = Magazine::where('category','Slide')->where('text4','HeaderLogu')->where('admin_name',$admin->admin_name)->first();
                   
 
-  
                $category=App::where('admin_name',$admin->admin_name)->where('admin_category','Member')->orderBy('id','asc')->get();
 
                      if($category[0]){
@@ -467,7 +466,7 @@ public function delete(Request $request) {
          }
 
          //if($sort=$request->sort){
-                // $query->orderBy("member_card", $sort);}
+         // $query->orderBy("member_card",$sort);}
 
           
         $perPage=$request->input('perPage',18);
