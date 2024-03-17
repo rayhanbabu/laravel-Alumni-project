@@ -371,7 +371,7 @@ public function delete(Request $request) {
                $category=App::where('admin_name',$admin->admin_name)->where('admin_category','Member')->orderBy('id','asc')->get();
 
                      if($category[0]){
-                        $count1=DB::table('members')->where('admin_name',$admin->admin_name)->where('category_id',$category[0]['id'])->count();
+                        $count1=DB::table('members')->where('admin_name',$admin->admin_name)->where('member_verify',1)->where('category_id',$category[0]['id'])->count();
                         $row1=[
                            'category'=>$category[0]['category'],
                            'count'=>$count1
@@ -384,7 +384,7 @@ public function delete(Request $request) {
                       }
 
                       if($category[1]){
-                        $count2=DB::table('members')->where('admin_name',$admin->admin_name)->where('category_id',$category[1]['id'])->count();
+                        $count2=DB::table('members')->where('admin_name',$admin->admin_name)->where('member_verify',1)->where('category_id',$category[1]['id'])->count();
                         $row2=[
                            'category'=>$category[1]['category'],
                            'count'=>$count2
@@ -398,7 +398,7 @@ public function delete(Request $request) {
 
 
                       if($category[2]){
-                        $count3=DB::table('members')->where('admin_name',$admin->admin_name)->where('category_id',$category[2]['id'])->count();
+                        $count3=DB::table('members')->where('admin_name',$admin->admin_name)->where('member_verify',1)->where('category_id',$category[2]['id'])->count();
                         $row3=[
                            'category'=>$category[2]['category'],
                            'count'=>$count3
@@ -411,7 +411,7 @@ public function delete(Request $request) {
                       }
 
                       if($category[3]){
-                        $count4=DB::table('members')->where('admin_name',$admin->admin_name)->where('category_id',$category[3]['id'])->count();
+                        $count4=DB::table('members')->where('admin_name',$admin->admin_name)->where('member_verify',1)->where('category_id',$category[3]['id'])->count();
                         $row4=[
                            'category'=>$category[3]['category'],
                            'count'=>$count4
