@@ -24,7 +24,7 @@ th, td {
   <center>
         <h3>{{$admin->nameen}}</h3>
         <h5>{{$admin->address}}</h5>
-        <h5> Payment Summary : {{$date1}} To {{$date2}} <br>Payment Type : {{$payment_type}}</h5>
+        <h5> Payment Date : {{$date}}  <br>Payment Type : {{$payment_type}}</h5>
 </center>
 
 <table>

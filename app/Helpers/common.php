@@ -110,6 +110,12 @@ function get_balance() {
           $data=Invoice::where('admin_name',$admin_name)->where('category_id',$category_id)->where('payment_status',1)->get();
           return $data;
        }
+
+       function event_atten_payment_type($admin_name,$category_id,$payment_type){
+         $data=Invoice::where('admin_name',$admin_name)->where('category_id',$category_id)->where('payment_status',1)
+         ->where('payment_type',$payment_type)->get();
+         return $data;
+      }
       
 
 

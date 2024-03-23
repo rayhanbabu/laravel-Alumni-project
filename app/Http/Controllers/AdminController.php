@@ -59,11 +59,12 @@ class AdminController extends Controller
     if (Session::has('admin')) {
       $admin = Session::get('admin');
       $data = Admin::find($admin->id);
-
-      $event_category = App::where('admin_name', $admin->admin_name)->where('admin_category', 'Event')->where('status', 1)->get();
+      $all_category= APP::where('admin_name', Session::get('admin')->admin_name)->where('status',1)->orderBy('id','desc')->get();
+      $event_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Event')->where('status', 1)->get();
     }
 
-    return view('admin.dashboard', ['admin' => $data, 'event_category' => $event_category]);
+
+    return view('admin.dashboard', ['admin' => $data, 'all_category'=>$all_category, 'event_category' => $event_category]);
   }
 
 
@@ -391,6 +392,7 @@ class AdminController extends Controller
       $model = Member::find($request->input('edit_id'));
       if ($model) {
         $model->phone = $request->input('phone');
+        $model->name = $request->input('name');
         $model->email = $request->input('email');
         $model->serial = $request->input('serial');
         $model->category_id = $request->input('category_id');
@@ -740,14 +742,15 @@ class AdminController extends Controller
      $payment_type = $request->input('payment_type');
 
        
-     $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
+     $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+      'header_size','resheader_size','getway_fee','other_link')->first();
   
   
      $invoice = Invoice::leftjoin('members', 'members.id', '=', 'invoices.member_id')
          ->leftjoin('apps', 'apps.id', '=', 'invoices.category_id')
         ->where('invoices.admin_name', $admin->admin_name)->whereBetween('payment_date', [$date1, $date2])->where('invoices.payment_status', 1)
         ->where('payment_type',$payment_type)
-        ->select('members.member_card','members.name','members.phone','apps.category','invoices.*')->orderBy('member_card', 'asc')->get();
+        ->select('members.member_card','members.name','members.phone','apps.category','invoices.*')->orderBy('payment_date', 'asc')->get();
     
       // return $invoice;
       // die();
@@ -771,4 +774,88 @@ class AdminController extends Controller
 
     return $pdf->stream($file . '.pdf');
   }
+
+
+
+  public function payment_report_date(Request $request)
+  {
+   
+     $date= $request->input('date');
+     $payment_type = $request->input('payment_type');
+
+    $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+      'header_size','resheader_size','getway_fee','other_link')->first();
+  
+  
+     $invoice = Invoice::leftjoin('members', 'members.id', '=', 'invoices.member_id')
+         ->leftjoin('apps', 'apps.id', '=', 'invoices.category_id')
+        ->where('invoices.admin_name', $admin->admin_name)->where('payment_date',$date)->where('invoices.payment_status', 1)
+        ->where('payment_type',$payment_type)
+        ->select('members.member_card','members.name','members.phone','apps.category','invoices.*')->orderBy('payment_date', 'asc')->get();
+    
+      // return $invoice;
+      // die();
+    $file = 'Payment-' . $date. '.pdf';
+    $pdf = PDF::loadView('pdf.payment_report_date', [
+      'title' => 'PDF Title',
+      'author' => 'PDF Author',
+      'margin_left' => 20,
+      'margin_right' => 20,
+      'margin_top' => 60,
+      'margin_bottom' => 20,
+      'margin_header' => 15,
+      'margin_footer' => 10,
+      'showImageErrors' => true,
+      'invoice' => $invoice,
+      'date' => $date,
+      'payment_type' => $payment_type,
+      'admin' => $admin,
+    ]);
+
+    return $pdf->stream($file . '.pdf');
+  }
+
+
+  
+  public function payment_category_report(Request $request)
+  {
+   
+     $category= $request->input('category');
+     $payment_type = $request->input('payment_type');
+
+    $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+      'header_size','resheader_size','getway_fee','other_link')->first();
+      $category_name = App::where('id', $category)->first();
+  
+     $invoice=Invoice::leftjoin('members','members.id', '=', 'invoices.member_id')
+        ->leftjoin('apps', 'apps.id','=','invoices.category_id')
+        ->where('invoices.admin_name', $admin->admin_name)->where('invoices.category_id',$category)->where('invoices.payment_status', 1)
+        ->where('payment_type',$payment_type)
+        ->select('members.member_card','members.name','members.phone','apps.category','invoices.*')->orderBy('payment_date', 'asc')->get();
+    
+       // return $invoice;
+       // die();
+    $file = 'Payment-' . $payment_type. '.pdf';
+    $pdf = PDF::loadView('pdf.payment_category_report', [
+      'title' => 'PDF Title',
+      'author' => 'PDF Author',
+      'margin_left' => 20,
+      'margin_right' => 20,
+      'margin_top' => 60,
+      'margin_bottom' => 20,
+      'margin_header' => 15,
+      'margin_footer' => 10,
+      'showImageErrors' => true,
+      'invoice' => $invoice,
+      'payment_type' => $payment_type,
+      'category_name'=>$category_name,
+      'admin' => $admin,
+    ]);
+
+    return $pdf->stream($file . '.pdf');
+  }
+
+
+
+
 }

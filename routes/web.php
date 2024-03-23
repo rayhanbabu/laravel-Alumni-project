@@ -323,6 +323,9 @@ Route::middleware('AdminIs')->group(function(){
          //Pdf Reports
          Route::post('/pdf/payment_category',[AdminController::class,'payment_category']);
          Route::post('/pdf/payment_report',[AdminController::class,'payment_report']);
+         Route::post('/pdf/payment_report_date',[AdminController::class,'payment_report_date']);
+         Route::post('/pdf/payment_category_report',[AdminController::class,'payment_category_report']);
+         
 
 
    });

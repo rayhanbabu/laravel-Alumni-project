@@ -24,7 +24,7 @@ th, td {
   <center>
         <h3>{{$admin->nameen}}</h3>
        <h5>{{$admin->address}}</h5>
-       <h5> Category : {{$category_name->category}} {{$monthyear}} </h5>
+       <h5> Category : {{$category_name->category}} , Payment Type : {{$payment_type}}  </h5>
 </center>
 
 <table>
@@ -35,7 +35,7 @@ th, td {
 	      <th align="left" width="190">Name</th>
         <th align="left" width="60">Amount</th>
         <th align="left" width="80">Date</th>
-        <th align="left" width="70">Signature</th>
+        <th align="left" width="70">Payment method</th>
     </tr>
   
   @foreach($invoice as $row)
@@ -45,7 +45,7 @@ th, td {
 	      <td align="left">{{ $row->name }} </td>
         <td align="left">{{ $row->amount }}TK </td>
         <td align="left">{{ $row->payment_date }} </td>
-	      <td align="right"> </td>   
+	      <td align="right"> {{ $row->payment_method }}</td>   
      </tr>
   @endforeach
 

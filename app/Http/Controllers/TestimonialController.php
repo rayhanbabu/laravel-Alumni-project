@@ -228,7 +228,7 @@ if($validator->fails()){
          $testimonial->phone=$request->input('phone');
          $testimonial->phone_status=$request->input('phone_status');
          $testimonial->email=$request->input('email');
-          $testimonial->text1=$request->input('text1');
+         $testimonial->text1=$request->input('text1');
          $testimonial->email_status=$request->input('email_status');
          $testimonial->fb_link=$request->input('fb_link');
          $testimonial->verify_status=$request->input('verify_status');
@@ -507,7 +507,9 @@ public function delete(Request $request) {
            ,'members.phone','degree_category','passing_year','profile_image'
            ,'gender','birth_date','blood','country','city','occupation','organization','designation'
            ,'blood_status','phone_status','email_status','fb_link','web_link','affiliation'
-           ,'training','expertise','apps.category')->get();
+           ,'training','expertise','apps.category','division_id','district_id'
+           ,'upazilla_id','union_id','word_id','village','bn_name','mother_name'
+           ,'father_name','nid','about_self')->get();
       return response()->json([
         'status'=>200,  
         'data'=>$data,

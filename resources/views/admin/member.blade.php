@@ -348,10 +348,16 @@
             </div>
 
             <div class="col-lg-12 my-2">
-                    <label> Member Card<span style="color:red;"> * </span></label>
+                    <label> MemberShip Number <span style="color:red;"> * </span></label>
                     <input name="member_card"  type="text" id="edit_member_card" class="form-control" value="" required />
                     <p class="text-danger edit_err_member_card"></p>
               </div>
+
+              <div class="col-lg-12 my-2">
+                    <label>Name <span style="color:red;"> * </span></label>
+                    <input name="name"  type="text" id="edit_name" class="form-control" value="" required />
+                    <p class="text-danger edit_err_name"></p>
+              </div>   
 
             <div class="col-lg-12 my-2">
                     <label> Designation  </label>

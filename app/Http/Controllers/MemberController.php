@@ -64,7 +64,9 @@ class MemberController extends Controller
                $model = new Member;
                $model->category_id = $request->input('category_id');
                $model->serial = $count;
-               $model->member_card = $member_card;
+                if($request->input('member_card')){
+                    $model->member_card = $request->input('member_card');
+                }else{  $model->member_card = $member_card; }
                $model->admin_name = $request->username;
                $model->name = $request->input('name');
                $model->degree_category = $request->input('degree_category');
@@ -83,7 +85,11 @@ class MemberController extends Controller
                $model->email = $request->input('email');
                $model->emailmd5 = md5($request->input('email'));
                $model->email_status = 'show';
-               $model->email_verify = 0;
+               if($request->input('email_verify')){
+                   $model->email_verify = 1;
+                }else{
+                   $model->email_verify = 0;
+                }
                $model->member_verify = 0;
                $model->status = 1;
                $model->division_id = $request->input('division_id');
@@ -147,6 +153,7 @@ class MemberController extends Controller
                   'name' => $name,
                ];
 
+          if(empty($request->input('email_verify'))){
                if ($admin->welcome_size == 1) {
                   Mail::to($email)->send(new \App\Mail\RegMail($details));
                }
@@ -164,6 +171,7 @@ class MemberController extends Controller
                   $model->web_link = $admin->other_link;
                   $invoice->save();
                }
+            }
 
                return response()->json([
                   'status' => 200,
