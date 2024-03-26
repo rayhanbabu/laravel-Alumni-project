@@ -224,6 +224,11 @@
              Payment View
      </a>
 
+     <a class="nav-link @yield('non_paymentview_select')" href="{{url('admin/non_paymentview')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+           Non  Member Payment View
+     </a>
+
      <a class="nav-link @yield('dataview_select')" href="{{url('admin/dataview')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
              Token  Setup

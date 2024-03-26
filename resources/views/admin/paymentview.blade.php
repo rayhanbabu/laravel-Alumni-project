@@ -14,8 +14,7 @@
                                     @foreach($category as $row)
                                   <option value="{{$row->id}}">{{$row->category}}</option>
                                  @endforeach	
-                               </select> 
-					                     
+                               </select> 			                     
                          </div>
                      </div>
 

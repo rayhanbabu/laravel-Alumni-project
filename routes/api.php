@@ -9,6 +9,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\DuclubController;
 use App\Models\Testimonial;
+use App\Http\Controllers\NonmemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,8 +53,7 @@ use App\Models\Testimonial;
             Route::get('{username}/invoice_pdf/{id}', [MemberController::class,'invoice_pdf']); 
             Route::post('{username}/payment_create', [InvoiceController::class,'payment_create']);
             Route::post('{username}/issue_create', [MemberController::class,'issue_create']);
-            Route::get('{username}/issue_view', [MemberController::class,'issue_view']);
-           
+            Route::get('{username}/issue_view', [MemberController::class,'issue_view']);       
        });
 
        Route::get('payment_success', [InvoiceController::class,'payment_success']);
@@ -61,18 +61,17 @@ use App\Models\Testimonial;
        Route::post('payment_ipn', [InvoiceController::class,'payment_ipn']);
 
       
-         //public APi
+        //public APi
         Route::get('/{username}', [TestimonialController::class,'apiusername']);
         Route::get('/{username}/home', [TestimonialController::class,'apihome']);
         //category= History, Notice, Upcoming, Past, Constitution, Contact, Others, Document 
         Route::get('/{username}/notice/{category}', [TestimonialController::class, 'apinotice']);
 
-          // member=Executive , Life_Member, Member
+       // member=Executive , Life_Member, Member
        Route::get('/{username}/member/{member}', [TestimonialController::class, 'apimember']);
        Route::get('/{username}/viewmember/{id}', [TestimonialController::class,'apiviewmember']);
        Route::get('/{username}/membersearch', [TestimonialController::class,'apimembersearch']);
        Route::get('/{username}/member_category', [TestimonialController::class,'apimembercategory']);
-
 
        //HomePage Booking 
        Route::get('/{username}/membercard/{membercard}',[MemberController::class,'apimembercard']);
@@ -80,12 +79,16 @@ use App\Models\Testimonial;
        Route::post('/{username}/home_invoice_create/',[MemberController::class,'apihome_invoice_create']);
        Route::get('/{username}/home_invoice_view/{member_id}',[MemberController::class,'apihome_invoice_view']);
        Route::get('/{username}/home_invoice_delete/{id}',[MemberController::class,'apihome_invoice_delete']);
+
+       //Homepage Non Member Booking
+       Route::post('{username}/nonmember_invoice_create', [NonmemberController::class,'nonmember_invoice_create']);
+       Route::get('{username}/nonmember_invoice_view/{tran_id}', [NonmemberController::class,'nonmember_invoice_view']);
       
-      // Geolocation
-      Route::get('/{username}/divisions', [TestimonialController::class, 'apidivisions']);
-      Route::get('/{username}/districts/{division_id}', [TestimonialController::class, 'apidistricts']);
-      Route::get('/{username}/upazilas/{district_id}', [TestimonialController::class, 'apiupazilas']);
-      Route::get('/{username}/unions/{upazilla_id}', [TestimonialController::class, 'apiunions']);
+       // Geolocation
+       Route::get('/{username}/divisions', [TestimonialController::class, 'apidivisions']);
+       Route::get('/{username}/districts/{division_id}', [TestimonialController::class, 'apidistricts']);
+       Route::get('/{username}/upazilas/{district_id}', [TestimonialController::class, 'apiupazilas']);
+       Route::get('/{username}/unions/{upazilla_id}', [TestimonialController::class, 'apiunions']);
        
        //category =Gallery
        Route::get('/{username}/magazine/{category}', [TestimonialController::class, 'apimagazine']);

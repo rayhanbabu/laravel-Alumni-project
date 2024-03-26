@@ -20,6 +20,7 @@ use App\Http\Controllers\WithdrawController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\InvoiceMaintainController;
+use App\Http\Controllers\NonmemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -292,7 +293,7 @@ Route::middleware('AdminIs')->group(function(){
         Route::post('/expre/update', [ExpreController::class, 'update']);
 
 
-         //Application 
+         //Payment View 
         Route::get('/admin/paymentview',[AdminController::class,'paymentview']);
         Route::get('/admin/payment_fetch',[AdminController::class,'fetch']);
         Route::get('/admin/payment/fetch_data',[AdminController::class,'fetch_data']);
@@ -300,6 +301,11 @@ Route::middleware('AdminIs')->group(function(){
         Route::post('/admin/payment_delete',[AdminController::class,'payment_delete']);
        
         Route::post('/admin/admin_invoice_create',[AdminController::class,'admin_invoice_create']);
+
+        //Non Payment View 
+        Route::get('/admin/non_paymentview',[NonmemberController::class,'non_paymentview']);
+        Route::get('/admin/non_payment_fetch',[NonmemberController::class,'non_fetch']);
+        Route::get('/admin/non_payment/fetch_data',[NonmemberController::class,'non_fetch_data']);
          
         //Form Customize
         Route::get('/form/customize', [FormController::class,'customize']);
@@ -343,7 +349,13 @@ Route::middleware('AdminIs')->group(function(){
 
     Route::post('admin/amarpay_search',[InvoiceController::class,'amarpay_search']);
 
-
+     //Mon Member aamarpay Getway
+     Route::get('nonmember_epay/{username}/{tran_id}',[NonmemberController::class,'nonmember_amarpay_epay'])->name('nonmember_amarpay_epay');
+     Route::get('nonmember_amarpay_payment/{tran_id}',[NonmemberController::class,'nonmember_amarpay_payment'])->name('nonmember_amarpay_payment');
+     //You need declear your success & fail route in "app\Middleware\VerifyCsrfToken.php"
+     Route::post('nonmember_amarpay_success',[NonmemberController::class,'nonmember_amarpay_success'])->name('nonmember_amarpay_success');
+     Route::post('nonmember_amarpay_fail',[NonmemberController::class,'nonmember_amarpay_fail'])->name('nonmember_amarpay_fail');
+     Route::get('nonmember_amarpay_cancel',[NonmemberController::class,'nonmember_amarpay_cancel'])->name('nonmember_amarpay_cancel');
 
     //registration
     Route::get('/', [HomepageController::class, 'homepage']);
