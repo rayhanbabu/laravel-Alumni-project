@@ -16,6 +16,7 @@ use PDF;
 use Exception;
 use App\Models\App;
 use App\Models\Invoice;
+use App\Models\Nonmember;
 use Illuminate\Support\Str;
 
 
@@ -54,17 +55,19 @@ class AdminController extends Controller
     }
   }
 
-  function dashboard()
-  {
+  function dashboard() {
     if (Session::has('admin')) {
-      $admin = Session::get('admin');
-      $data = Admin::find($admin->id);
-      $all_category= APP::where('admin_name', Session::get('admin')->admin_name)->where('status',1)->orderBy('id','desc')->get();
-      $event_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Event')->where('status', 1)->get();
+       $admin = Session::get('admin');
+       $data = Admin::find($admin->id);
+       $member = Invoice::where('payment_type','Online')->where('payment_status',1)->where('admin_name', $data->admin_name)->sum('amount');
+       $nonmember = Nonmember::where('payment_type','Online')->where('payment_status',1)->where('admin_name', $data->admin_name)->sum('amount');
+       $total_payment=$member+$nonmember;
+       $all_category= APP::where('admin_name', Session::get('admin')->admin_name)->where('status',1)->orderBy('id','desc')->get();
+       $event_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Event')->where('status', 1)->get();
     }
 
-
-    return view('admin.dashboard', ['admin' => $data, 'all_category'=>$all_category, 'event_category' => $event_category]);
+      return view('admin.dashboard', ['admin' => $data, 'all_category'=>$all_category ,'event_category' => $event_category,
+          'total_payment' => $total_payment]);
   }
 
 
