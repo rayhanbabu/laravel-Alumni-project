@@ -38,7 +38,8 @@ class NonmemberController extends Controller
             $app = App::where('admin_name', $request->username)->where('id', $request->input('category_id'))
                ->where('admin_category','Event')->first();
                if ($app) {
-                  $total_amount = $app->amount+$admin->blood_size + ($app->amount * $admin->getway_fee) / 100;
+                   $amount=$app->amount+$admin->blood_size;
+                  $total_amount = $amount + ($amount * $admin->getway_fee) / 100;
                   $model = new Nonmember;
                   $model->category_id = $request->input('category_id');
                   $model->admin_name = $request->username;
@@ -49,7 +50,7 @@ class NonmemberController extends Controller
                   $model->passing_year = $request->input('passing_year');
                   $model->designation = $request->input('designation');
                   $model->tran_id = Str::random(10);
-                  $model->amount = $app->amount+$admin->blood_size;
+                  $model->amount = $amount;
                   $model->getway_fee = $admin->getway_fee;
                   $model->total_amount = $total_amount;
                   $model->web_link = $admin->other_link;
