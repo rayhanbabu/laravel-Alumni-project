@@ -481,8 +481,8 @@
          </div> 
 
          <div class="form-group col-sm-6  my-2">
-               <label class=""><b>Blood Size</b></label>
-               <input type="text" id="edit_blood_size"  name="blood_size" class="form-control" required>
+               <label class=""><b> Non Mmeber Extra Amount </b></label>
+               <input type="number" id="edit_blood_size"  name="blood_size" class="form-control" required>
          </div> 
 
          <div class="form-group col-sm-6  my-2">

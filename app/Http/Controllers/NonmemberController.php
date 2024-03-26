@@ -38,7 +38,7 @@ class NonmemberController extends Controller
             $app = App::where('admin_name', $request->username)->where('id', $request->input('category_id'))
                ->where('admin_category','Event')->first();
                if ($app) {
-                  $total_amount = $app->amount + ($app->amount * $admin->getway_fee) / 100;
+                  $total_amount = $app->amount+$admin->blood_size + ($app->amount * $admin->getway_fee) / 100;
                   $model = new Nonmember;
                   $model->category_id = $request->input('category_id');
                   $model->admin_name = $request->username;
@@ -49,9 +49,9 @@ class NonmemberController extends Controller
                   $model->passing_year = $request->input('passing_year');
                   $model->designation = $request->input('designation');
                   $model->tran_id = Str::random(10);
-                  $model->amount = $app->amount;
+                  $model->amount = $app->amount+$admin->blood_size;
                   $model->getway_fee = $admin->getway_fee;
-                  $model->total_amount = $total_amount;
+                  $model->total_amount = $total_amount+$admin->blood_size;
                   $model->web_link = $admin->other_link;
                   $model->save();
 
@@ -332,8 +332,7 @@ class NonmemberController extends Controller
                $query->orwhere('nonmembers.email', 'like', '%' . $search . '%');
                $query->orwhere('nonmembers.id', 'like', '%' . $search . '%');
                $query->orwhere('apps.category', 'like', '%' . $search . '%');
-             })
-              ->select( 'apps.category', 'nonmembers.*')
+             })->select('apps.category', 'nonmembers.*')
               ->orderBy($sort_by, $sort_type)->paginate(10);
             return view('admin.non_paymentview_data', compact('data'))->render();
            }
