@@ -51,7 +51,7 @@ class NonmemberController extends Controller
                   $model->tran_id = Str::random(10);
                   $model->amount = $app->amount+$admin->blood_size;
                   $model->getway_fee = $admin->getway_fee;
-                  $model->total_amount = $total_amount+$admin->blood_size;
+                  $model->total_amount = $total_amount;
                   $model->web_link = $admin->other_link;
                   $model->save();
 
