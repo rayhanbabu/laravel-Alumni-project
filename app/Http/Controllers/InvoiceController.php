@@ -182,12 +182,6 @@ class InvoiceController extends Controller
       $model->bank_tran = $success['bank_trxid'];
       $model->problem_status = 'No';
       $model->update();
-
-      $admin = Admin::where('admin_name', $success['opt_c'])->first();
-      $online_cur_amount=$admin->online_cur_amount;
-      $total_amount=$online_cur_amount+$model->amount;
-      DB::update("update admins set online_cur_amount ='$total_amount' where admin_name = '$admin->admin_name'");
-
   
       return view('web.payment_success', ["web_link" => $success['opt_b']]);
     } catch (Exception $e) {
