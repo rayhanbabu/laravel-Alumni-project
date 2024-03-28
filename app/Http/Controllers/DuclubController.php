@@ -168,13 +168,15 @@ class DuclubController extends Controller
 
     public function product_add(request $request)
     {
-      try {    
+    //  try {    
       $productID=$request->productID;
       $qty=$request->qty;
       $price=$request->price;
+      $priority=$request->priority;
       $member_id=$request->header('member_id');
       $date= date('Y-m-d');
 
+     
       $data = [
           'customer' => $member_id,
           'warehouseID' => '4',
@@ -190,11 +192,13 @@ class DuclubController extends Controller
           'r1' => '3',
           'extra_sms' => '0',
           'submitBtn' => '',
-          'priority' => '["1"]',
-          'qty' => '["'.$qty.'"]',
-          'productID' => '["'.$productID.'"]',
-          'price' => '["'.$price.'"]',
+          'priority' => $priority,
+          'qty' => $qty,
+          'productID' => $productID,
+          'price' => $price,
       ];
+    
+    //   die();
       
       $response = Http::asForm()->post('https://www.dhakauniversityclub.com/api/salesStore', $data);
      
@@ -207,12 +211,12 @@ class DuclubController extends Controller
                ], 200);
             }
        }
-       } catch (Exception $e) {
-           return response()->json([
-              'status' => 501,
-              'message' => 'Somting Error',
-           ],501);
-      }
+      //  } catch (Exception $e) {
+      //      return response()->json([
+      //         'status' => 501,
+      //         'message' => 'Someting Error',
+      //      ],501);
+      // }
     }
 
 

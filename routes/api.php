@@ -105,7 +105,7 @@ use App\Http\Controllers\NonmemberController;
 
   Route::middleware('DuClubToken')->group(function(){ 
        Route::get('/duclub/api/member_ledger', [DuclubController::class,'member_ledger']);
-       Route::get('/duclub/api/product_add', [DuclubController::class,'product_add']);
+       Route::post('/duclub/api/product_add', [DuclubController::class,'product_add']);
        Route::get('/duclub/api/pending_product_view', [DuclubController::class,'pending_product_view']);
        Route::get('/duclub/api/product_delete/{saleID}', [DuclubController::class,'product_delete']);
   }); 
