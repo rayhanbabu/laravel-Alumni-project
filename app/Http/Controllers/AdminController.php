@@ -755,6 +755,10 @@ class AdminController extends Controller
         ->where('payment_type',$payment_type)
         ->select('members.member_card','members.name','members.phone','apps.category','invoices.*')->orderBy('payment_date', 'asc')->get();
     
+        $non_invoice = Nonmember::leftjoin('apps', 'apps.id', '=', 'nonmembers.category_id')
+       ->where('nonmembers.admin_name', $admin->admin_name)->whereBetween('payment_date', [$date1, $date2])->where('nonmembers.payment_status', 1)
+       ->where('payment_type',$payment_type)
+       ->select('apps.category','nonmembers.*')->orderBy('nonmembers.id', 'asc')->get();
       // return $invoice;
       // die();
     $file = 'Payment-' . $date1.'-'.$date2 . '.pdf';
@@ -773,6 +777,7 @@ class AdminController extends Controller
       'date2' => $date2,
       'payment_type' => $payment_type,
       'admin' => $admin,
+      'non_invoice' => $non_invoice,
     ]);
 
     return $pdf->stream($file . '.pdf');
@@ -796,6 +801,11 @@ class AdminController extends Controller
         ->where('payment_type',$payment_type)
         ->select('members.member_card','members.name','members.phone','apps.category','invoices.*')->orderBy('payment_date', 'asc')->get();
     
+        $non_invoice = Nonmember::leftjoin('apps', 'apps.id', '=', 'nonmembers.category_id')
+        ->where('nonmembers.admin_name', $admin->admin_name)->where('payment_date',$date)->where('nonmembers.payment_status', 1)
+        ->where('payment_type',$payment_type)
+        ->select('apps.category','nonmembers.*')->orderBy('nonmembers.id', 'asc')->get();
+
       // return $invoice;
       // die();
     $file = 'Payment-' . $date. '.pdf';
@@ -813,6 +823,7 @@ class AdminController extends Controller
       'date' => $date,
       'payment_type' => $payment_type,
       'admin' => $admin,
+      'non_invoice' => $non_invoice,
     ]);
 
     return $pdf->stream($file . '.pdf');
@@ -836,7 +847,12 @@ class AdminController extends Controller
         ->where('payment_type',$payment_type)
         ->select('members.member_card','members.name','members.phone','apps.category','invoices.*')->orderBy('payment_date', 'asc')->get();
     
-       // return $invoice;
+        $non_invoice = Nonmember::leftjoin('apps', 'apps.id', '=', 'nonmembers.category_id')
+        ->where('nonmembers.admin_name', $admin->admin_name)->where('nonmembers.category_id',$category)->where('nonmembers.payment_status', 1)
+        ->where('payment_type',$payment_type)
+        ->select('apps.category','nonmembers.*')->orderBy('nonmembers.id', 'asc')->get();
+       
+        // return $invoice;
        // die();
     $file = 'Payment-' . $payment_type. '.pdf';
     $pdf = PDF::loadView('pdf.payment_category_report', [
@@ -853,6 +869,7 @@ class AdminController extends Controller
       'payment_type' => $payment_type,
       'category_name'=>$category_name,
       'admin' => $admin,
+      'non_invoice' => $non_invoice,
     ]);
 
     return $pdf->stream($file . '.pdf');

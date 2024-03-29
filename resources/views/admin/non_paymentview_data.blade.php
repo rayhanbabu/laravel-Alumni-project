@@ -3,6 +3,7 @@
 ?>
 @foreach($data as $row)
       <tr>
+                  <td>{{ $row->id}}</td>
                   <td>{{ $row->tran_id}}</td>
                   
                   <td> 

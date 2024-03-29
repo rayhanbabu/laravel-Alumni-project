@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Magazine;
+use App\Models\Nonmember;
 use App\Models\Invoice;
 function prx($arr){
    echo "<pre>";
@@ -115,7 +116,20 @@ function get_balance() {
          $data=Invoice::where('admin_name',$admin_name)->where('category_id',$category_id)->where('payment_status',1)
          ->where('payment_type',$payment_type)->get();
          return $data;
-      }
+      } 
+
+       function non_event_atten_number($admin_name,$category_id){
+          $data=Nonmember::where('admin_name',$admin_name)->where('category_id',$category_id)->where('payment_status',1)->get();
+          return $data;
+       }
+
+       function non_event_atten_payment_type($admin_name,$category_id,$payment_type){
+          $data=Nonmember::where('admin_name',$admin_name)->where('category_id',$category_id)->where('payment_status',1)
+          ->where('payment_type',$payment_type)->get();
+          return $data;
+       } 
+
+      
       
 
 

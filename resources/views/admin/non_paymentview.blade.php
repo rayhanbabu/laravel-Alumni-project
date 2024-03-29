@@ -57,6 +57,7 @@
    <table class="table table-bordered" id="employee_data">
    <thead>
        <tr>
+       <th  width="10%">Serial No </th>
        <th width="10%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer" >Invoice ID
                 <span id="id_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
 

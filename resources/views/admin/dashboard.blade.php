@@ -141,89 +141,8 @@
     </div>
 
 </div>
-<br>
-<h4> Event Infromation</h4>
 
-<div class="row">
-    @php
-    $total_sum_offline=0;
-    $total_sum=0;
-    @endphp
-    @foreach($event_category as $item)
-    <div class="col-xl-3 col-sm-6 col-12 p-2">
-        <div class="card shadow">
-            <div class="card-content">
-                <div class="card-body">
-                    <div class="media d-flex">
-                        <div class="media-body text-left">
-
-                            @php
-                            $total=event_atten_number($item->admin_name,$item->id)->count();
-                            $total_sum+=$total;
-
-                            $total_offline=event_atten_payment_type($item->admin_name,$item->id,'Offline')->count();
-                            $total_sum_offline+=$total_offline;
-                            @endphp
-                            <h3 class="success"> {{ event_atten_number($item->admin_name,$item->id)->count() }} </h3>
-                            </h3>
-                            <div class="d-grid gap-2 d-md-flex">
-                                <p class="text-start text-info ">Online: {{event_atten_payment_type($item->admin_name,$item->id,'Online')->count() }} </p>
-                                <p class="text-end text-success">Offline: {{event_atten_payment_type($item->admin_name,$item->id,'Offline')->count() }}</p>
-                            </div>
-                            <span> {{ $item->category }} ({{ $item->amount }}TK ) </span>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="icon-cup success font-large-2 float-right"></i>
-                        </div>
-                    </div>
-                    <div class="progress mt-1 mb-0" style="height: 7px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
-
-
-
-
-
-
-    <div class="col-xl-3 col-sm-6 col-12 p-2">
-        <div class="card shadow">
-            <div class="card-content">
-                <div class="card-body">
-                    <div class="media d-flex">
-                        <div class="media-body text-left">
-                            <h3 class="success"> {{$total_sum}}</h3>
-                            <div class="d-grid gap-2 d-md-flex">
-                                <p class="text-start text-info ">Online: {{$total_sum-$total_sum_offline}} </p>
-                                <p class="text-end text-success">Offline: {{$total_sum_offline}}</p>
-                            </div>
-                            </h3>
-                            <span> Total Member Present </span>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="icon-cup success font-large-2 float-right"></i>
-                        </div>
-                    </div>
-                    <div class="progress mt-1 mb-0" style="height: 7px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-</div>
-
-
-<br>
 <h4> Report Summary </h4>
-
 
 <div class="row">
 
@@ -323,6 +242,161 @@
             </form>
         </div>
     </div>
+</div>
+
+
+
+<h4> Event Infromation Member</h4>
+<div class="row">
+    @php
+    $total_sum_offline=0;
+    $total_sum=0;
+    @endphp
+    @foreach($event_category as $item)
+    <div class="col-xl-3 col-sm-6 col-12 p-2">
+        <div class="card shadow">
+            <div class="card-content">
+                <div class="card-body">
+                    <div class="media d-flex">
+                        <div class="media-body text-left">
+
+                            @php
+                            $total=event_atten_number($item->admin_name,$item->id)->count();
+                            $total_sum+=$total;
+
+                            $total_offline=event_atten_payment_type($item->admin_name,$item->id,'Offline')->count();
+                            $total_sum_offline+=$total_offline;
+                            @endphp
+                            <h3 class="success"> {{ event_atten_number($item->admin_name,$item->id)->count() }} </h3>
+                            </h3>
+                            <div class="d-grid gap-2 d-md-flex">
+                                <p class="text-start text-info ">Online: {{event_atten_payment_type($item->admin_name,$item->id,'Online')->count() }} </p>
+                                <p class="text-end text-success">Offline: {{event_atten_payment_type($item->admin_name,$item->id,'Offline')->count() }}</p>
+                            </div>
+                            <span> {{ $item->category }} ({{ $item->amount }}TK ) </span>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="icon-cup success font-large-2 float-right"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 mb-0" style="height: 7px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+
+
+
+
+
+
+    <div class="col-xl-3 col-sm-6 col-12 p-2">
+        <div class="card shadow">
+            <div class="card-content">
+                <div class="card-body">
+                    <div class="media d-flex">
+                        <div class="media-body text-left">
+                            <h3 class="success"> {{$total_sum}}</h3>
+                            <div class="d-grid gap-2 d-md-flex">
+                                <p class="text-start text-info ">Online: {{$total_sum-$total_sum_offline}} </p>
+                                <p class="text-end text-success">Offline: {{$total_sum_offline}}</p>
+                            </div>
+                            </h3>
+                            <span> Total Member Present </span>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="icon-cup success font-large-2 float-right"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 mb-0" style="height: 7px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<h4> Event Infromation Non-Member</h4>
+<div class="row">
+    @php
+    $non_total_sum_offline=0;
+    $non_total_sum=0;
+    @endphp
+    @foreach($event_category as $item)
+    <div class="col-xl-3 col-sm-6 col-12 p-2">
+        <div class="card shadow">
+            <div class="card-content">
+                <div class="card-body">
+                    <div class="media d-flex">
+                        <div class="media-body text-left">
+
+                            @php
+                            $total=non_event_atten_number($item->admin_name,$item->id)->count();
+                            $non_total_sum+=$total;
+
+                            $non_total_offline=non_event_atten_payment_type($item->admin_name,$item->id,'Offline')->count();
+                            $non_total_sum_offline+=$non_total_offline;
+                            @endphp
+                            <h3 class="success"> {{ non_event_atten_number($item->admin_name,$item->id)->count() }} </h3>
+                            </h3>
+                            <div class="d-grid gap-2 d-md-flex">
+                                <p class="text-start text-info ">Online: {{non_event_atten_payment_type($item->admin_name,$item->id,'Online')->count() }} </p>
+                                <p class="text-end text-success">Offline: {{non_event_atten_payment_type($item->admin_name,$item->id,'Offline')->count() }}</p>
+                            </div>
+                            <span> {{ $item->category }} ({{ $item->amount }}TK ) </span>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="icon-cup success font-large-2 float-right"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 mb-0" style="height: 7px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+
+
+
+
+
+
+    <div class="col-xl-3 col-sm-6 col-12 p-2">
+        <div class="card shadow">
+            <div class="card-content">
+                <div class="card-body">
+                    <div class="media d-flex">
+                        <div class="media-body text-left">
+                            <h3 class="success"> {{$non_total_sum}}</h3>
+                            <div class="d-grid gap-2 d-md-flex">
+                                <p class="text-start text-info ">Online: {{$non_total_sum-$non_total_sum_offline}} </p>
+                                <p class="text-end text-success">Offline: {{$non_total_sum_offline}}</p>
+                            </div>
+                            </h3>
+                            <span> Total Member Present </span>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="icon-cup success font-large-2 float-right"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 mb-0" style="height: 7px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
