@@ -875,6 +875,45 @@ class AdminController extends Controller
     return $pdf->stream($file . '.pdf');
   }
 
+   public function auto_invoice(Request $request)
+    {
+   
+      $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+      'header_size','resheader_size','getway_fee','other_link')->first();
+
+      $invoice=Nonmember::leftjoin('apps','apps.id','=','nonmembers.category_id')
+      ->leftjoin('admins','admins.admin_name','=','nonmembers.admin_name')
+      ->where('nonmembers.admin_name',$admin->admin_name)->where('nonmembers.id',5)
+      ->where('nonmembers.payment_status',1)->where('payment_type','Online')->select(
+      'admins.nameen' ,'admins.address','admins.mobile','admins.email as admin_email'
+      ,'apps.category','nonmembers.*')->orderBy('payment_date', 'asc')->first();
+
+        $data['title']=$invoice->nameen;
+        $data['file']=$invoice->nameen;
+        $data['address']=$invoice->address;
+        $data['admin_mobile']=$invoice->mobile;
+        $data['admin_email']=$invoice->admin_email;
+
+        $data['email']=$invoice->email;
+        $data['phone']=$invoice->phone;
+        $data['name']=$invoice->name;
+        $data['tran_id']=$invoice->tran_id;
+        $data['category']=$invoice->category;
+        $data['payment_method']=$invoice->payment_method;
+        $data['payment_time']=$invoice->payment_time;
+        $data['total_amount']=$invoice->total_amount;
+
+        $pdf = PDF::loadView('pdf.auto_invoice',$data);
+         Mail::send('pdf.auto_invoice',$data,function($message) use ($data,$pdf){
+            $message->to($data['email'])
+             ->subject($data['title'])
+             ->attachData($pdf->output(),$data['file'].".pdf");       
+        });
+
+      
+        }
+
+
 
 
 

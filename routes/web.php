@@ -332,7 +332,7 @@ Route::middleware('AdminIs')->group(function(){
          Route::post('/pdf/payment_report_date',[AdminController::class,'payment_report_date']);
          Route::post('/pdf/payment_category_report',[AdminController::class,'payment_category_report']);
          
-
+         Route::get('/auto_invoice', [AdminController::class, 'auto_invoice']);
 
    });
 
@@ -369,8 +369,8 @@ Route::middleware('AdminIs')->group(function(){
    
     
       /* 
-   Route::get('/testimonial', [TestimonialController::class, 'testimonial']);
-   Route::get('/langhome', [TestimonialController::class, 'langhome']);
+   Route::get('/testimonial', [TestimonialController::class,'testimonial']);
+   Route::get('/langhome', [TestimonialController::class,'langhome']);
 
   Route::get('/view',[HomeController::class,'view']); 
 
@@ -389,6 +389,8 @@ Route::middleware('AdminIs')->group(function(){
   Route::post('/pdfs',[HomeController::class,'pdfs']); 
 
 */
+
+
 
 
 

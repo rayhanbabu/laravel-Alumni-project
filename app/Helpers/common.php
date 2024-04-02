@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Magazine;
 use App\Models\Nonmember;
 use App\Models\Invoice;
+use App\Models\Admin;
+
 function prx($arr){
    echo "<pre>";
    print_r($arr);
@@ -129,8 +131,6 @@ function get_balance() {
           return $data;
        } 
 
-      
-      
 
 
 
