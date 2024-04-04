@@ -360,14 +360,12 @@ class AdminController extends Controller
     return back()->with('success', 'Data Delete Successfull');
   }
 
-
-
   public function member_update(Request $request)
   {
 
-    if (Session::has('admin')) {
-      $admin = Session::get('admin');
-    }
+        if(Session::has('admin')) {
+             $admin = Session::get('admin');
+        }
 
     $validator = \Validator::make(
       $request->all(),
@@ -447,9 +445,9 @@ class AdminController extends Controller
 
   public function paymentview()
   {
-    $data = APP::where('admin_name', Session::get('admin')->admin_name)->where('status', 1)->orderBy('id', 'desc')->get();
-    $member = Member::where('admin_name', Session::get('admin')->admin_name)->where('member_verify', 1)->get();
-    return view('admin.paymentview', ['category' => $data, 'member' => $member]);
+     $data = APP::where('admin_name',Session::get('admin')->admin_name)->where('status', 1)->orderBy('id', 'desc')->get();
+     $member = Member::where('admin_name',Session::get('admin')->admin_name)->where('member_verify', 1)->get();
+     return view('admin.paymentview', ['category' => $data, 'member' => $member]);
   }
 
   public function fetch()

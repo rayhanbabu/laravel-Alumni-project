@@ -3,7 +3,7 @@
 ?>
 @foreach($data as $row)
       <tr>
-                  <td>{{ $row->id}}</td>
+                  <td>{{ $row->serial}}</td>
                   <td>{{ $row->tran_id}}</td>
                   
                   <td> 
@@ -15,11 +15,15 @@
                   <td>{{ $row->name}} <br> {{ $row->phone}}</td>
                   <td>{{ $row->category}}</td>
                   <td>{{ $row->email}} , {{ $row->passing_year}} </td>
+                  <td>
+       <button type="button" name="edit" id="{{$row->id}}" class="btn btn-success btn-sm edit" 
+	  	     data-serial="{{$row->serial}}" >Edit</button>
+        </td>
                   <td>{{ $row->amount}}</td>
             @if($row->payment_status == 1)
-              <td> <button type="button" id="{{ $row->id}}" class="status_id btn btn-success btn-sm">Paid</button> </td>
-            @else
-             <td> <button type="button" id="{{ $row->id}}" class="status_id btn btn-warning btn-sm">Pending</button> </td>
+              <td><a  class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to Change this Status')"  href="{{ url('admin/non_payment_status/'.$row->id)}}">Paid</a></td>
+              @else
+              <td><a  class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to Change this Status')"  href="{{ url('admin/non_payment_status/'.$row->id)}}">Unpaud</a></td>
            @endif
                   <td>{{ $row->payment_type}}</td>
                   <td>{{ $row->payment_method}} {{ $row->payment_time}}</td>

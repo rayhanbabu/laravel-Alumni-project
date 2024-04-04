@@ -306,6 +306,9 @@ Route::middleware('AdminIs')->group(function(){
         Route::get('/admin/non_paymentview',[NonmemberController::class,'non_paymentview']);
         Route::get('/admin/non_payment_fetch',[NonmemberController::class,'non_fetch']);
         Route::get('/admin/non_payment/fetch_data',[NonmemberController::class,'non_fetch_data']);
+        Route::post('/admin/non_payment_update',[NonmemberController::class,'non_payment_update']);
+        Route::post('/admin/add_non_payment',[NonmemberController::class,'add_non_payment']);
+        Route::get('/admin/non_payment_status/{id}',[NonmemberController::class,'non_payment_status']);
          
         //Form Customize
         Route::get('/form/customize', [FormController::class,'customize']);

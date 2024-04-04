@@ -40,7 +40,7 @@ class NonmemberController extends Controller
             $app = App::where('admin_name', $request->username)->where('id', $request->input('category_id'))
                ->where('admin_category','Event')->first();
                if ($app) {
-                   $amount=$app->amount+$admin->blood_size;
+                 $amount=$app->amount+$admin->blood_size;
                   $total_amount = $amount + ($amount * $admin->getway_fee) / 100;
                   $model = new Nonmember;
                   $model->category_id = $request->input('category_id');
@@ -316,7 +316,7 @@ class NonmemberController extends Controller
 
       public function nonmember_invoice_view($username, $tran_id)
        {
-          $data=Nonmember::where('admin_name', $username)->where('tran_id',$tran_id)->first();
+            $data=Nonmember::where('admin_name', $username)->where('tran_id',$tran_id)->first();
             return response()->json([
              'status' => 200,
              'data' =>$data,
@@ -328,7 +328,8 @@ class NonmemberController extends Controller
 
        public function non_paymentview()
        {
-         $data = APP::where('admin_name', Session::get('admin')->admin_name)->where('status', 1)->orderBy('id', 'desc')->get();
+         $data = APP::where('admin_name', Session::get('admin')->admin_name)->where('status', 1)
+         ->where('admin_category','Event')->orderBy('id','desc')->get();
        
          return view('admin.non_paymentview', ['category' => $data]);
        }
@@ -361,6 +362,7 @@ class NonmemberController extends Controller
              ->where(function ($query) use ($search) {
                $query->orwhere('nonmembers.designation', 'like', '%' . $search . '%');
                $query->orwhere('nonmembers.name', 'like', '%' . $search . '%');
+               $query->orwhere('nonmembers.serial', 'like', '%' . $search . '%');
                $query->orwhere('nonmembers.phone', 'like', '%' . $search . '%');
                $query->orwhere('nonmembers.email', 'like', '%' . $search . '%');
                $query->orwhere('nonmembers.id', 'like', '%' . $search . '%');
@@ -372,8 +374,120 @@ class NonmemberController extends Controller
        }
      
      
+       public function non_payment_update(Request $request)
+       {
+
+        if (Session::has('admin')) {
+          $admin = Session::get('admin');
+        }
+  
+         $request->validate([
+          'serial' => 'required|unique:nonmembers,serial,' . $request->input('id') . 'NULL,id,admin_name,' . $admin->admin_name,
+         ]);
+         $model = Nonmember::find($request->input('id'));
+         $model->serial = $request->input('serial');
+         $model->update();
+         return back()->with('success','Update Successfully');
+       }     
 
 
+       public function add_non_payment(Request $request)
+       {
+
+        if (Session::has('admin')) {
+          $admin = Session::get('admin');
+        }
+  
+         $request->validate([
+           'name' => 'required',
+           'category_id' => 'required',
+           'email' => 'required',
+           'phone' => 'required',
+           'address' => 'required',
+           'designation' => 'required',
+         ]);
+
+
+         $app = App::where('admin_name', $admin->admin_name)->where('id', $request->input('category_id'))
+         ->where('admin_category','Event')->first();
+         if ($app) {
+            $amount=$app->amount+$admin->blood_size;
+            $total_amount = $amount + ($amount * $admin->getway_fee) / 100;
+            $model = new Nonmember;
+            $model->category_id = $request->input('category_id');
+            $model->admin_name = $admin->admin_name;
+            $model->name = $request->input('name');
+            $model->phone = $request->input('phone');
+            $model->email = $request->input('email');
+            $model->address = $request->input('address');
+            $model->passing_year = $request->input('passing_year');
+            $model->designation = $request->input('designation');
+            $model->tran_id = Str::random(10);
+            $model->amount = $amount;
+            $model->getway_fee = $admin->getway_fee;
+            $model->total_amount = $total_amount;
+            $model->web_link = $admin->other_link;
+            $model->save();
+
+            $modelupdate = Nonmember::find($model->id);
+            $modelupdate->serial = $model->id;
+            $modelupdate->update();
+
+            return back()->with('success','Data Insert Successfully');
+
+          }else{
+              return back()->with('fail','Invalid category');
+          }
+
+         $model = Nonmember::find($request->input('id'));
+         $model->serial = $request->input('serial');
+         $model->update();
+         return back()->with('success','data Update Successfully');
+       }     
+
+
+
+       public function non_payment_status(Request $request, $id)
+       {
+          
+          $id = $request->id;
+          $invoice = Nonmember::where('id', $id)->first();
+      
+          if ($invoice->payment_type == "Online") {
+            return back()->with('fail','Online Payment Exist.Can Not Change Payment Status');
+          } else {
+            if ($invoice->payment_status == 0) {
+              $status = 1;
+              $payment_time = date('Y-m-d H:i:s');
+              $payment_type = 'Offline';
+              $payment_method = 'admin';
+            } else {
+              $status = 0;
+              $payment_time = date('2010-10-10 10:10:10');
+              $payment_type = 'Offline';
+              $payment_method = '';
+            }
+            $payment_date = date('Y-m-d');
+            $payment_day = date('d');
+            $payment_month = date('n');
+            $payment_year = date('Y');
+      
+            $model = Nonmember::find($id);
+            $model->payment_status = $status;
+            $model->payment_type = $payment_type;
+            $model->payment_time = $payment_time;
+            $model->payment_method = $payment_method;
+            $model->payment_date = $payment_date;
+            $model->payment_year = $payment_year;
+            $model->payment_month = $payment_month;
+            $model->payment_day = $payment_day;
+            $model->update();
+      
+            return back()->with('success','Payment Status updated');
+          }
+        }
+      
+      
 
 }
 

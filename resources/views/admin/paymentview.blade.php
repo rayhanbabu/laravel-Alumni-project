@@ -3,7 +3,9 @@
 @section('paymentview_select','active')
 @section('content')
  
-<div class="row mt-4 mb-3">
+<div class="card mt-4 mb-3">
+  <div class="card-header">
+<div class="row">
                <div class="col-2"> <h5 class="mt-0">Payment View</h5></div>
                      <div class="col-4">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -93,7 +95,7 @@
 
 
   
-
+ 
 
 <div id="success_message"></div>
  <div class="row mb-2">
@@ -106,6 +108,7 @@
      </div>
     </div>
    </div>
+
 
 
 <div class="card-block table-border-style">                     
@@ -139,7 +142,10 @@
  
    </div>
   </div>
-</div>
+  </div>
+
+
+
 
 <script>  
 $(document).ready(function(){ 

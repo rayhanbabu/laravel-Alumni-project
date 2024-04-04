@@ -425,8 +425,7 @@
                  <label for="roll"> Image (Max:300kb)</label>
                  <input type="file" name="image" id="image" class="form-control" placeholder="" >
             </div>
-
-</div>
+  </div>
 
             <div class="mt-2" id="avatar_image">
 
@@ -487,7 +486,7 @@
 
   <div class="row">
           <div class="col-sm-4">
-          <b>Member Card</b>
+          <b>Membership Number</b>
           </div>
           <div class="col-sm-8" id="view_member_card">
           </div>
