@@ -757,41 +757,48 @@ class AdminController extends Controller
        ->where('nonmembers.admin_name', $admin->admin_name)->whereBetween('payment_date', [$date1, $date2])->where('nonmembers.payment_status', 1)
        ->where('payment_type',$payment_type)
        ->select('apps.category','nonmembers.*')->orderBy('nonmembers.id', 'asc')->get();
-      // return $invoice;
-      // die();
-    $file = 'Payment-' . $date1.'-'.$date2 . '.pdf';
-    $pdf = PDF::loadView('pdf.payment_report', [
-      'title' => 'PDF Title',
-      'author' => 'PDF Author',
-      'margin_left' => 20,
-      'margin_right' => 20,
-      'margin_top' => 60,
-      'margin_bottom' => 20,
-      'margin_header' => 15,
-      'margin_footer' => 10,
-      'showImageErrors' => true,
-      'invoice' => $invoice,
-      'date1' => $date1,
-      'date2' => $date2,
-      'payment_type' => $payment_type,
-      'admin' => $admin,
-      'non_invoice' => $non_invoice,
-    ]);
+     
+       return view('print.payment_report',['invoice' => $invoice,
+         'date1' => $date1,
+         'date2' => $date2,
+         'payment_type' => $payment_type,
+         'admin' => $admin,
+         'non_invoice' => $non_invoice,]);
 
-    return $pdf->stream($file . '.pdf');
+       // return $invoice;
+      // die();
+    // $file = 'Payment-' . $date1.'-'.$date2 . '.pdf';
+    // $pdf = PDF::loadView('pdf.payment_report', [
+    //   'title' => 'PDF Title',
+    //   'author' => 'PDF Author',
+    //   'margin_left' => 20,
+    //   'margin_right' => 20,
+    //   'margin_top' => 60,
+    //   'margin_bottom' => 20,
+    //   'margin_header' => 15,
+    //   'margin_footer' => 10,
+    //   'showImageErrors' => true,
+    //   'invoice' => $invoice,
+    //   'date1' => $date1,
+    //   'date2' => $date2,
+    //   'payment_type' => $payment_type,
+    //   'admin' => $admin,
+    //   'non_invoice' => $non_invoice,
+    // ]);
+    // return $pdf->stream($file . '.pdf');
+
+
   }
 
 
 
   public function payment_report_date(Request $request)
   {
-   
      $date= $request->input('date');
      $payment_type = $request->input('payment_type');
 
-    $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+    $admin = Admin::where('admin_name',Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
       'header_size','resheader_size','getway_fee','other_link')->first();
-  
   
      $invoice = Invoice::leftjoin('members', 'members.id', '=', 'invoices.member_id')
          ->leftjoin('apps', 'apps.id', '=', 'invoices.category_id')
@@ -804,27 +811,12 @@ class AdminController extends Controller
         ->where('payment_type',$payment_type)
         ->select('apps.category','nonmembers.*')->orderBy('nonmembers.id', 'asc')->get();
 
-      // return $invoice;
-      // die();
-    $file = 'Payment-' . $date. '.pdf';
-    $pdf = PDF::loadView('pdf.payment_report_date', [
-      'title' => 'PDF Title',
-      'author' => 'PDF Author',
-      'margin_left' => 20,
-      'margin_right' => 20,
-      'margin_top' => 60,
-      'margin_bottom' => 20,
-      'margin_header' => 15,
-      'margin_footer' => 10,
-      'showImageErrors' => true,
-      'invoice' => $invoice,
-      'date' => $date,
-      'payment_type' => $payment_type,
-      'admin' => $admin,
-      'non_invoice' => $non_invoice,
-    ]);
-
-    return $pdf->stream($file . '.pdf');
+        return view('print.payment_report_date',[
+        'invoice' => $invoice,
+        'date' => $date,
+        'payment_type' => $payment_type,
+        'admin' => $admin,
+        'non_invoice' => $non_invoice]);
   }
 
 
@@ -850,27 +842,13 @@ class AdminController extends Controller
         ->where('payment_type',$payment_type)
         ->select('apps.category','nonmembers.*')->orderBy('nonmembers.id', 'asc')->get();
        
-        // return $invoice;
-       // die();
-    $file = 'Payment-' . $payment_type. '.pdf';
-    $pdf = PDF::loadView('pdf.payment_category_report', [
-      'title' => 'PDF Title',
-      'author' => 'PDF Author',
-      'margin_left' => 20,
-      'margin_right' => 20,
-      'margin_top' => 60,
-      'margin_bottom' => 20,
-      'margin_header' => 15,
-      'margin_footer' => 10,
-      'showImageErrors' => true,
-      'invoice' => $invoice,
-      'payment_type' => $payment_type,
-      'category_name'=>$category_name,
-      'admin' => $admin,
-      'non_invoice' => $non_invoice,
-    ]);
-
-    return $pdf->stream($file . '.pdf');
+        return view('print.payment_category_report',[
+          'invoice' => $invoice,
+          'payment_type' => $payment_type,
+          'category_name'=>$category_name,
+          'admin' => $admin,
+          'non_invoice' => $non_invoice,]);
+     
   }
 
    public function auto_invoice(Request $request)

@@ -3,8 +3,8 @@
 @section('admin_select','active')
 @section('content')
 
-<div class="row mt-4 mb-3">
-               <div class="col-3"> <h4 class="mt-0">Admin View</h4></div>
+    <div class="row mt-4 mb-3">
+               <div class="col-3"> <h4 class="mt-0"> Admin View </h4></div>
                      <div class="col-2">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                              <form action="{{url('maintain/adminpdf')}}" method="POST" enctype="multipart/form-data">
