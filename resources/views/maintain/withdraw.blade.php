@@ -42,8 +42,14 @@
           <p class="text-danger err_withdraw_amount"></p>
      </div>
 
-     
-	  
+     <div class="form-group  my-2">
+	      	<label><b> Organization Name</b></label>
+           <select class="form-select" name="admin_name" id="admin_name" aria-label="Default select example" required>
+                    @foreach($admin as $admin)
+                    <option value="{{$admin->admin_name}}">{{$admin->nameen}}</option>
+                    @endforeach
+                </select>
+       </div>
 
     
       <div class="loader">

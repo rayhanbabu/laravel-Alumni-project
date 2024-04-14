@@ -585,7 +585,8 @@ public function adminstatus($type,$status,$id){
 
 
       public function withdraw_index(){
-           return view('maintain.withdraw');
+           $admin= Admin::all();
+           return view('maintain.withdraw',['admin'=>$admin]);
        }
 
   public function withdraw_fetch(){

@@ -19,19 +19,17 @@ class WithdrawController extends Controller
     if(Session::has('admin')){
       $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
       $data=Withdraw::where('admin_name',$admin->admin_name)
-         ->orderBy('id', 'desc')->paginate(15);
+         ->orderBy('id','desc')->paginate(15);
        return view('admin.withdraw_data',compact('data'));
     }
    }
 
    public function store(Request $request){
-
-    if(Session::has('admin')){
-       $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-       $validator=\Validator::make($request->all(),[  
-         'withdraw_amount' => 'required|numeric',
-      ],
-     );
+    $admin= Admin::where('admin_name',$request->input('admin_name'))->first();
+        $validator=\Validator::make($request->all(),[  
+           'withdraw_amount' => 'required|numeric',
+         ],
+       );
     
    if($validator->fails()){
          return response()->json([
@@ -53,7 +51,7 @@ class WithdrawController extends Controller
                 'message'=>'Inserted Data',
              ]);   
        }
-      }
+     
     }
 
 
