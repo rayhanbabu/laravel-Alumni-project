@@ -39,7 +39,7 @@ class WithdrawController extends Controller
            'message'=>$validator->messages(),
          ]);
    }else{
-          if($admin->online_cur_amount>$request->withdraw_amount){
+          
               $app= new Withdraw;
               $app->withdraw_amount=$request->input('withdraw_amount');
               $app->bank_route=$admin->bank_route;
@@ -51,14 +51,7 @@ class WithdrawController extends Controller
              return response()->json([
                'status'=>200,  
                 'message'=>'Inserted Data',
-             ]);
-
-            }else{
-                return response()->json([
-                     'status'=>300,  
-                     'message'=>'Withdraw Amount gather than current amount. ',
-                  ]);
-            }
+             ]);   
        }
       }
     }

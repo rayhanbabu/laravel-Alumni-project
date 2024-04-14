@@ -236,7 +236,7 @@
 
      <a class="nav-link @yield('withdraw_select')" href="{{url('admin/withdraw')}}">
         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-          Withdraw Application
+          Withdraw 
      </a>
 
      <a class="nav-link @yield('issue_select') " href="{{url('admin/issue')}}">

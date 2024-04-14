@@ -153,6 +153,7 @@ Route::middleware('MaintainIs')->group(function(){
           //Payment information
           Route::get('maintain/payment',[OnlinepaymentController::class,'paymentview']);
           //withdraw
+          Route::post('/admin/withdraw',[WithdrawController::class,'store']);
           Route::get('/maintain/withdraw/',[MaintainController::class,'withdraw_index']);
           Route::get('/maintain/withdraw_fetch/',[MaintainController::class,'withdraw_fetch']);
           Route::get('/maintain/withdraw/fetch_data/',[MaintainController::class,'withdraw_fetch_data']);
@@ -319,7 +320,6 @@ Route::middleware('AdminIs')->group(function(){
 
          //Withdraw 
         Route::get('/admin/withdraw/',[WithdrawController::class,'index']);
-        Route::post('/admin/withdraw',[WithdrawController::class,'store']);
         Route::get('/admin/withdraw_fetch/',[WithdrawController::class,'fetch']);
         Route::get('/admin/withdraw/fetch_data/',[WithdrawController::class,'fetch_data']);
         Route::delete('/admin/withdraw_delete/{id}',[WithdrawController::class,'destroy']);

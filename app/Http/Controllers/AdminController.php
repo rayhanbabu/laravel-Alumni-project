@@ -17,6 +17,7 @@ use Exception;
 use App\Models\App;
 use App\Models\Invoice;
 use App\Models\Nonmember;
+use App\Models\Withdraw;
 use Illuminate\Support\Str;
 
 
@@ -64,10 +65,12 @@ class AdminController extends Controller
        $total_payment=$member+$nonmember;
        $all_category= APP::where('admin_name', Session::get('admin')->admin_name)->where('status',1)->orderBy('id','desc')->get();
        $event_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Event')->where('status', 1)->get();
-    }
+       $withdraw = Withdraw::where('withdraw_status',1)->where('admin_name', $data->admin_name)->sum('withdraw_amount');
+   
+      }
 
       return view('admin.dashboard', ['admin' => $data, 'all_category'=>$all_category ,'event_category' => $event_category,
-          'total_payment' => $total_payment]);
+          'total_payment' => $total_payment,'withdraw' =>$withdraw]);
   }
 
 

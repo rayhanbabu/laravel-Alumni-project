@@ -77,7 +77,7 @@
                 <div class="card-body">
                     <div class="media d-flex">
                         <div class="media-body text-left">
-                            <h3 class="success"> {{$total_payment}}TK </h3>
+                            <h3 class="success"> {{$total_payment-$withdraw}}TK </h3>
                             </h3>
                             <span>Available Online Amount</span>
                         </div>
@@ -101,7 +101,7 @@
                 <div class="card-body">
                     <div class="media d-flex">
                         <div class="media-body text-left">
-                            <h3 class="success">{{$admin->online_withdraw}}TK</h3>
+                            <h3 class="success">{{$withdraw}}TK</h3>
                             </h3>
                             <span>Online Withdraw </span>
                         </div>
