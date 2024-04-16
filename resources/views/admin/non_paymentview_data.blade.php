@@ -23,7 +23,7 @@
             @if($row->payment_status == 1)
               <td><a  class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to Change this Status')"  href="{{ url('admin/non_payment_status/'.$row->id)}}">Paid</a></td>
               @else
-              <td><a  class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to Change this Status')"  href="{{ url('admin/non_payment_status/'.$row->id)}}">Unpaud</a></td>
+              <td><a  class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to Change this Status')"  href="{{ url('admin/non_payment_status/'.$row->id)}}">Unpaid</a></td>
            @endif
                   <td>{{ $row->payment_type}}</td>
                   <td>{{ $row->payment_method}} {{ $row->payment_time}}</td>

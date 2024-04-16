@@ -18,7 +18,7 @@
             @if($row->payment_status == 1)
               <td> <button type="button" id="{{ $row->id}}" class="status_id btn btn-success btn-sm">Paid</button> </td>
             @else
-             <td> <button type="button" id="{{ $row->id}}" class="status_id btn btn-warning btn-sm">Pending</button> </td>
+             <td> <button type="button" id="{{ $row->id}}" class="status_id btn btn-warning btn-sm">Unpaid</button> </td>
            @endif
                   <td>{{ $row->payment_type}}</td>
                   <td>{{ $row->payment_method}} {{ $row->payment_time}}</td>

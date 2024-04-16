@@ -45,7 +45,7 @@
   
       <div class="row">
           <div class="col-sm-4 my-2">
-              <label for="name">Date<span style="color:red;"> * </span></label>
+              <label for="name"> Date <span style="color:red;"> * </span> </label>
              <input type="date" name="date" id="name"  value="{{$data->date}}"class="form-control" placeholder=""  required>
           </div>
 
