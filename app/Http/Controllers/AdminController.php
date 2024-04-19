@@ -867,9 +867,20 @@ class AdminController extends Controller
   
       $event_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Event')->where('status', 1)->get();
 
+
+      $event_member=Invoice::leftjoin('apps', 'apps.id', '=', 'invoices.category_id')
+      ->leftjoin('members', 'members.id', '=', 'invoices.member_id')
+       ->where('invoices.admin_name',$admin->admin_name)->where('apps.admin_category','Event')->where('apps.status', 1)
+       ->where('payment_status',1)->select('apps.category', 'invoices.*','members.name'
+      ,'members.phone','members.member_card','members.serial')->orderBy('members.serial','asc')->get();
+     
+      $event_non_member=Nonmember::leftjoin('apps', 'apps.id', '=', 'nonmembers.category_id')
+       ->where('nonmembers.admin_name',$admin->admin_name)->where('apps.admin_category','Event')->where('apps.status', 1)
+       ->where('payment_status',1)->select('apps.category', 'nonmembers.*')->orderBy('nonmembers.id','asc')->get();
      
         return view('print.event_report',[
-        'event_category' => $event_category,
+        'event_member' => $event_member,
+        'event_non_member' => $event_non_member,
         'admin' => $admin,]);
   }
 

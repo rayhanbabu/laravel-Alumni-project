@@ -82,21 +82,14 @@
 
         <b> Member List of current Event</b>
 <table>
-
     <tr>
         <th align="left" width="40">Membership</th>
         <th align="left" width="40">Serial No</th>
-	      <th align="left" width="140">Name</th>
-        <th align="left" width="70">Event Type</th>
-        <th align="left" width="60">Signature </th>
+	      <th align="left" width="220">Name</th>
+        <th align="left" width="120">Event Type</th>
+        <th align="left" width="90">Signature </th>
     </tr>
-  
-  @foreach($event_category as $item)
 
-      @php
-      $event_member=event_atten_number($item->admin_name,$item->id);
-      @endphp
-    
      @foreach($event_member as $row)
         <tr>
 	          <td align="left" > {{$row->member_card}}</td>
@@ -106,43 +99,35 @@
             <td align="left" > </td>
         </tr>  
         @endforeach
-     
-  @endforeach
 </table>
 
  <br>
 
 
-   
  <b> Non-Member List of current Event</b>
 <table>
-
     <tr>
         <th align="left" width="40">Membership</th>
         <th align="left" width="40">Serial No</th>
-	      <th align="left" width="140">Name</th>
-        <th align="left" width="70">Event Type</th>
-        <th align="left" width="60">Signature </th>
+	      <th align="left" width="220">Name</th>
+        <th align="left" width="120">Event Type</th>
+        <th align="left" width="90">Signature </th>
     </tr>
-  
-  @foreach($event_category as $item)
 
-      @php
-      $event_non_member=non_event_atten_number($item->admin_name,$item->id);
-      @endphp
-    
      @foreach($event_non_member as $row)
         <tr>
-	          <td align="left" > </td>
-            <td align="left" > {{$row->id}}</td>
-            <td align="left" > {{$row->name}}</td>
-            <td align="left" >{{$row->category}} </td>
-            <td align="left" > </td>
+	          <td align="left"> </td>
+            <td align="left"> {{$row->id}}</td>
+            <td align="left"> {{$row->name}}</td>
+            <td align="left"> {{$row->category}} </td>
+            <td align="left"> </td>
         </tr>  
         @endforeach
-     
-  @endforeach
 </table>
+
+
+   
+ 
 
 
 
