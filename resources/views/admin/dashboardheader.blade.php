@@ -231,7 +231,7 @@
 
      <a class="nav-link @yield('dataview_select')" href="{{url('admin/dataview')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             Token  Setup
+           Registartion & Token  Setup
      </a>
 
      <a class="nav-link @yield('withdraw_select')" href="{{url('admin/withdraw')}}">

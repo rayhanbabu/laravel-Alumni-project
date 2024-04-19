@@ -110,7 +110,11 @@ function get_balance() {
 
 
       function event_atten_number($admin_name,$category_id){
-          $data=Invoice::where('admin_name',$admin_name)->where('category_id',$category_id)->where('payment_status',1)->get();
+          $data=Invoice::leftjoin('apps', 'apps.id', '=', 'invoices.category_id')
+             ->leftjoin('members', 'members.id', '=', 'invoices.member_id')
+          ->where('invoices.admin_name',$admin_name)->where('invoices.category_id',$category_id)
+          ->where('payment_status',1)->select('apps.category', 'invoices.*','members.name'
+          ,'members.phone','members.member_card','members.serial')->orderBy('members.serial','asc')->get();
           return $data;
        }
 
@@ -121,7 +125,9 @@ function get_balance() {
       } 
 
        function non_event_atten_number($admin_name,$category_id){
-          $data=Nonmember::where('admin_name',$admin_name)->where('category_id',$category_id)->where('payment_status',1)->get();
+          $data=Nonmember::leftjoin('apps', 'apps.id', '=', 'nonmembers.category_id')->
+          where('nonmembers.admin_name',$admin_name)->where('category_id',$category_id)
+          ->where('payment_status',1)->select('apps.category', 'nonmembers.*')->orderBy('nonmembers.id','asc')->get();
           return $data;
        }
 

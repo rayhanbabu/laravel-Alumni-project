@@ -640,6 +640,10 @@ class AdminController extends Controller
     $admin->token5 = $request->input('token5');
     $admin->token6 = $request->input('token6');
 
+    $admin->program_title = $request->input('program_title');
+    $admin->program_desc = $request->input('program_desc');
+    $admin->program_status = $request->input('program_status');
+
     $admin->update();
     return redirect()->back()->with('success', 'Token Setup Update Successfuly');
   }
@@ -853,6 +857,23 @@ class AdminController extends Controller
           'non_invoice' => $non_invoice,]);
      
   }
+
+
+  public function event_report(Request $request)
+  {
+     
+     $admin = Admin::where('admin_name',Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+      'header_size','resheader_size','getway_fee','other_link')->first();
+  
+      $event_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Event')->where('status', 1)->get();
+
+     
+        return view('print.event_report',[
+        'event_category' => $event_category,
+        'admin' => $admin,]);
+  }
+
+
 
    public function auto_invoice(Request $request)
     {

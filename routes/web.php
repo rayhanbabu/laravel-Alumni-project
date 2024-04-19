@@ -334,8 +334,9 @@ Route::middleware('AdminIs')->group(function(){
          Route::post('/pdf/payment_report',[AdminController::class,'payment_report']);
          Route::post('/pdf/payment_report_date',[AdminController::class,'payment_report_date']);
          Route::post('/pdf/payment_category_report',[AdminController::class,'payment_category_report']);
-         
-         Route::get('/auto_invoice', [AdminController::class, 'auto_invoice']);
+         Route::post('/pdf/event_report',[AdminController::class,'event_report']);
+      
+         Route::get('/auto_invoice', [AdminController::class,'auto_invoice']);
 
    });
 

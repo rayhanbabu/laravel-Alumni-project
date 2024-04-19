@@ -146,7 +146,7 @@
 
 <div class="row">
 
-    <div class="col-xl-4 col-sm-6 col-12 p-2">
+    <div class="col-xl-3 col-sm-6 col-12 p-2">
         <div class="card bg-light shadow">
             <div class="mx-3 my-2">
                 <b class="text-center">Range Wise Payment Report </b>
@@ -179,7 +179,7 @@
         </div>
     </div>
 
-    <div class="col-xl-4 col-sm-6 col-12 p-2">
+    <div class="col-xl-3 col-sm-6 col-12 p-2">
         <div class="card bg-light shadow">
             <div class="mx-3 my-2">
                 <b class="text-center">Date Wise Payment Report </b>
@@ -207,7 +207,7 @@
         </div>
     </div>
 
-    <div class="col-xl-4 col-sm-6 col-12 p-2">
+    <div class="col-xl-3 col-sm-6 col-12 p-2">
         <div class="card bg-light shadow">
             <div class="mx-3 my-2">
                 <b class="text-center">Category Wise Payment Report </b>
@@ -222,7 +222,6 @@
                         <option value="Online">Online</option>
                     </select>
                 </div>
-
 
                 <div class="justify-content-end p-3">
                     <label> Select category</label>
@@ -242,6 +241,36 @@
             </form>
         </div>
     </div>
+
+
+
+    <div class="col-xl-3 col-sm-6 col-12 p-2">
+        <div class="card bg-light shadow">
+            <div class="mx-3 my-2">
+                <b class="text-center">Member & Non Member Event List  </b>
+            </div>
+            <form action="{{ url('pdf/event_report') }}" method="post" enctype="multipart/form-data">
+                {!! csrf_field() !!}
+                <div class="justify-content-end p-3">
+                   
+                </div>
+
+                <div class="justify-content-end p-3">
+                   
+                </div>
+
+
+
+                <div class="form-group  mx-3 my-3">
+                    <input type="submit" value="Submit" class="btn btn-primary waves-effect waves-light btn-sm">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
 </div>
 
 

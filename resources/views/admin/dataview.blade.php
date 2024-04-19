@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="row mt-4 mb-3">
-               <div class="col-3"> <h4 class="mt-0">Token Setup</h4></div> 
+               <div class="col-3"> <h4 class="mt-0">Registration & Token Setup</h4></div> 
                      </div> 
                </div>  
              
@@ -27,6 +27,9 @@
  <table class="table table-bordered" id="employee_data">
     <thead>
       <tr>
+        <th width="10%" >Program Title</th>
+        <th width="10%" >Program Value, Date, Deadline</th>
+        <th width="10%" >Program Status</th>
          <th width="10%" >Token 1</th>
          <th width="10%" >Token 2 </th>
          <th width="10%" >Token 3 </th>
@@ -41,6 +44,9 @@
 
 	@foreach($admin as $item)
 	 <tr>
+        <td>{{$item->program_title}}</td>
+        <td>{{$item->program_desc}}</td>
+        <td>{{$item->program_status}}</td>
         <td>{{$item->token1}}</td>
         <td>{{$item->token2}}</td>
         <td>{{$item->token3}}</td>
@@ -51,9 +57,11 @@
 
     <td>
       <button type="button" name="edit" id="{{$item->id}}" class="btn btn-success btn-sm edit" 
-	    data-token1="{{$item->token1}}"  data-token2="{{$item->token2}}"  data-token3="{{$item->token3}}"
-          data-token4="{{$item->token4}}" data-token5="{{$item->token5}}" data-token6="{{$item->token6}}"
-           >Edit</button>
+	         data-token1="{{$item->token1}}"  data-token2="{{$item->token2}}"  data-token3="{{$item->token3}}"
+           data-token4="{{$item->token4}}" data-token5="{{$item->token5}}" data-token6="{{$item->token6}}"
+           data-program_title="{{$item->program_title}}" data-program_desc="{{$item->program_desc}}"
+           data-program_status="{{$item->program_status}}" 
+          >Edit</button>
     </td>
 
       
@@ -89,7 +97,9 @@
                    var token4 = $(this).data("token4");
                    var token5 = $(this).data("token5");
                    var token6 = $(this).data("token6");
-                 
+                   var program_title = $(this).data("program_title"); 
+                   var program_desc = $(this).data("program_desc");
+                   var program_status = $(this).data("program_status");
                  
                  
                    
@@ -100,6 +110,10 @@
                      $('#edit_token4').val(token4);
                      $('#edit_token5').val(token5);
                      $('#edit_token6').val(token6);
+
+                     $('#edit_program_title').val(program_title);
+                     $('#edit_program_desc').val(program_desc);
+                     $('#edit_program_status').val(program_status);
                     
                      $('#updatemodal').modal('show');
                 });
@@ -129,8 +143,27 @@
 
          <input type="hidden" id="edit_id" name="id" class="form-control">
 
-         <div class="row px-3">
+           <div class="row px-3">
 
+         
+           <div class="form-group  col-sm-12  my-2">
+               <label class=""><b> Program Title</b></label>
+               <input type="text" id="edit_program_title"  name="program_title" class="form-control" >
+           </div> 
+
+          
+           <div class="form-group  col-sm-12  my-2">
+               <label class=""><b>Token 1</b></label>
+               <input type="text" id="edit_program_desc"  name="program_desc" class="form-control" >
+           </div> 
+       
+           <div class="form-group  col-sm-12  my-2">
+                <label class=""><b> Program Status</b></label>
+                <select class="form-select"  id="edit_program_status"  name="program_status" aria-label="Default select example">
+                     <option value="1">Show</option>
+                     <option value="0">Hidden</option>
+             </select>
+              </div> 
        
 
           <div class="form-group  col-sm-12  my-2">
@@ -148,10 +181,10 @@
                <input type="text" id="edit_token3"  name="token3" class="form-control" >
           </div>
 
-          <div class="form-group  col-sm-12  my-2">
+           <div class="form-group  col-sm-12  my-2">
                <label class=""><b>Token 4</b></label>
                <input type="text" id="edit_token4"  name="token4" class="form-control" >
-          </div>
+           </div>
 
           <div class="form-group  col-sm-12  my-2">
                <label class=""><b>Token 5</b></label>
