@@ -28,7 +28,7 @@
     <thead>
       <tr>
         <th width="10%" >Program Title</th>
-        <th width="10%" >Program Value, Date, Deadline</th>
+        <th width="10%" >Program Vanue, Date, Deadline</th>
         <th width="10%" >Program Status</th>
          <th width="10%" >Token 1</th>
          <th width="10%" >Token 2 </th>
@@ -133,7 +133,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Token Setup  Edit</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Registration & Token Setup  Edit</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
@@ -153,7 +153,7 @@
 
           
            <div class="form-group  col-sm-12  my-2">
-               <label class=""><b>Program Value, Date, Deadline</b></label>
+               <label class=""><b>Program Vanue, Date, Deadline</b></label>
                <input type="text" id="edit_program_desc"  name="program_desc" class="form-control" >
            </div> 
        

@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="row mt-4 mb-3">
-               <div class="col-6"> <h4 class="mt-0">Ex President / Secretary View</h4></div>
+               <div class="col-6"> <h4 class="mt-0">Ex President, Secretary & Donor View</h4></div>
                      <div class="col-3">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             
@@ -61,33 +61,29 @@
                       <option value="Select One">Select One</option>
                       <option value="President">President</option>
                       <option value="Secretary">Secretary</option>  
+                      <option value="Donor">Donor</option>  
                  </select>
               </div>
          </div>
 
 
             <div class="my-2">
-             <label for="desig">From Date<span style="color:red;"> * </span></label>
-             <input type="date" name="date1" id="date1" class="form-control" placeholder=""  required>
+             <label for="desig">From Date / Donor Info</label>
+             <input type="text" name="date1" id="date1" class="form-control" placeholder=""  >
           </div>
 
           <div class="my-2">
-             <label for="desig">To Date<span style="color:red;"> * </span></label>
-             <input type="date" name="date2" id="date2" class="form-control" placeholder=""  required>
+             <label for="desig">To Date</label>
+             <input type="text" name="date2" id="date2" class="form-control" placeholder=""  >
           </div>
 
           <div class="my-2">
-             <label for="avatar">Select Image(300*300)</label>
+             <label for="avatar">Select Image(300kb)</label>
              <input type="file" name="image"  id="image" class="form-control" >
           </div>
 
 
-      
-
-          
-      
-
-
+    
           
           <div class="loader">
             <img src="{{ asset('images/abc.gif') }}" alt="" style="width: 50px;height:50px;">
@@ -142,19 +138,20 @@
                        <option value="Select One">Select One</option>
                        <option value="President">President</option>
                        <option value="Secretary">Secretary</option>  
+                       <option value="Donor">Donor</option>  
                     </select>
                 </div>
            </div>
 
 
             <div class="my-2">
-             <label for="desig">From Date<span style="color:red;"> * </span></label>
-             <input type="date" name="date1" id="edit_date1" class="form-control" placeholder=""  required>
+             <label for="desig">From Date  Donor Info</label>
+             <input type="text" name="date1" id="edit_date1" class="form-control" placeholder=""  >
           </div>
 
           <div class="my-2">
-             <label for="desig">To Date<span style="color:red;"> * </span></label>
-             <input type="date" name="date2" id="edit_date2" class="form-control" placeholder=""  required>
+             <label for="desig">To Date</label>
+             <input type="text" name="date2" id="edit_date2" class="form-control" placeholder=""  >
           </div>
 
           <div class="my-2">

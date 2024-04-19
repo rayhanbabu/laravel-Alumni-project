@@ -93,6 +93,7 @@ use App\Http\Controllers\NonmemberController;
        //category =Gallery
        Route::get('/{username}/magazine/{category}', [TestimonialController::class, 'apimagazine']);
        Route::get('/{username}/expre', [TestimonialController::class, 'apiexpre']);
+      
 
        //Payment Getway
 

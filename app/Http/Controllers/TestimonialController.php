@@ -566,17 +566,18 @@ public function delete(Request $request) {
     public function apiexpre($username) {
          $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
               'mobile','admin_name','header_size','resheader_size')->first();
-          $data1 = expre::where('category','President')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
-          $data2 = expre::where('category','Secretary')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
+          $president = expre::where('category','President')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
+          $secretary = expre::where('category','Secretary')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
+          $donor = expre::where('category','Donor')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
           $logu = Magazine::where('category','Slide')->where('text4','Logu')->where('admin_name',$admin->admin_name)->first();
           
-          return response()->json([
+             return response()->json([
                   'admin'=>$admin 
                   ,'logu'=>$logu
-                  ,'data1'=>$data1
-                  ,'data2'=>$data2
-                  
-           ]);
+                  ,'president'=>$president
+                  ,'secretary'=>$secretary
+                  ,'donor'=>$donor     
+               ]);
     }
 
 

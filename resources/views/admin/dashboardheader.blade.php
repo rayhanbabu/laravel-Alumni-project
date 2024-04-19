@@ -279,7 +279,7 @@
 
      <a class="nav-link @yield('expre_select')" href="{{url('/expre/index')}}">
      <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-         Ex president / Secretary 
+         Ex president,Secretary & Donor
    </a>
 
 
