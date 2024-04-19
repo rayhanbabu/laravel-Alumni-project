@@ -153,7 +153,7 @@
 
           
            <div class="form-group  col-sm-12  my-2">
-               <label class=""><b>Token 1</b></label>
+               <label class=""><b>Program Value, Date, Deadline</b></label>
                <input type="text" id="edit_program_desc"  name="program_desc" class="form-control" >
            </div> 
        
