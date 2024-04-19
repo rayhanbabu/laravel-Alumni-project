@@ -145,7 +145,7 @@
 
 
             <div class="my-2">
-             <label for="desig">From Date  Donor Info</label>
+             <label for="desig">From Date/ Donor Info</label>
              <input type="text" name="date1" id="edit_date1" class="form-control" placeholder=""  >
           </div>
 
@@ -155,7 +155,7 @@
           </div>
 
           <div class="my-2">
-             <label for="avatar">Select Image(300*300)</label>
+             <label for="avatar">Select Image(300kb)</label>
              <input type="file" name="image"  id="image" class="form-control" >
           </div>
 
