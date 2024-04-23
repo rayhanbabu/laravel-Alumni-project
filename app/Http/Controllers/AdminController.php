@@ -693,7 +693,7 @@ class AdminController extends Controller
         'getway_fee',
         'other_link'
       )->first();
-      $category = App::where('admin_name', $username)->where('admin_category', 'Event')->where('status', 1)->where('id', $request->category_id)->first();
+      $category = App::where('admin_name', $username)->where('status', 1)->where('id', $request->category_id)->first();
       if ($category) {
         $verify = Member::where('member_verify', 1)->where('id', $member_id)->count('id');
 
