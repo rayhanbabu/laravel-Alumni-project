@@ -176,34 +176,41 @@ $(document).ready(function(){
         $(document).on('click', '.status_id', function(e) {
         e.preventDefault();
         let id = $(this).attr('id');
-        Swal.fire({
-          title: 'Are you sure?',
-          text: "Update Payment Status?",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, Update it'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            $.ajax({
-              url:'/admin/payment_status',
-              method: 'post',
-              data: {
-                id: id,
-              },
-              success: function(response) {
-                if(response.status==200){
+        
+
+        (async () => {
+        const { value: payment_method } = await Swal.fire({
+               input:'text',
+               inputLabel:'Payment Ref/ Payment Receipt',
+               inputPlaceholder:'Payment Ref/ Payment Receipt'
+             })
+       if (payment_method) {
+           $.ajax({
+                url:'/admin/payment_status',
+                method: 'post',
+                data: {
+                  id: id,
+                  payment_method: payment_method,
+                },
+               success: function(response) {
+                //console.log(response);
+                 if(response.status==200){
                   Swal.fire("",response.message, "success");
                   fetch();
                  }else if(response.status==300){
                   Swal.fire("",response.message, "warning");  
+                 }else if(response.status==400){
+                  Swal.fire("",response.message, "warning");  
                  }
-                
-              }
-            });
-          }
-        })
+
+                }
+              });
+
+            }
+        })();
+
+
+        
       });
 
 

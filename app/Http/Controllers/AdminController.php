@@ -505,6 +505,7 @@ class AdminController extends Controller
   public function payment_status(Request $request)
   {
     $id = $request->id;
+    $payment_method = $request->payment_method;
     $invoice = Invoice::where('id', $id)->first();
 
     if ($invoice->payment_type == "Online") {
@@ -517,12 +518,10 @@ class AdminController extends Controller
         $status = 1;
         $payment_time = date('Y-m-d H:i:s');
         $payment_type = 'Offline';
-        $payment_method = 'admin';
       } else {
         $status = 0;
         $payment_time = date('2010-10-10 10:10:10');
         $payment_type = 'Offline';
-        $payment_method = '';
       }
       $payment_date = date('Y-m-d');
       $payment_day = date('d');
