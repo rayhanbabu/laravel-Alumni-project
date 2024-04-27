@@ -142,6 +142,10 @@ class NoticeController extends Controller
    public function destroy($id)
    {
        $post = Notice::find($id);  
+       $path=public_path('uploads/admin/').$post->image;
+       if(File::exists($path)){
+        File::delete($path);
+        }
        
        $post->delete();
        return redirect('/admin/notice')->with('success','Data Deleted  successfully');

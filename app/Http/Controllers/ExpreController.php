@@ -168,10 +168,11 @@ public function edit(Request $request) {
           $w=$hw[0];
           $h=$hw[1];	 
            //  if($w<310 && $h<310){
-              $filePath = public_path('uploads/admin') . '/' . $text->image;
-              if (file_exists($filePath)) {
-                   unlink($filePath);
-                }
+              $path = public_path('uploads/admin') . '/' . $text->image;
+
+                if(File::exists($path)){
+                  File::delete($path);
+             }
               $image = $request->file('image');
               $new_name = rand() . '.' . $image->getClientOriginalExtension();
               $image->move(public_path('uploads/admin'), $new_name);
