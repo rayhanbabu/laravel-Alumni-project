@@ -96,8 +96,17 @@ class MemberController extends Controller
                $model->district_id = $request->input('district_id');
                $model->upazilla_id = $request->input('upazilla_id');
                $model->union_id = $request->input('union_id');
+               $model->post_office = $request->input('post_office');
+               $model->post_code = $request->input('post_code');
                $model->word_id = $request->input('word_id');
                $model->village = $request->input('village');
+
+               $model->pre_division_id = $request->input('pre_division_id');
+               $model->pre_district_id = $request->input('pre_district_id');
+               $model->pre_upazilla_id = $request->input('pre_upazilla_id');
+               $model->pre_union_id = $request->input('pre_union_id');
+               $model->pre_post_office = $request->input('pre_post_office');
+               $model->pre_post_code = $request->input('pre_post_code');
 
                $model->expertise = $request->input('expertise');
                $model->training = $request->input('training');
@@ -461,8 +470,17 @@ class MemberController extends Controller
          $model->district_id = $request->input('district_id');
          $model->upazilla_id = $request->input('upazilla_id');
          $model->union_id = $request->input('union_id');
+         $model->post_office = $request->input('post_office');
+         $model->post_code = $request->input('post_code');
          $model->word_id = $request->input('word_id');
          $model->village = $request->input('village');
+
+         $model->pre_division_id = $request->input('pre_division_id');
+         $model->pre_district_id = $request->input('pre_district_id');
+         $model->pre_upazilla_id = $request->input('pre_upazilla_id');
+         $model->pre_union_id = $request->input('pre_union_id');
+         $model->pre_post_office = $request->input('pre_post_office');
+         $model->pre_post_code = $request->input('pre_post_code');
 
          $model->bn_name = $request->input('bn_name');
          $model->mother_name = $request->input('mother_name');
