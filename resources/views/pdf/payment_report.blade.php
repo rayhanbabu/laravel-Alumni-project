@@ -27,7 +27,7 @@ th, td {
         <h5> Payment Summary : {{$date1}} To {{$date2}} <br>Payment Type : {{$payment_type}}</h5>
 </center>
 
-
+<h4> Total Payment {{$date1}} To {{$date2}} : {{ $invoice->sum('amount')}}</h4>
 <h4> Member Payment History</h4>
 <table>
 
