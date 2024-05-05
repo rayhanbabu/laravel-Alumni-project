@@ -436,7 +436,7 @@ class NonmemberController extends Controller
        {
           
           $id = $request->id;
-          $payment_method = $request->id;
+          $payment_method = $request->payment_method;
           $invoice = Nonmember::where('id', $id)->first();
       
           if ($invoice->payment_type == "Online") {

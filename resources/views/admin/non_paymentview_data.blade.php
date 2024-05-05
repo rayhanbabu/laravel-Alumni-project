@@ -21,7 +21,7 @@
         @if($row->payment_status == 1)
           <td> 
              <button type="button" name="edit" id="{{$row->id}}" class="btn btn-success btn-sm edit" 
-	  	       data-serial="{{$row->payment_method}}" >Paid</button>
+	  	       data-payment_method="{{$row->payment_method}}" >Paid</button>
           </td>
               @else
            <td>      
