@@ -374,22 +374,7 @@ class NonmemberController extends Controller
        }
      
      
-       public function non_payment_update(Request $request)
-       {
-
-        if (Session::has('admin')) {
-          $admin = Session::get('admin');
-        }
-  
-         $request->validate([
-          'serial' => 'required|unique:nonmembers,serial,' . $request->input('id') . 'NULL,id,admin_name,' . $admin->admin_name,
-         ]);
-         $model = Nonmember::find($request->input('id'));
-         $model->serial = $request->input('serial');
-         $model->update();
-         return back()->with('success','Update Successfully');
-       }     
-
+      
 
        public function add_non_payment(Request $request)
        {
@@ -447,10 +432,11 @@ class NonmemberController extends Controller
 
 
 
-       public function non_payment_status(Request $request, $id)
+       public function non_payment_update(Request $request)
        {
           
           $id = $request->id;
+          $payment_method = $request->id;
           $invoice = Nonmember::where('id', $id)->first();
       
           if ($invoice->payment_type == "Online") {
@@ -460,12 +446,10 @@ class NonmemberController extends Controller
               $status = 1;
               $payment_time = date('Y-m-d H:i:s');
               $payment_type = 'Offline';
-              $payment_method = 'admin';
             } else {
               $status = 0;
               $payment_time = date('2010-10-10 10:10:10');
               $payment_type = 'Offline';
-              $payment_method = '';
             }
             $payment_date = date('Y-m-d');
             $payment_day = date('d');

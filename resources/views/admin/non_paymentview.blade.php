@@ -96,7 +96,6 @@
       <th  width="10%">Payment Category</th>
       <th  width="10%">Email , Passing Yaer</th>
       <th  width="10%">Payment</th>
-      <th  width="10%">Edit</th>
 		  <th  width="10%">Payment Status</th>
       <th  width="10%">Payment Type</th>
       <th  width="10%">Payment Info</th>
@@ -126,10 +125,10 @@ $(document).ready(function(){
       
          $(document).on('click','.edit',function(){
                    var id = $(this).attr("id");  
-                   var serial = $(this).data("serial");
+                   var payment_method = $(this).data("payment_method");
 
                    $('#edit_id').val(id);
-                   $('#edit_serial').val(serial);
+                   $('#edit_payment_method').val(payment_method);
 
                    $('#updatemodal').modal('show');
             });
@@ -304,8 +303,8 @@ $(document).ready(function(){
               <div class="row px-3">
 
               <div class="form-group col-sm-12  my-2"> 
-                 <label class=""><b>Serial No </b></label>
-                 <input type="text" name="serial" id="edit_serial" class="form-control" required>
+                  <label class=""> <b>Payment Ref/Payment Receipt </b></label>
+                  <input type="text" name="payment_method" id="edit_payment_method" class="form-control" required>
               </div> 
 
          </div>

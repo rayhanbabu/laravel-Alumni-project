@@ -64,9 +64,9 @@ class MemberController extends Controller
                $model = new Member;
                $model->category_id = $request->input('category_id');
                $model->serial = $count;
-                if($request->input('member_card')){
+                 if($request->input('member_card')){
                     $model->member_card = $request->input('member_card');
-                }else{  $model->member_card = $member_card; }
+                 }else{  $model->member_card = $member_card; }
                $model->admin_name = $request->username;
                $model->name = $request->input('name');
                $model->degree_category = $request->input('degree_category');
@@ -116,6 +116,8 @@ class MemberController extends Controller
                $model->father_name = $request->input('father_name');
                $model->nid = $request->input('nid');
                $model->about_self = $request->input('about_self');
+               $model->address_status = $request->input('address_status');
+               $model->org_address = $request->input('org_address');
 
 
                if ($request->hasfile('profile_image')) {
@@ -456,7 +458,7 @@ class MemberController extends Controller
          $model->city = $request->input('city');
          $model->occupation = $request->input('occupation');
          $model->phone = $request->input('phone');
-         $model->email = $request->input('email');
+         //$model->email = $request->input('email');
          $model->blood = $request->input('blood');
 
          $model->organization = $request->input('organization');
@@ -481,6 +483,9 @@ class MemberController extends Controller
          $model->pre_union_id = $request->input('pre_union_id');
          $model->pre_post_office = $request->input('pre_post_office');
          $model->pre_post_code = $request->input('pre_post_code');
+
+         $model->address_status = $request->input('address_status');
+         $model->org_address = $request->input('org_address');
 
          $model->bn_name = $request->input('bn_name');
          $model->mother_name = $request->input('mother_name');

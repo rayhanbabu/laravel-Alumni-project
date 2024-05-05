@@ -15,15 +15,19 @@
                   <td>{{ $row->name}} <br> {{ $row->phone}}</td>
                   <td>{{ $row->category}}</td>
                   <td>{{ $row->email}} , {{ $row->passing_year}} </td>
-                  <td>
-       <button type="button" name="edit" id="{{$row->id}}" class="btn btn-success btn-sm edit" 
-	  	     data-serial="{{$row->serial}}" >Edit</button>
-        </td>
+                 
+      
                   <td>{{ $row->amount}}</td>
-            @if($row->payment_status == 1)
-              <td><a  class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to Change this Status')"  href="{{ url('admin/non_payment_status/'.$row->id)}}">Paid</a></td>
+        @if($row->payment_status == 1)
+          <td> 
+             <button type="button" name="edit" id="{{$row->id}}" class="btn btn-success btn-sm edit" 
+	  	       data-serial="{{$row->payment_method}}" >Paid</button>
+          </td>
               @else
-              <td><a  class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to Change this Status')"  href="{{ url('admin/non_payment_status/'.$row->id)}}">Unpaid</a></td>
+           <td>      
+              <button type="button" name="edit" id="{{$row->id}}" class="btn btn-warning btn-sm edit" 
+	  	        data-payment_method="{{$row->payment_method}}" >Pending</button>
+          </td>
            @endif
                   <td>{{ $row->payment_type}}</td>
                   <td>{{ $row->payment_method}} {{ $row->payment_time}}</td>

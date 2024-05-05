@@ -75,12 +75,12 @@
 
       <div class="area">
      
-        <h5> {{$admin->nameen}}<br>
+       <h5>{{$admin->nameen}}<br>
             {{$admin->address}}<br>
-         Payment Summary : {{$date1}} To {{$date2}} <br>Payment Type : {{$payment_type}}</h5>
+            Payment Summary : {{$date1}} To {{$date2}}<br>Payment Type : {{$payment_type}}</h5>
         
-         <h4> Total Payment[{{$date1}} To {{$date2}}] : {{ $invoice->sum('amount')+ $non_invoice->sum('amount')}}TK</h4>
-        <b> Member Payment History </b>
+           <h4> Total Payment[{{$date1}} To {{$date2}}] : {{ $invoice->sum('amount')+ $non_invoice->sum('amount')}}TK</h4>
+           <b> Member Payment History </b>
 <table>
 
     <tr>
