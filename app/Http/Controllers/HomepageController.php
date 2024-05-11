@@ -267,6 +267,23 @@ public function update(Request $request ){
 
 
 
+   public function du_term(Request $request){
+     $du_term=Homepage::where('babu','TermDu')->orderBy('serial','asc')->get();
+         return response()->json([
+           'status'=>'success',  
+            'data'=>$du_term,
+         ]);
+      }
+
+
+    public function du_privacy(Request $request){
+       $du_term=Homepage::where('babu','PolicyDu')->orderBy('serial','asc')->get();
+         return response()->json([
+           'status'=>'success',  
+            'data'=>$du_term,
+          ]);
+      }
+
 
 
 

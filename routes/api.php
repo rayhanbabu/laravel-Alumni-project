@@ -10,6 +10,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\DuclubController;
 use App\Models\Testimonial;
 use App\Http\Controllers\NonmemberController;
+use App\Http\Controllers\HomepageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,10 @@ use App\Http\Controllers\NonmemberController;
        Route::get('/duclub/api/product_view', [DuclubController::class,'product_view']);
        Route::get('/duclub/api/login/{phone}', [DuclubController::class,'duclub_login']);
        Route::get('/duclub/api/VerifyLogin/{phone}/{otp}',[DuclubController::class, 'duclub_VerifyLogin']);
+
+
+       Route::get('/dumess/api/term', [HomepageController::class,'du_term']);
+       Route::get('/dumess/api/privacy', [HomepageController::class,'du_privacy']);
 
   Route::middleware('DuClubToken')->group(function(){ 
        Route::get('/duclub/api/member_ledger', [DuclubController::class,'member_ledger']);
