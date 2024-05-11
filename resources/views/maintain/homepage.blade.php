@@ -57,6 +57,8 @@
                          <option value="Refund">Refund</option> 
                          <option value="Cancel">Cancel</option>
                          <option value="DUCLUB">DUCLUB</option>
+                         <option value="TermDu">TermDu</option> 
+                         <option value="PolicyDu">PolicyDu</option> 
                    </select>
               </div>
           </div>
@@ -151,6 +153,8 @@
                           <option value="Refund">Refund</option> 
                           <option value="Cancel">Cancel</option>
                           <option value="DUCLUB">DUCLUB</option>
+                          <option value="TermDu">TermDu</option> 
+                          <option value="PolicyDu">PolicyDu</option> 
                     </select>
             </div>
           </div>
