@@ -119,6 +119,9 @@ class MemberController extends Controller
                $model->address_status = $request->input('address_status');
                $model->org_address = $request->input('org_address');
 
+               $model->batch_id = $request->input('batch_id');
+               $model->profession_id = $request->input('profession_id');
+
 
                if ($request->hasfile('profile_image')) {
                   $file = $_FILES['profile_image']['tmp_name'];
@@ -486,6 +489,9 @@ class MemberController extends Controller
 
          $model->address_status = $request->input('address_status');
          $model->org_address = $request->input('org_address');
+
+         $model->batch_id = $request->input('batch_id');
+         $model->profession_id = $request->input('profession_id');
 
          $model->bn_name = $request->input('bn_name');
          $model->mother_name = $request->input('mother_name');

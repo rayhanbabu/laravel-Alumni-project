@@ -546,6 +546,28 @@ public function delete(Request $request) {
             'data'=>$data 
       ]);
     }
+
+
+    public function apibatchcategory($username){
+      $data= App::where('admin_name',$username)->where('admin_category','Batch')
+      ->where('status',1)->select('id','category')->get();
+     
+       return response()->json([
+           'status'=>200,
+            'data'=>$data 
+      ]);
+    }
+
+
+    public function apiprofessioncategory($username){
+      $data= App::where('admin_name',$username)->where('admin_category','Profession')
+      ->where('status',1)->select('id','category')->get();
+     
+       return response()->json([
+           'status'=>200,
+            'data'=>$data 
+      ]);
+    }
     
     public function apimagazine($username,$category){
           $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',

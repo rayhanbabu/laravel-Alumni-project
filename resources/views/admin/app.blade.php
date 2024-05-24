@@ -41,11 +41,15 @@
 
      <input type="hidden" name="admin_category"  id="admin_category" value="{{$admin_category}}" >
 
-     <div class="form-group  my-2">
-	      	<label><b>Amount (TK)</b></label>
-	        <input name="amount" id="amount" type="number"   class="form-control"  required/>
-          <p class="text-danger err_category"></p>
-     </div>
+     @if($admin_category=="Event" || $admin_category=="Member") 
+       <div class="form-group  my-2">
+	        	<label><b>Amount (TK)</b></label>
+	          <input name="amount" id="amount" type="number"   class="form-control"  required/>
+            <p class="text-danger err_category"></p>
+        </div>
+     @else
+         <input type="hidden" name="amount"  id="amount" value="0" >
+     @endif
 
     <div class="form-group  my-2">
          <label for="lname">Category Show Member</label>
@@ -102,11 +106,15 @@
           <p class="text-danger err_category"></p>
      </div>
 
+     @if($admin_category=="Event" || $admin_category=="Member") 
      <div class="form-group  my-2">
 	      	<label><b>Amount (TK)</b></label>
 	        <input name="amount" id="edit_amount" type="number"   class="form-control"  required/>
           <p class="text-danger err_amount"></p>
      </div>
+     @else
+         <input type="hidden" name="amount"  id="amount" value="0" >
+     @endif
 
     <div class="form-group  my-2">
          <label for="lname">Category Show Member</label>
@@ -160,12 +168,14 @@
        <tr>
        <th  width="10%">Id</th>
        <th width="25%" class="sorting" data-sorting_type="asc" data-column_name="category" style="cursor: pointer" >category 
-                <span id="category_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
-       <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Amount
-                  <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
-           <th  width="10%">Status</th>
-		      <th  width="10%"></th>
-		      <th  width="10%"></th>
+              <span id="category_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
+                @if($admin_category=="Event" || $admin_category=="Member") 
+                  <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Amount
+                    <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
+                @endif
+             <th  width="10%">Status</th>
+		         <th  width="10%"></th>
+		         <th  width="10%"></th>
       </tr>
     </thead>
     <tbody>

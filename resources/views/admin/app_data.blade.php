@@ -1,8 +1,10 @@
 @foreach($data as $row)
            <tr>
-                 <td>{{ $row->id}}</td>
+                  <td>{{ $row->id}}</td>
                   <td>{{ $row->category}}</td>
-                  <td>{{ $row->amount}}</td>
+                  @if($row->admin_category=="Event" || $row->admin_category=="Member") 
+                     <td>{{ $row->amount}}</td>
+                  @endif
                   <td>
           @if($row->status == 1)
              <a href="#"  class="btn btn-success btn-sm">Show<a>

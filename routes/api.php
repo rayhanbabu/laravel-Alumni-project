@@ -73,6 +73,8 @@ use App\Http\Controllers\HomepageController;
        Route::get('/{username}/viewmember/{id}', [TestimonialController::class,'apiviewmember']);
        Route::get('/{username}/membersearch', [TestimonialController::class,'apimembersearch']);
        Route::get('/{username}/member_category', [TestimonialController::class,'apimembercategory']);
+       Route::get('/{username}/batch_category', [TestimonialController::class,'apibatchcategory']);
+       Route::get('/{username}/profession_category', [TestimonialController::class,'apiprofessioncategory']);
 
        //HomePage Booking 
        Route::get('/{username}/membercard/{membercard}',[MemberController::class,'apimembercard']);
