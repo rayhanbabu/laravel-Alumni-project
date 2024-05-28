@@ -280,9 +280,16 @@
      </a>
 
      <a class="nav-link @yield('expre_select')" href="{{url('/expre/index')}}">
-     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-         Former president, Secretary & Donor
-   </a>
+        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+            Former president, Secretary & Donor
+     </a>
+
+    
+       <a class="nav-link @yield('committee_select')" href="{{url('admin/committee/Committee')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+              Former Committee
+        </a>
+
 
 
    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseattansetting" aria-expanded="false" aria-controls="collapseLayouts">
@@ -294,6 +301,7 @@
          <nav class="sb-sidenav-menu-nested nav">
             <a class="nav-link" href="{{url('admin/app/Batch')}}">Batch</a>
             <a class="nav-link" href="{{url('admin/app/Profession')}}"> Profession</a>
+            <a class="nav-link" href="{{url('admin/app/Committee')}}"> Committee</a>
         </nav>
     </div>
 

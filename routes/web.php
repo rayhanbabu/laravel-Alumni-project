@@ -21,6 +21,7 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\InvoiceMaintainController;
 use App\Http\Controllers\NonmemberController;
+use App\Http\Controllers\CommitteeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -203,6 +204,16 @@ Route::middleware('AdminIs')->group(function(){
     Route::post('/admin/app_update/{id}',[AppController::class,'update']);
     Route::delete('/admin/app_delete/{id}',[AppController::class,'destroy']);
 
+
+     //committee 
+     Route::get('/admin/committee/{admin_category}',[CommitteeController::class,'index']);
+     Route::post('/admin/committee',[CommitteeController::class,'store']);
+     Route::get('/admin/committee_fetch/{admin_category}/{committee_id}',[CommitteeController::class,'fetch']);
+     Route::get('/admin/committee/fetch_data/{admin_category}/{committee_id}',[CommitteeController::class,'fetch_data']);
+     Route::get('/admin/committee_edit/{id}',[CommitteeController::class,'edit']);
+     Route::post('/admin/committee_update/{id}',[CommitteeController::class,'update']);
+     Route::delete('/admin/committee_delete/{id}',[CommitteeController::class,'destroy']);
+       
 
     //member
     Route::get('/admin/member/{category_id}', [AdminController::class, 'member']);

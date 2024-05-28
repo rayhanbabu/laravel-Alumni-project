@@ -7,6 +7,7 @@ use App\Models\Testimonial;
 use App\Models\Homepage;
 use App\Models\App;
 use App\Models\Admin;
+use App\Models\Committee;
 use App\Models\Maintain;
 use App\Models\Magazine;
 use App\Models\Notice;
@@ -551,12 +552,11 @@ public function delete(Request $request) {
     public function apibatchcategory($username){
       $data= App::where('admin_name',$username)->where('admin_category','Batch')
       ->where('status',1)->select('id','category')->get();
-     
        return response()->json([
-           'status'=>200,
-            'data'=>$data 
-      ]);
-    }
+             'status'=>200,
+             'data'=>$data 
+        ]);
+     }
 
 
     public function apiprofessioncategory($username){
@@ -568,6 +568,26 @@ public function delete(Request $request) {
             'data'=>$data 
       ]);
     }
+
+
+     public function apicommitteecategory($username){
+       $data= App::where('admin_name',$username)->where('admin_category','Committee')
+       ->where('status',1)->select('id','category')->get();
+         return response()->json([
+              'status'=>200,
+              'data'=>$data 
+          ]);
+      }
+
+
+      public function committee_list($username,$committee_id){
+        $data= Committee::where('admin_name',$username)->where('category','Committee')->where('committee_id',$committee_id)
+        ->where('status',1)->orderBy('serial','asc')->get();
+          return response()->json([
+               'status'=>200,
+               'data'=>$data 
+           ]);
+       }
     
     public function apimagazine($username,$category){
           $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
