@@ -8,7 +8,7 @@
                   <li class="breadcrumb-item active">Dashboard/password change</li>
               </ol>
      <div class="row">
-         <p>      'batch_id'=> $row[0], 
+         <p>   'batch_id'=> $row[0], 
               'member_card'=>$row[1],
               'serial'=>$row[2], 
               'admin_name'=>$row[3], 
