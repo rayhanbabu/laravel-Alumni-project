@@ -32,6 +32,25 @@ function prx($arr){
        } 
    }
 
+     function batch_category(){
+       if(Session::has('admin')){
+            $admin=Session::get('admin');
+            $category=DB::table('apps')->where('admin_name',$admin->admin_name)->where('admin_category','Batch')->get();
+            return $category;
+         } 
+      }
+
+
+      function profession_category(){
+         if(Session::has('admin')){
+              $admin=Session::get('admin');
+              $category=DB::table('apps')->where('admin_name',$admin->admin_name)->where('admin_category','Profession')->get();
+              return $category;
+           } 
+        }
+    
+  
+
 
 
 function baseimage($path){

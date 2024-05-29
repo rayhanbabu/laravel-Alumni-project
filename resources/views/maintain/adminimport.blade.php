@@ -8,6 +8,16 @@
                   <li class="breadcrumb-item active">Dashboard/password change</li>
               </ol>
      <div class="row">
+         <p>    'batch_id'=> $row[0], 
+              'member_card'=>$row[1],
+              'serial'=>$row[2], 
+              'admin_name'=>$row[3], 
+              'category_id'=>$row[4], 
+              'name'=> $row[5], 
+              'phone'=> $row[6], 
+              'email'=> $row[7], 
+              'member_password'=> $row[8], 
+              'village '=> $row[9],  </p>
          @if(session('status'))
          <h5 class="alert alert-success">{{ session('status')}} </h5>
                 @endif

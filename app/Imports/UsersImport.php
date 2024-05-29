@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use App\Models\User;
-use App\Models\Admin;
+use App\Models\Member;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class UsersImport implements ToModel
@@ -15,13 +15,17 @@ class UsersImport implements ToModel
     */
     public function model(array $row)
     {
-        return new Admin([
-              'name'     => $row[0],
-              'email'    => $row[1], 
-              'mobile'    => $row[2], 
-              'admin_name'    => $row[3], 
-              'admin_password' => $row[4],
-              'role'    => $row[5], 
+        return new Member([
+              'batch_id'=> $row[0], 
+              'member_card'=>$row[1],
+              'serial'=>$row[2], 
+              'admin_name'=>$row[3], 
+              'category_id'=>$row[4], 
+              'name'=> $row[5], 
+              'phone'=> $row[6], 
+              'email'=> $row[7], 
+              'member_password'=> $row[8], 
+              'village '=> $row[9], 
         ]);
     }
 }

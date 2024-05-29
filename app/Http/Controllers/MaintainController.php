@@ -467,15 +467,14 @@ public function adminstatus($type,$status,$id){
            );  
       }
      
-      return back()->with('success','Status Successful'); 
-   }
+       return back()->with('success','Status Successful'); 
+    }
    
 
       public function dataview(Request $request){
-        $maintain=Maintain::get();
-        return view('maintain.dataview',['maintain'=>$maintain]);
-
-      }
+          $maintain=Maintain::get();
+          return view('maintain.dataview',['maintain'=>$maintain]);
+       }
 
       public function dataedit(Request $request){
               

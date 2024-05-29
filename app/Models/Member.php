@@ -26,6 +26,10 @@ class Member extends Model
         'training',
         'expertise',
         'serial',
+        'village',
+        'batch_id',
+        'admin_name',
+        'member_password',
     ];
 
 }

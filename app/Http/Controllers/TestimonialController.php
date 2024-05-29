@@ -343,13 +343,13 @@ public function delete(Request $request) {
              $admin= Admin::where('admin_name',$admin_name)->select('id','name','nameen','address','email',
                      'mobile','admin_name','header_size','resheader_size')->first();
             if($admin){
-                Cookie::queue('cook_user',$admin->admin_name,60/6); // 60 minutes
-                return redirect('/');   
-             }else{
+                 Cookie::queue('cook_user',$admin->admin_name,60/6); // 60 minutes
+                 return redirect('/');   
+              }else{
                 return redirect('/web/search');  
-             }
+              }
            
-       }
+          }
 
 
   

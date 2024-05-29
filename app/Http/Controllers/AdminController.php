@@ -314,6 +314,7 @@ class AdminController extends Controller
       $sort_by = $request->get('sortby');
       $sort_type = $request->get('sorttype');
       $search = $request->get('search');
+      $range = $request->get('range');
       $search = str_replace(" ", "%", $search);
       $data = Member::leftjoin('apps', 'apps.id', '=', 'members.category_id')
         ->where('members.admin_name', $admin->admin_name)->Where('members.category_id', $request->category_id)
@@ -323,7 +324,7 @@ class AdminController extends Controller
             ->orWhere('name', 'like', '%' . $search . '%')
             ->orWhere('email', 'like', '%' . $search . '%');
         })->select('apps.category', 'members.*')->orderBy('member_verify', 'asc')->orderBy($sort_by, $sort_type)
-        ->paginate(10);
+        ->paginate($range);
       return view('admin.member_data', compact('data'))->render();
     }
   }
@@ -406,6 +407,10 @@ class AdminController extends Controller
         $model->email_status = $request->input('email_status');
         $model->phone_status = $request->input('phone_status');
         $model->blood_status = $request->input('blood_status');
+
+        $model->village = $request->input('village');
+        $model->batch_id = $request->input('batch_id');
+        $model->profession_id = $request->input('profession_id');
         if ($request->hasfile('image')) {
           $imgfile = 'profile-';
           $size = $request->file('image')->getsize();

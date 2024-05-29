@@ -30,17 +30,27 @@
                   @endif
     </div>             
 
-
+   
     <div class="row my-2">
-    <div class="col-md-9">
-    <div id="success_message"></div>
+    <div class="col-md-3 p-2">
+      <select class="form-select form-select-sm" id="range" name="range" aria-label="Default select example " required>
+                     <option  value="10">10 </option>
+                    <option  value="20">20 </option>
+                    <option  value="50">50 </option>
+                    <option  value="100">100 </option>
+              </select>             
+    
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6 "> </div>
+
+    <div class="col-md-3 p-2">
      <div class="form-group">
       <input type="text" name="search" id="search" placeholder="Enter Search " class="form-control form-control-sm"  autocomplete="off"  />
      </div>
     </div>
    </div>
+
+   <div id="success_message"></div>
 				
 <div class="overflow">		
 <div class="x_content">
@@ -56,10 +66,10 @@
            Serial <span id="serial_icon"> <i class="fas fa-sort-amount-up-alt"></i></span> </th>
 		       <th width="35%">Name</th>
 	         <th width="20%">Email </th>
-          <th width="35%">Mobile</th>
-          <th width="5%">Password</th>
-          <th width="15%">Edit</th>
-          <th width="5%">View</th>		
+           <th width="35%">Mobile</th>
+          
+           <th width="15%">Edit</th>
+           <th width="5%">View</th>		
           
           <th width="8%" class="sorting" data-sorting_type="asc" data-column_name="email_verify" style="cursor: pointer">
           Email Verification <span id="email_verify_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
@@ -68,7 +78,15 @@
            Member Verification <span id="member_verify_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
           <th width="5%" >Status</th>
           <th width="5%" >Delete</th>
-        
+          <th width="5%">Password</th>
+      </tr>
+
+      <tr>
+          <td colspan="19">
+            <div  class="loader_page text-center">
+                <img src="{{ asset('images/abc.gif') }}" alt="" style="width: 50px;height:50px;">
+            </div>
+         </td>
       </tr>
     </thead>
     <tbody>
@@ -85,6 +103,8 @@
  
 </div>
 </div>
+
+
 
 
 
@@ -140,6 +160,9 @@
                   $("#edit_blood_status").val(response.value.blood_status);
                   $("#edit_phone_status").val(response.value.phone_status);
                   $("#edit_email_status").val(response.value.email_status);
+                  $('#edit_village').val(response.value.village);
+                  $('#edit_profession_id').val(response.value.profession_id);
+                  $('#edit_batch_id').val(response.value.batch_id);
                   $("#avatar_image").html(
                 `<img src="/uploads/admin/${response.value.profile_image}" width="100" class="img-fluid img-thumbnail">`);
                 }
@@ -250,13 +273,18 @@
 
 
 
-      function fetch_data(page, sort_type="", sort_by="", search=""){
+      function fetch_data(page, sort_type="", sort_by="", search="",range=""){
         $.ajax({
-        url:"/admin/member/fetch_data/{{$category_id}}"+"?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
+        url:"/admin/member/fetch_data/{{$category_id}}"+"?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search+"&range="+range,
+        beforeSend : function()
+               {
+               $('.loader_page').show();
+               },
         success:function(data)
         {
-        $('tbody').html('');
-        $('.x_content tbody').html(data);
+         $('tbody').html('');
+         $('.loader_page').hide();
+         $('.x_content tbody').html(data);
         }
         });
          }
@@ -267,7 +295,8 @@
         var column_name = $('#hidden_column_name').val();
         var sort_type = $('#hidden_sort_type').val();
         var page = $('#hidden_page').val();
-        fetch_data(page, sort_type, column_name, search);
+        var range = $('#range').val();
+        fetch_data(page, sort_type, column_name, search,range);
       });
 
 
@@ -277,7 +306,8 @@
            var column_name = $('#hidden_column_name').val();
            var sort_type = $('#hidden_sort_type').val();
            var search = $('#search').val();
-          fetch_data(page, sort_type, column_name, search);
+           var range = $('#range').val();
+          fetch_data(page, sort_type, column_name, search,range);
         }); 
 
 
@@ -301,12 +331,20 @@
            $('#hidden_sort_type').val(reverse_order);
            var page = $('#hidden_page').val();
            var search = $('#search').val();
-          fetch_data(page, reverse_order, column_name, search);
+           var range = $('#range').val();
+          fetch_data(page, reverse_order, column_name, search,range);
           });
 
 
 	
-
+          $(document).on('change', '#range', function(){
+               var search = $('#search').val();
+               var column_name = $('#hidden_column_name').val();
+               var sort_type = $('#hidden_sort_type').val();
+               var page = $('#hidden_page').val();
+              var range = $('#range').val();
+             fetch_data(page, sort_type, column_name, search,range);
+  });
 
 
 
@@ -318,7 +356,7 @@
 {{-- edit employee modal start --}}
 <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel"
   data-bs-backdrop="static" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Edit Member</h5>
@@ -329,41 +367,69 @@
          <div class="modal-body p-4 bg-light">
           <div class="row">
 
-        
-    
-              <div class="col-lg-6 my-2">
+              <div class="col-lg-4 my-2">
                     <label> Serial Number<span style="color:red;"> * </span></label>
                     <input name="serial"  type="text" id="edit_serial" class="form-control" value="" required />
                     <p class="text-danger edit_err_serial"></p>
               </div>
 
-              <div class="col-lg-6 my-2">
-              <label for="lname">Category<span style="color:red;"> * </span></label>
-               <select class="form-select" name="category_id" id="edit_category_id" aria-label="Default select example"  required >
-                   @foreach(member_category() as $category) 
-                      <option value="{{$category->id}}">{{$category->category}}</option>
-                   @endforeach
-
-               </select>
-            </div>
-
-            <div class="col-lg-12 my-2">
+             
+             <div class="col-lg-4 my-2">
                     <label> MemberShip Number <span style="color:red;"> * </span></label>
                     <input name="member_card"  type="text" id="edit_member_card" class="form-control" value="" required />
                     <p class="text-danger edit_err_member_card"></p>
               </div>
 
-              <div class="col-lg-12 my-2">
+              <div class="col-lg-4 my-2">
+              <label for="lname">Category<span style="color:red;"> * </span></label>
+                 <select class="form-select" name="category_id" id="edit_category_id" aria-label="Default select example"  required >
+                    @foreach(member_category() as $category) 
+                      <option value="{{$category->id}}">{{$category->category}}</option>
+                    @endforeach
+                </select>
+              </div>
+
+
+              <div class="col-lg-7 my-2">
                     <label>Name <span style="color:red;"> * </span></label>
                     <input name="name"  type="text" id="edit_name" class="form-control" value="" required />
                     <p class="text-danger edit_err_name"></p>
-              </div>   
+              </div>  
+              
+              <div class="col-lg-5 my-2">
+              <label for="lname">Profession</label>
+                 <select class="form-select" name="profession_id" id="edit_profession_id" aria-label="Default select example"   >
+                     <option value="">Select One</option>
+                 @foreach(profession_category() as $category) 
+                      <option value="{{$category->id}}">{{$category->category}}</option>
+                    @endforeach
+                </select>
+              </div>
 
-            <div class="col-lg-12 my-2">
-                    <label> Designation  </label>
+
+            <div class="col-lg-7 my-2">
+                    <label>Committee Designation  </label>
                     <input name="designation"  type="text" id="edit_designation" class="form-control" value=""  />
                     <p class="text-danger edit_err_designation"></p>
               </div>
+
+              <div class="col-lg-5 my-2">
+              <label for="lname">Batch/Session</label>
+                 <select class="form-select" name="batch_id" id="edit_batch_id" aria-label="Default select example"  >
+                       <option value="">Select One</option>
+                 @foreach(batch_category() as $category) 
+                         <option value="{{$category->id}}">{{$category->category}}</option>
+                     @endforeach
+                </select>
+              </div>
+
+
+             <div class="col-lg-12 my-2">
+                <label> Address <span style="color:red;"> * </span></label>
+                <input name="village"  type="text" id="edit_village" class="form-control" value=""  />
+                <p class="text-danger edit_err_email"></p>
+           </div>
+
 
              <div class="col-lg-8 my-2">
                   <label> Phone   No<span style="color:red;"> * </span></label>
