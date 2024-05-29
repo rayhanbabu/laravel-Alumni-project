@@ -407,6 +407,7 @@ class AdminController extends Controller
         $model->email_status = $request->input('email_status');
         $model->phone_status = $request->input('phone_status');
         $model->blood_status = $request->input('blood_status');
+        $model->organization = $request->input('organization');
 
         $model->village = $request->input('village');
         $model->batch_id = $request->input('batch_id');

@@ -163,6 +163,7 @@
                   $('#edit_village').val(response.value.village);
                   $('#edit_profession_id').val(response.value.profession_id);
                   $('#edit_batch_id').val(response.value.batch_id);
+                  $('#edit_organization').val(response.value.organization);
                   $("#avatar_image").html(
                 `<img src="/uploads/admin/${response.value.profile_image}" width="100" class="img-fluid img-thumbnail">`);
                 }
@@ -425,8 +426,14 @@
 
 
              <div class="col-lg-12 my-2">
-                <label> Address <span style="color:red;"> * </span></label>
+                <label> Address</label>
                 <input name="village"  type="text" id="edit_village" class="form-control" value=""  />
+                <p class="text-danger edit_err_email"></p>
+           </div>
+
+           <div class="col-lg-12 my-2">
+                <label> Organization </label>
+                <input name="organization"  type="text" id="edit_organization" class="form-control" value=""  />
                 <p class="text-danger edit_err_email"></p>
            </div>
 

@@ -26,6 +26,7 @@ class UsersImport implements ToModel
               'email'=> $row[7], 
               'member_password'=> $row[8], 
               'village'=> $row[9], 
+              'organization'=> $row[10], 
         ]);
     }
 }
