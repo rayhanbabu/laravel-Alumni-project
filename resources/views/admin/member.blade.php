@@ -3,8 +3,7 @@
 @section($category_id.'_select','active')
 @section('content')
 
-
-<div class="row mt-3 mb-0 mx-2">
+   <div class="row mt-3 mb-0 mx-2">
                 <div class="col-sm-3 my-2"> <h5 class="mt-0"><?php if($category->category){ echo $category->category;}else{ echo "";}?> View </h5></div>
                      
                  <div class="col-sm-6 my-2">
@@ -17,7 +16,9 @@
 
                 <div class="col-sm-3 my-2 ">
                  <div class="d-grid gap-3 d-flex justify-content-end">
-                   
+                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddModal">
+                           Add
+                         </button>  
                  </div>
                 </div>
 
@@ -28,7 +29,7 @@
                      @if(Session::has('fail'))
                  <div  class="alert alert-danger"> {{Session::get('fail')}}</div>
                   @endif
-    </div>             
+       </div>             
 
    
     <div class="row my-2">
@@ -103,6 +104,81 @@
  
 </div>
 </div>
+
+
+
+    <!-- Modal Add -->
+    <div class="modal fade" id="AddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="staticBackdropLabel"> Add</h5>
+           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+   <form method="post" id="add_form" enctype="multipart/form-data" >
+      <div class="modal-body">
+            <ul class="alert alert-warning d-none"  id="add_form_errlist"></ul>
+
+       <div class="form-group  my-2">
+	        	<label>Name <span style="color:red;"> * </span></label>
+	         <input name="name" id="name" type="text" class="form-control"  required/>
+           <p class="text-danger err_name"></p>
+       </div>
+
+     <div class="form-group  my-2">
+	      	<label>Membership Number <span style="color:red;"> * </span></label>
+	        <input name="member_card" type="text"   class="form-control"  required/>
+          <p class="text-danger err_member_card"></p>
+     </div>
+
+     <div class="form-group  my-2">
+           <label for="lname">Batch/Session</label>
+                 <select class="form-select" name="batch_id" id="batch_id" aria-label="Default select example"  required>
+                       <option value="">Select One</option>
+                 @foreach(batch_category() as $category) 
+                         <option value="{{$category->id}}">{{$category->category}}</option>
+                     @endforeach
+                </select>
+       </div>         
+
+        <div class="form-group  my-2">
+               <label> Phone   No<span style="color:red;"> * </span></label>
+                  <input name="phone"  type="text" id="phone" pattern="[0][1][3 4 5 6 7 8 9][0-9]{8}" class="form-control" value="" required />
+                 <p class="text-danger err_phone"></p>
+        </div>
+
+       <div class="form-group  my-2">
+           <label>E-mail<span style="color:red;"> * </span></label>
+                <input name="email"  type="email" id="email" class="form-control" value="" required />
+                <p class="text-danger err_email"></p>
+        </div>
+
+      <input type="hidden" name="category_id"  id="category_id" value="{{$category_id}}" >
+        
+  
+     
+    
+      <div class="loader">
+                  <img src="{{ asset('images/abc.gif') }}" alt="" style="width: 50px;height:50px;">
+			 </div><br>
+	 
+    
+     <button type="submit"  id="add_btn"   class=" btn btn-success">Submit</button>
+
+   </div>
+   </form> 
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>   
+
+ <!-- Modal Add  End-->
+
 
 
 
@@ -346,6 +422,55 @@
               var range = $('#range').val();
              fetch_data(page, sort_type, column_name, search,range);
   });
+
+
+  $(document).on('submit', '#add_form', function(e){ 
+        e.preventDefault();
+        
+         let formData=new FormData($('#add_form')[0]);
+       
+         $.ajax({
+             type:'POST',
+             url:'/admin/member_add',
+             data:formData,
+             contentType: false,
+             processData:false,
+             beforeSend : function()
+               {
+               $('.loader').show();
+               $("#add_btn").prop('disabled', true)
+               },
+             success:function(response){
+              //console.log(response);
+             if(response.status == 400){
+                   $('.err_phone').text(response.validate_err.phone);
+                   $('.err_email').text(response.validate_err.email);
+                   $('.err_member_card').text(response.validate_err.member_card);
+                 }else if(response.status == 500){
+                  Swal.fire("Du reg  already exist ", "Please try again", "warning");
+                 }else{
+                    //console.log(response.message);
+                    $('#add_form_errlist').html("");
+                    $('#add_form_errlist').addClass('d-none');
+                    $('#success_message').html("");
+                    $('#success_message').addClass('alert alert-success');
+                    $('#success_message').text(response.message)
+                    $('#AddModal').modal('hide');
+                    $("#add_form")[0].reset();
+                    $('.err_phone').text('');
+                    $('.err_email').text('');
+                    $('.err_member_card').text('');
+                    fetch();
+                 }  
+                 $('.loader').hide();
+                 $("#add_btn").prop('disabled', false)
+             }
+
+          });
+      
+    });  
+
+
 
 
 

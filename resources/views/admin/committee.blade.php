@@ -102,6 +102,13 @@
                       <option value="0">Hidden</option>
                 </select>
      </div>         
+
+
+          <div class="form-group  my-2">
+                <label for="roll"> Image (Max:400KB)</label>
+                <input type="file" name="image" id="image" class="form-control" placeholder="" >
+                <p class="text-danger error_building_image"></p>
+            </div>
 	  
    
 
@@ -174,7 +181,14 @@
                       <option value="1">Show</option>
                       <option value="0">Hidden</option>
                 </select>
-     </div>         
+     </div>     
+     
+     <div class="form-group  my-2">
+                <label for="roll"> Image (Max:400KB)</label>
+                <input type="file" name="image" id="image" class="form-control" placeholder="" >
+                <p class="text-danger error_building_image"></p>
+            </div>
+	  
 
 
     <div class="loader">
@@ -218,8 +232,8 @@
  <table class="table table-bordered" id="employee_data">
  <thead>
        <tr>
-           <th  width="10%">Id</th>
-
+             <th  width="10%">Id</th>
+             <th  width="10%">Image</th>
               <th width="10%" class="sorting" data-sorting_type="asc" data-column_name="serial" style="cursor: pointer" >Serial 
               <span id="serial_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
 

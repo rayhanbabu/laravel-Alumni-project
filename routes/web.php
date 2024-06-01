@@ -195,7 +195,7 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('/admin/password',[AdminController::class,'password']);
     Route::post('admin/password',[AdminController::class,'passwordedit']);
 
-    //Application 
+    //Application  
     Route::get('/admin/app/{admin_category}',[AppController::class,'index']);
     Route::post('/admin/app',[AppController::class,'store']);
     Route::get('/admin/app_fetch/{admin_category}',[AppController::class,'fetch']);
@@ -216,11 +216,12 @@ Route::middleware('AdminIs')->group(function(){
        
 
     //member
-    Route::get('/admin/member/{category_id}', [AdminController::class, 'member']);
-    Route::get('/admin/member_fetch/{category_id}', [AdminController::class, 'member_fetch']);
+    Route::post('/admin/member_add',[AdminController::class,'member_add']);
+    Route::get('/admin/member/{category_id}',[AdminController::class, 'member']);
+    Route::get('/admin/member_fetch/{category_id}',[AdminController::class, 'member_fetch']);
     Route::get('/admin/member_view/{id}', [AdminController::class, 'member_view']);
-    Route::get('/admin/member/fetch_data/{category_id}', [AdminController::class, 'member_fetch_data']);
-    Route::post('/admin/member_update', [AdminController::class, 'member_update']);
+    Route::get('/admin/member/fetch_data/{category_id}',[AdminController::class, 'member_fetch_data']);
+    Route::post('/admin/member_update',[AdminController::class, 'member_update']);
     Route::get('/admin/member/{operator}/{status}/{id}', [AdminController::class, 'memberstatus']);
     Route::get('/admin/member_delete/{id}', [AdminController::class, 'member_delete']);
     Route::post('/member/export',[AdminController::class,'member_export']); 

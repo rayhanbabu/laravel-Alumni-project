@@ -1,6 +1,7 @@
 @foreach($data as $row)
            <tr>
                   <td>{{ $row->id}}</td>
+                  <td> <img src="{{ asset('/uploads/admin/'.$row->image) }}" width="100" class="img-thumbnail" alt="Image"></td>
                   <td>{{ $row->serial}}</td>
                   <td>{{ $row->designation}}</td>
                   <td>{{ $row->name}}</td>

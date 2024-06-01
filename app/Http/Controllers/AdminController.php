@@ -452,6 +452,56 @@ class AdminController extends Controller
 
 
 
+  public function member_add(Request $request)
+  {
+        if(Session::has('admin')) {
+             $admin = Session::get('admin');
+        }
+
+    $validator = \Validator::make(
+      $request->all(),
+      [
+        'phone' => 'required|unique:members,phone',
+        'email' => 'required|unique:members,email',
+        'member_card' => 'required|unique:members,member_card,NULL,id,admin_name,' . $admin->admin_name,
+        'name' => 'required',
+        'image' => 'image|mimes:jpeg,png,jpg|max:400',
+      ],
+      [
+        'phone.required' => 'Phone number is required',
+        'email.required' => 'Email is required',
+      ]
+    );
+
+    if ($validator->fails()) {
+      return response()->json([
+        'status' => 400,
+        'validate_err' => $validator->messages(),
+      ]);
+    } else {
+        $model = new Member;
+        $model->phone = $request->input('phone');
+        $model->name = $request->input('name');
+        $model->email = $request->input('email');
+        $model->admin_name = $admin->admin_name;
+        $model->member_password ='Pass246#';
+        $model->serial = 0;
+        $model->category_id = $request->input('category_id');
+        $model->member_card = $request->input('member_card');
+        $model->batch_id = $request->input('batch_id');
+        $model->save();
+        return response()->json([
+          'status' => 200,
+          'message' => ' Updated Successfull'
+        ]);
+     
+    }
+  }
+
+
+
+
+
   public function paymentview()
   {
      $data = APP::where('admin_name',Session::get('admin')->admin_name)->where('status', 1)->orderBy('id', 'desc')->get();

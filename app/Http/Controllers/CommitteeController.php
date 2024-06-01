@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\validator;
 use App\Models\Admin;
 use DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\File;
 
 class CommitteeController extends Controller
 {
@@ -47,6 +48,7 @@ class CommitteeController extends Controller
              'category' => 'required',
              'name' => 'required',
              'committee_id' => 'required',
+             'image'=>'image|mimes:jpeg,png,jpg|max:400',
            ],
        );
       
@@ -65,6 +67,12 @@ class CommitteeController extends Controller
                 $app->link=$request->input('link');
                 $app->serial=$request->input('serial');
                 $app->admin_name=$admin->admin_name;
+                if($request->hasfile('image')){
+                  $image= $request->file('image');
+                  $file_name = 'image'.rand() . '.' . $image->getClientOriginalExtension();
+                  $image->move(public_path('uploads/admin'), $file_name);
+                  $app->image=$file_name;
+               }
                 $app->save();
                return response()->json([
                  'status'=>200,  
@@ -96,6 +104,7 @@ class CommitteeController extends Controller
        $validator=\Validator::make($request->all(),[       
           'name' => 'required',
           'designation' => 'required',
+          'image'=>'image|mimes:jpeg,png,jpg|max:400',
         ]);
 
       if($validator->fails()){
@@ -111,6 +120,16 @@ class CommitteeController extends Controller
               $app->designation=$request->input('designation');
               $app->link=$request->input('link');
               $app->serial=$request->input('serial');
+              if($request->hasfile('image')){
+                $path=public_path('uploads/admin/').$app->image;
+                if(File::exists($path)){
+                 File::delete($path);
+                 }
+                 $image= $request->file('image');
+                 $file_name = 'image'.rand() . '.' . $image->getClientOriginalExtension();
+                 $image->move(public_path('uploads/admin'), $file_name);
+                 $app->image=$file_name;
+             }
               $app->update();   
               return response()->json([
                   'status'=>200,
@@ -128,8 +147,12 @@ class CommitteeController extends Controller
 
 
      public function destroy($id){
-          $notice=Committee::find($id);
-          $notice->delete();
+          $post = Committee::find($id);  
+          $path=public_path('uploads/admin/').$post->image;
+           if(File::exists($path)){
+             File::delete($path);
+           }
+          $post->delete();
           return response()->json([
              'status'=>200,  
              'message'=>'Deleted Data',
