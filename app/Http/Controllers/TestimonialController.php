@@ -588,6 +588,20 @@ public function delete(Request $request) {
                'data'=>$data 
            ]);
        }
+
+    
+       public function current_committee($username){
+          $data= App::where('admin_name',$username)->where('admin_category','Committee')
+          ->where('status',1)->select('id','category')->first();
+         $data= Committee::where('admin_name',$username)->where('category','Committee')->where('committee_id',$data->id)
+          ->where('status',1)->orderBy('serial','asc')->get();
+            return response()->json([
+                'status'=>200,
+                'data'=>$data 
+            ]);
+        }
+
+
     
     public function apimagazine($username,$category){
           $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',

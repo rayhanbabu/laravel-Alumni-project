@@ -63,8 +63,7 @@
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
                 @if(Session::has('admin'))   
-                {{Session::get('admin')->nameen}},   Username : {{Session::get('admin')->admin_name}}
-               
+                  {{Session::get('admin')->nameen}},   Username : {{Session::get('admin')->admin_name}}
                 @endif                   
                 </div>
             </form>

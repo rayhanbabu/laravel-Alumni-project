@@ -35,16 +35,19 @@ class AdminController extends Controller
       'admin_password' => 'required',
     ]);
     $status = 1;
-    $admin = DB::table('admins')->where('admin_name', '=', $request->admin_name)->first();
+    $ipAddress = $request->ip();
+    $userAgent = $request->header('User-Agent');
+    $admin = DB::table('admins')->where('admin_name','=',$request->admin_name)->first();
     if ($admin) {
-      if ($request->admin_password == $admin->admin_password) {
+      if ($request->admin_password == $admin->admin_password){
         if ($admin->email_verify == $status) {
-          if ($admin->status == $status) {
-            $request->session()->put('admin', $admin);
-            return redirect('/admin/dashboard');
-          } else {
-            return back()->with('fail', 'Waiting for account verification');
-          }
+           if($admin->status == $status) {
+             DB::update("update admins set user_agent='$userAgent', ip_address='$ipAddress' where id='$admin->id'");
+               $request->session()->put('admin', $admin);
+               return redirect('/admin/dashboard');
+           } else {
+             return back()->with('fail', 'Waiting for account verification');
+           }
         } else {
           return back()->with('fail', 'Invalid E-mail.Send URL your mail. Please Click and Verify E-mail');
         }
