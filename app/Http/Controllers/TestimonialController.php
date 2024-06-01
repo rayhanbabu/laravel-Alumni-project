@@ -572,7 +572,7 @@ public function delete(Request $request) {
 
      public function apicommitteecategory($username){
        $data= App::where('admin_name',$username)->where('admin_category','Committee')
-       ->where('status',1)->select('id','category')->get();
+       ->select('id','category')->get();
          return response()->json([
               'status'=>200,
               'data'=>$data 
