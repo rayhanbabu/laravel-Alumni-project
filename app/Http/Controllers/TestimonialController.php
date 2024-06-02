@@ -360,7 +360,7 @@ public function delete(Request $request) {
 
           public function apihome($username){
                   $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email','program_desc','program_title','program_status',
-                     'mobile','admin_name','header_size','resheader_size','text1','text2','text3')->first();
+                     'mobile','admin_name','header_size','resheader_size','text1','text2','text3','blood_size')->first();
                   $slide = Magazine::where('category','Slide')->where('text4','Slide')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
                   $slide1 = Magazine::where('category','Slide')->where('text4','Slide')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->first();
                   $welcome = Magazine::where('category','Welcome')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
