@@ -68,12 +68,13 @@ class AdminController extends Controller
        $total_payment=$member+$nonmember;
        $all_category= APP::where('admin_name', Session::get('admin')->admin_name)->where('status',1)->orderBy('id','desc')->get();
        $event_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Event')->where('status', 1)->get();
+       $batch_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Batch')->where('status', 1)->get();
+       $profession_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Profession')->get();
        $withdraw = Withdraw::where('withdraw_status',1)->where('admin_name', $data->admin_name)->sum('withdraw_amount');
-   
       }
-
+   
       return view('admin.dashboard', ['admin' => $data, 'all_category'=>$all_category ,'event_category' => $event_category,
-          'total_payment' => $total_payment,'withdraw' =>$withdraw]);
+         'total_payment' => $total_payment,'withdraw' =>$withdraw ,'batch_category' => $batch_category,'profession_category' => $profession_category]);
   }
 
 
@@ -984,6 +985,40 @@ class AdminController extends Controller
 
 
 
+        public function member_info(Request $request)
+        {
+           
+           $admin = Admin::where('admin_name',Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+            'header_size','resheader_size','getway_fee','other_link')->first();
+        
+          
+            $batch_id=$request->input('batch_id');
+            $profession_id=$request->input('profession_id');
 
+            $batch_category = App::where('admin_name',Session::get('admin')->admin_name)->where('admin_category','Batch')->where('id',$batch_id)->first();
+            $profession_category = App::where('admin_name',Session::get('admin')->admin_name)->where('admin_category','Profession')->where('id',$profession_id)->first();
+           
+            if(!empty($batch_id) && !empty($profession_id)){
+                    $data = Member::where('admin_name',Session::get('admin')->admin_name)
+                   ->where('batch_id',$batch_id)->where('profession_id',$profession_id)->orderBy('member_card','asc')->orderBy('serial','asc')->get();
+                    return view('print.member_info',[ 'data' => $data,'admin' => $admin ,'batch_category'=>$batch_category
+                   ,'profession_category'=>$profession_category]);
+              }else if(empty($profession_id)){
+                    $data = Member::where('admin_name',Session::get('admin')->admin_name)
+                    ->where('batch_id',$batch_id)->orderBy('member_card','asc')->orderBy('serial','asc')->get();
+                    return view('print.member_info',[ 'data' => $data,'admin' => $admin,'batch_category'=>$batch_category
+                    ,'profession_category'=>$profession_category]);
+              }else if(empty($batch_id)){
+                    $data = Member::where('admin_name',Session::get('admin')->admin_name)
+                    ->where('profession_id',$profession_id)->orderBy('member_card','asc')->orderBy('serial','asc')->get();
+                    return view('print.member_info',['data' => $data,'admin' => $admin,'batch_category'=>$batch_category
+                     ,'profession_category'=>$profession_category]);
+                  }else{
+              return "Please Select Batch/Session or Prefession";
+            }
+             
+
+           
+        }
 
 }

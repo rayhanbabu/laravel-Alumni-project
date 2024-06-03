@@ -229,7 +229,6 @@ Route::middleware('AdminIs')->group(function(){
     Route::get('admin/dataview',[AdminController::class,'dataview']);
     Route::post('admin/dataedit',[AdminController::class,'dataedit']);
 
-
       //Notice
        Route::get('/admin/notice',[NoticeController::class,'index']);
        Route::get('/admin/notice_fetch',[NoticeController::class,'fetch']);
@@ -347,6 +346,7 @@ Route::middleware('AdminIs')->group(function(){
          Route::post('/pdf/payment_report_date',[AdminController::class,'payment_report_date']);
          Route::post('/pdf/payment_category_report',[AdminController::class,'payment_category_report']);
          Route::post('/pdf/event_report',[AdminController::class,'event_report']);
+         Route::post('/pdf/member_info',[AdminController::class,'member_info']);
       
          Route::get('/auto_invoice', [AdminController::class,'auto_invoice']);
          
