@@ -87,7 +87,7 @@
 	      <th align="left" width="220"> Name</th>
         <th align="left" width="120"> Phone</th>
         <th align="left" width="90"> Email </th>
-        <th align="left" width="90"> designation </th>
+        <th align="left" width="90"> Organization </th>
         <th align="left" width="90"> Address </th>
     </tr>
 
@@ -97,10 +97,14 @@
             <td align="left" > {{$row->name}}</td>
             <td align="left" > {{$row->phone}}</td>
             <td align="left" > {{$row->email}}</td>
-            <td align="left" > {{$row->designation}}</td>
+            <td align="left" > {{$row->organization}}</td>
             <td align="left" > {{$row->village}}</td>
         </tr>  
         @endforeach
+        <tr>
+	         <td align="left" colspan="4"> Total Member : {{$data->count()}}</td>
+           <td align="left" colspan="2"></td>  
+     </tr>
 </table>
 
       </div>
