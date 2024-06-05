@@ -59,13 +59,13 @@ class NoticeController extends Controller
 
 
     public function store(Request $request) {
-
-        $validated = $request->validate([
-            'date'=>'required',
-            'text'=>'required',
-            'image' =>'image|mimes:jpeg,png,jpg|max:500',
-            'title'=>'required',
-        ]);
+      
+         $validated = $request->validate([
+             'date'=>'required',
+             'text'=>'required',
+             'image' =>'mimes:jpeg,png,jpg,pdf|max:500',
+             'title'=>'required',
+          ]);
 
 
          if(Session::has('admin')){

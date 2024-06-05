@@ -53,6 +53,7 @@
              <label for="lname">Category<span style="color:red;"> * </span></label>
                  <select class="form-select" name="category" id="category" aria-label="Default select example"  required >
                       <option value="Notice">Notice</option>
+                      <option value="Meeting">Meeting</option>
                       <option value="Upcoming">Upcoming</option>
                       <option value="Past">Past</option>
                       <option value="Constitution">Constitution</option>

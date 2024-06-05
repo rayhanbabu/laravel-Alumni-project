@@ -649,18 +649,17 @@ class AdminController extends Controller
     $category_name = App::where('id', $category)->first();
 
     if ($_POST['month']) {
-      $invoice = Invoice::leftjoin('members', 'members.id', '=', 'invoices.member_id')
-        ->where('invoices.admin_name', $admin->admin_name)->where('invoices.category_id', $category)
-        ->where('invoices.payment_month', $month)->where('invoices.payment_year', $year)->where('invoices.payment_status', 1)
-        ->select('members.member_card', 'members.name', 'invoices.*')->orderBy('member_card', 'asc')->get();
-    } else {
-      $invoice = Invoice::leftjoin('members', 'members.id', '=', 'invoices.member_id')
-        ->where('invoices.admin_name', $admin->admin_name)->where('invoices.category_id', $category)->where('invoices.payment_status', 1)
-        ->select('members.member_card', 'members.name', 'invoices.*')->orderBy('member_card', 'asc')->get();
-    }
+       $invoice = Invoice::leftjoin('members', 'members.id', '=', 'invoices.member_id')
+         ->where('invoices.admin_name', $admin->admin_name)->where('invoices.category_id', $category)
+         ->where('invoices.payment_month', $month)->where('invoices.payment_year', $year)->where('invoices.payment_status', 1)
+         ->select('members.member_card', 'members.name', 'invoices.*')->orderBy('member_card', 'asc')->get();
+      } else {
+        $invoice = Invoice::leftjoin('members', 'members.id', '=', 'invoices.member_id')
+          ->where('invoices.admin_name', $admin->admin_name)->where('invoices.category_id', $category)->where('invoices.payment_status', 1)
+         ->select('members.member_card', 'members.name', 'invoices.*')->orderBy('member_card', 'asc')->get();
+      }
 
     $file = 'Invoice-' . $monthyear . '.pdf';
-
     $pdf = PDF::loadView('pdf.payment_category', [
       'title' => 'PDF Title',
       'author' => 'PDF Author',

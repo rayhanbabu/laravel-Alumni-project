@@ -1,3 +1,6 @@
+<?php
+ use Illuminate\Support\Facades\URL;
+?>
 @extends('admin/dashboardheader')
 @section('page_title','Admin Panel')
 @section('notice_select','active')
@@ -29,6 +32,11 @@
               <img src="{{ asset('/uploads/admin/'.$data->image) }}" width="100" class="img-thumbnail" alt="Image">
            
             </div>
+                  <br>
+            <a  target="_blank"  href="<?php echo URL::to('/uploads/admin/'.$data->image) ?>">
+                      <?php echo URL::to('/uploads/admin/'.$data->image) ?></a>  
+                      <br>
+                      <br>
           
                       Description
                       <hr>
