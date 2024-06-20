@@ -16,7 +16,7 @@ class AdminAccess
      */
     public function handle(Request $request, Closure $next)
     {
-        if(admin_access()->role=='Admin'){ 
+        if(maintain_access()->role=='Admin'){ 
             return $next($request);
         }else{
             return  response('Unauthorized') ;

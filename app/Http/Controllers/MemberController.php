@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Models\Admin;
-use App\Helpers\MaintainJWTToken;
+use App\Helpers\AlumniMemberJWTToken;
 use App\Helpers\ForgetJWTToken;
 use Illuminate\Support\Facades\Hash;
 use App\Models\App;
@@ -27,10 +27,9 @@ class MemberController extends Controller
 {
 
 
-   public function application_memebr(Request $request)
-   {
-      $admin = Admin::where('admin_name', $request->username)->first();
-      $validator = \Validator::make(
+   public function application_memebr(Request $request) {
+         $admin = Admin::where('admin_name', $request->username)->first();
+         $validator = \Validator::make(
          $request->all(),
          [
             'name' => 'required',
@@ -235,44 +234,39 @@ class MemberController extends Controller
 
    public function forget_password(request $request)
    {
-
       $email = $request->email;
       $rand = rand(11111, 99999);
-      $email_exist = Member::where('email', $email)->where('admin_name', $request->username)->count('email');
+      $email_exist = Member::where('email',$email)->where('admin_name',$request->username)->count('email');
       if ($email_exist >= 1) {
-         DB::update(
-            "update members set forget_code ='$rand' where email = '$email'"
-         );
-
-         $subject = 'Password Recovery Code';
-         $title = 'Dear ';
-         $body = 'Your one time recovery code';
-         $link = '';
-         $name = 'ANCOVA';
-         $details = [
-            'subject' => $subject,
-            'title' => $title,
-            'otp_code' => $rand,
-            'link' => $link,
-            'body' => $body,
-            'name' => $name,
-         ];
-         Mail::to($email)->send(new \App\Mail\ForgetMail($details));
-
-         $TOKEN_FORGET = ForgetJWTToken::CreateToken($email);
+          DB::update("update members set forget_code ='$rand' where email = '$email'");
+          $subject = 'Password Recovery Code';
+          $title = 'Dear ';
+          $body = 'Your one time recovery code';
+          $link = '';
+          $name = 'ANCOVA';
+          $details = [
+             'subject' => $subject,
+             'title' => $title,
+             'otp_code' => $rand,
+             'link' => $link,
+             'body' => $body,
+             'name' => $name,
+          ];
+          Mail::to($email)->send(new \App\Mail\ForgetMail($details));
+          $TOKEN_FORGET = ForgetJWTToken::CreateToken($email);
 
          return response()->json([
-            'status' => 200,
-            'TOKEN_FORGET' => $TOKEN_FORGET,
-            'message' => 'Recovery code send your E-mail',
-         ]);
-      } else {
-         return response()->json([
-            'status' => 600,
-            'message' => 'Invalid  Email ',
-         ]);
-      }
-   }
+             'status' => 200,
+             'TOKEN_FORGET' => $TOKEN_FORGET,
+             'message' => 'Recovery code send your E-mail',
+           ]);
+        } else {
+           return response()->json([
+             'status' => 600,
+             'message' => 'Invalid  Email ',
+          ]);
+        }
+    }
 
 
    public function forget_code(request $request)
@@ -380,9 +374,7 @@ class MemberController extends Controller
             if ($member->member_password == $request->member_password) {
                if ($member->status == $status) {
                   if ($member->email_verify == $status) {
-                     $token = MaintainJWTToken::CreateToken($member->email, $member->id, $member->admin_name);
-                     //Cookie::queue('token_login',$token,60*24);
-                     //->cookie('TOKEN_LOGIN',$token,60*24*30)
+                     $token = AlumniMemberJWTToken::CreateToken($member->email, $member->id, $member->admin_name);
                      return response()->json([
                         'status' => 200,
                         'message' => 'success login',
@@ -531,14 +523,13 @@ class MemberController extends Controller
    }
 
 
-   public function member_logout()
-   {
-      //->cookie('TOKEN_LOGIN','',-1)
-      return response()->json([
-         'status' => 200,
-         'message' => 'Member Logout',
-      ]);
-   }
+   public function member_logout(){
+       //->cookie('TOKEN_LOGIN','',-1) 
+       return response()->json([
+          'status' => 200,
+          'message' => 'Member Logout',
+       ]);
+    }
 
 
    public function password_update(request $request)

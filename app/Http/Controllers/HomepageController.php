@@ -254,7 +254,6 @@ public function update(Request $request ){
   }
 
 
-
    public function cancel(Request $request){
        $cancel=Homepage::where('babu','Cancel')->orderBy('serial','asc')->get();
        $FooterContact=Homepage::where('babu','FooterContact')->orderBy('serial','asc')->first();

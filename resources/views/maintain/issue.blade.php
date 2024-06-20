@@ -4,7 +4,7 @@
 @section('content')
 
   <div class="row mt-4 mb-3">
-          <div class="col-6"> <h4 class="mt-0">Payment Issue  View</h4></div>
+          <div class="col-6"> <h4 class="mt-0"> Payment Issue  View </h4></div>
                      <div class="col-3">
                           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             

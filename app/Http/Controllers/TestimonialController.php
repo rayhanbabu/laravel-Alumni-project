@@ -34,8 +34,8 @@ class TestimonialController extends Controller
 
    public function store(Request $request){
 
-    if(Session::has('admin')){
-    $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+      $admin_name = $request->header('admin_name'); 
+      $admin = Admin::where('admin_name', $admin_name)->first();
       $validator=\Validator::make($request->all(),[       
          'serial' => 'required',
          'name' => 'required',
@@ -120,7 +120,6 @@ class TestimonialController extends Controller
      
       }
 
-      }
 
     }
    }
@@ -128,10 +127,9 @@ class TestimonialController extends Controller
 
        
     
-   public function fetchAll($member) {
-    if(Session::has('admin')){
-    $admin=Session::get('admin');
-    $data = Testimonial::where('category',$member)->where('admin_name',$admin->admin_name)->get();
+   public function fetchAll(Request $request,$member) {
+    $admin_name = $request->header('admin_name'); 
+    $data = Testimonial::where('category',$member)->where('admin_name',$admin_name)->get();
       $output=' <h5 class="text-success"> Total Member : '.$data->count().' </h5>';	
     if ($data->count()> 0) {
        $output .= '<table class="table table-bordered table-sm text-start align-middle">
@@ -184,7 +182,6 @@ class TestimonialController extends Controller
     } else {
        echo '<h1 class="text-center text-secondary my-5">No record present in the database!</h1>';
     }
-  }
 }
 
 
@@ -200,8 +197,7 @@ public function edit(Request $request) {
 public function update(Request $request ){
            
       
-  $validator=\Validator::make($request->all(),[
-             
+  $validator=\Validator::make($request->all(),[          
     'serial' => 'required',
     'name' => 'required',
     'category' => 'required',
@@ -305,10 +301,8 @@ public function delete(Request $request) {
                        ->orWhere('admin_name', 'like', '%'.$search.'%')
                        ->orWhere('address', 'like', '%'.$search.'%')
                        ->get();
-
-     
+                       
     if ($data->count()> 0) {
-       
        foreach ($data as $row) {
             $output= '<div class="col-md-4 my-3">
                   <div class="card shadow">
@@ -342,25 +336,21 @@ public function delete(Request $request) {
        public function admin_name($admin_name) {
              $admin= Admin::where('admin_name',$admin_name)->select('id','name','nameen','address','email',
                      'mobile','admin_name','header_size','resheader_size')->first();
-            if($admin){
-                 Cookie::queue('cook_user',$admin->admin_name,60/6); // 60 minutes
-                 return redirect('/');   
+              if($admin){
+                  Cookie::queue('cook_user',$admin->admin_name,60/6); // 60 minutes
+                  return redirect('/');   
               }else{
-                return redirect('/web/search');  
+                 return redirect('/web/search');  
               }
-           
           }
 
-
-  
-
-          public function apiusername($username){
-                return response()->json(['username'=>$username]);
-           }
+           public function apiusername($username){
+               return response()->json(['username'=>$username]);
+            }
 
           public function apihome($username){
                   $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email','program_desc','program_title','program_status',
-                     'mobile','admin_name','header_size','resheader_size','text1','text2','text3','blood_size')->first();
+                     'mobile','admin_name','header_size','resheader_size','text1','text2','text3','blood_size','address_phone','address_email')->first();
                   $slide = Magazine::where('category','Slide')->where('text4','Slide')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
                   $slide1 = Magazine::where('category','Slide')->where('text4','Slide')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->first();
                   $welcome = Magazine::where('category','Welcome')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();

@@ -16,7 +16,7 @@ class IssueEditAccess
      */
     public function handle(Request $request, Closure $next)
     {
-        if(admin_access()->role=='Admin' || admin_access()->issue_edit=='Yes'){ 
+        if(maintain_access()->role=='Admin' || maintain_access()->issue_edit=='Yes'){ 
             return $next($request);
         }else{
             return  response('UnAthorized') ;

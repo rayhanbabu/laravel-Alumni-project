@@ -42,7 +42,7 @@ use App\Http\Controllers\HomepageController;
 
        Route::post('/{username}/member_login',[MemberController::class,'member_login']);
 
-       Route::middleware('MaintainToken')->group(function(){
+       Route::middleware('AlumniMemberToken')->group(function(){
             Route::get('{username}/member_profile', [MemberController::class, 'member_profile']);
             Route::post('{username}/member_update', [MemberController::class, 'member_update']);
             Route::get('{username}/member_logout', [MemberController::class,'member_logout']);

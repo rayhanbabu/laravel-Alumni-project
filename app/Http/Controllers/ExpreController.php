@@ -18,9 +18,8 @@ class ExpreController extends Controller
     }
 
    public function store(Request $request){
-  if(Session::has('admin')){
-    $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-   
+    $admin_name = $request->header('admin_name'); 
+    $admin = Admin::where('admin_name', $admin_name)->first();
     $validator=\Validator::make($request->all(),[        
        'serial' => 'required',
        'name' => 'required',
@@ -79,18 +78,14 @@ class ExpreController extends Controller
     }
    }
 
-   }
 
 
-
-
-    
-   public function fetchAll() {
-    if(Session::has('admin')){
-    $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-    $data = expre::where('admin_name',$admin->admin_name)->get();
-    $output=' <h5 class="text-success"> Total Row : '.$data->count().' </h5>';	
-    if ($data->count()> 0) {
+   public function fetchAll(Request $request) {
+       $admin_name = $request->header('admin_name'); 
+       $admin = Admin::where('admin_name', $admin_name)->first();
+       $data = expre::where('admin_name',$admin->admin_name)->get();
+       $output=' <h5 class="text-success"> Total Row : '.$data->count().' </h5>';	
+    if($data->count()>0) {
        $output .= '<table class="table table-bordered table-sm text-start align-middle">
        <thead>
          <tr>
@@ -105,9 +100,6 @@ class ExpreController extends Controller
        </thead>
        <tbody>';
        foreach ($data as $row) {
-
-       
-
            $output .= '<tr>
            <td>' . $row->serial . '</td>
            <td><img src="/uploads/admin/'. $row->image. '" width="70" class="img-thumbnail" alt="Image"></td>
@@ -117,18 +109,16 @@ class ExpreController extends Controller
            <td>' . $row->date2 . '</td>
            <td>
            <a href="#" id="' . $row->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editEmployeeModal"><i class="bi-pencil-square h4"></i></a>
-
            <a href="#" id="' . $row->id . '" class="text-danger mx-1 deleteIcon"><i class="bi-trash h4"></i></a>
          </td>
      </tr>';
      }
-       $output .= '</tbody></table>';
-       echo $output;
-    } else {
-       echo '<h1 class="text-center text-secondary my-5">No record present in the database!</h1>';
-    }
+        $output .= '</tbody></table>';
+        echo $output;
+     } else {
+         echo '<h1 class="text-center text-secondary my-5">No record present in the database!</h1>';
+     }
   }
-}
 
 
 public function edit(Request $request) {

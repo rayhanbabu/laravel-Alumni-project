@@ -82,7 +82,7 @@ public function invoice_update(Request $request)
    $model->payment_day=$payment_day; 
    $model->problem_status='Yes'; 
    $model->problem_update_time=date('Y-m-d H:i:s'); 
-   $model->problem_update_by=admin_access()->maintain_name;
+   $model->problem_update_by=maintain_access()->maintain_name;
    $model->save();
    return redirect()->back()->with('success','Data Updated Successfuly');
    }

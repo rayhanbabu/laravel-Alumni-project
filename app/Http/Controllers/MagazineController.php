@@ -26,8 +26,8 @@ class MagazineController extends Controller
 
 
      public function store(Request $request){
-      if(Session::has('admin')){
-       $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+       $admin_name = $request->header('admin_name'); 
+       $admin = Admin::where('admin_name', $admin_name)->first();
         $validator=\Validator::make($request->all(),[                 
             'serial' => 'required',
             'title' => 'required',
@@ -127,14 +127,12 @@ class MagazineController extends Controller
           }
     
       }
-
-    }
    }
 
 
-       public function fetchAll($member) {
-        if(Session::has('admin')){
-        $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+       public function fetchAll(Request $request, $member) {
+        $admin_name = $request->header('admin_name'); 
+        $admin = Admin::where('admin_name', $admin_name)->first();
         $data = Magazine::where('category',$member)->where('admin_name',$admin->admin_name)->orderBy('serial','desc')->orderBy('id','asc')->get();
           $output=' <h5 class="text-success"> Total Row : '.$data->count().' </h5>';	
         if ($data->count()> 0 ) {
@@ -230,8 +228,6 @@ class MagazineController extends Controller
         } else {
            echo '<h1 class="text-center text-secondary my-5">No record present in the database!</h1>';
         }
-
-      }
     }
     
     
@@ -247,12 +243,11 @@ class MagazineController extends Controller
 
     public function update(Request $request ){
            
-      $validator=\Validator::make($request->all(),[
-                 
+      $validator=\Validator::make($request->all(),[    
              'serial' => 'required',
-            'title' => 'required',
-            'text1' => 'required',
-            'image' => 'mimes:jpeg,png,jpg,pdf|max:716800',
+             'title' => 'required',
+             'text1' => 'required',
+             'image' => 'mimes:jpeg,png,jpg,pdf|max:716800',
       ]);
     
     if($validator->fails()){

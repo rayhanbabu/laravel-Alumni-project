@@ -62,17 +62,15 @@
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
-                @if(Session::has('admin'))   
-                  {{Session::get('admin')->nameen}},   Username : {{Session::get('admin')->admin_name}}
-                @endif                   
+                              {{alumni_info()['name']}},  {{alumni_info()['admin_name']}}
                 </div>
             </form>
             <!-- Navbar-->
 
 
             <?php
- $admin=Admin::where('admin_name',Session::get('admin')->admin_name)->first(); 
-     $paydata=Onlinepayment::where('admin_name',Session::get('admin')->admin_name)->orderBy('id','desc')->first(); 
+     $admin=Admin::where('admin_name',alumni_info()['admin_name'])->first(); 
+     $paydata=Onlinepayment::where('admin_name',alumni_info()['admin_name'])->orderBy('id','desc')->first(); 
    ?>
            
 
@@ -322,20 +320,8 @@
 <div class="container-fluid px-3">
 
       <div>
-        @if($admin->version_type=='free')
                  @yield('content')
-                 @yield('contentpay')
-        @else
-             @if($paydata->status=='1')
-                  @yield('content')
-                  @yield('contentpay')
-             @else
-                 @yield('contentpay')
-             @endif     
-       
-        @endif
-       
-
+             
      </div>
 
 

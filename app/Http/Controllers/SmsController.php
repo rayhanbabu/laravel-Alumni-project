@@ -9,50 +9,45 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\validator;
 use App\Models\Testimonial;
 use App\Models\Member;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Session;
 use PDF;
 
 class SmsController extends Controller
 {
-    public function smsview()
+    public function smsview(Request $request)
      {
-         if (Session::has('admin')) {
-          $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
+          $admin_name = $request->header('admin_name'); 
+          $admin = Admin::where('admin_name',$admin_name)->first();
           return view('admin.smsview', ['admin' => $admin]);
-        }
     }
 
-    public function smsbuy()
+    public function smsbuy(Request $request)
     {
-      if(Session::has('admin')){
-          $admin=Admin::where('admin_name',Session::get('admin')->admin_name)->first();  
-          $smsbuy=DB::table('eiin_sms')->where('admin_name',$admin->admin_name)->get();
-          $activesms=DB::table('eiin_sms')->where('admin_name',$admin->admin_name)->where('verify_status',1)
-         ->where('status',1)->sum('smsno');
+          $admin_name = $request->header('admin_name'); 
+          $admin=Admin::where('admin_name',$admin_name)->first();  
+          $smsbuy=DB::table('eiin_sms')->where('admin_name',$admin_name)->get();
+          $activesms=DB::table('eiin_sms')->where('admin_name',$admin_name)->where('verify_status',1)
+          ->where('status',1)->sum('smsno');
        return view('admin.smsbuy',['admin'=>$admin ,'smsbuy'=>$smsbuy,'activesms'=>$activesms]);
-      }
+
     }
 
-    public function smsdetails()
-    {
-      if(Session::has('admin')){
-        $admin=Admin::where('admin_name',Session::get('admin')->admin_name)->first();  
-        $smsbuy=DB::table('eiin_sms')->where('admin_name',$admin->admin_name)->where('verify_status',1)
-        ->where('status',1)->get();
-        $smsspend=DB::table('sms')->where('admin_name',$admin->admin_name)->get();
-       return view('admin.smsdetails',['admin'=>$admin ,'smsbuy'=>$smsbuy,'smsspend'=>$smsspend]);
-      }
+    public function smsdetails(Request $request)
+    {   
+          $admin_name = $request->header('admin_name'); 
+          $admin=Admin::where('admin_name',$admin_name)->first();  
+          $smsbuy=DB::table('eiin_sms')->where('admin_name',$admin->admin_name)->where('verify_status',1)
+          ->where('status',1)->get();
+          $smsspend=DB::table('sms')->where('admin_name',$admin->admin_name)->get();
+          return view('admin.smsdetails',['admin'=>$admin ,'smsbuy'=>$smsbuy,'smsspend'=>$smsspend]);
     }
 
 
   public function smsinsert(Request $request)
   {
-
-
-   
-    if (Session::has('admin')) {
-      $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
+      $admin_name = $request->header('admin_name'); 
+      $admin = Admin::where('admin_name', $admin_name)->first();
       $smsavailable = $admin->available_sms;
       if ($smsavailable > 0) {
         $sms_type = $request->input('sms_type');
@@ -116,8 +111,8 @@ class SmsController extends Controller
                 }else{
                    $card= "Your Membership No : ". $row->member_card." . ";
                 }
-                $textinfo= $card.$text.". ".strtoupper($row->admin_name) ;  
-                 sms_send($phonearr, $textinfo);
+                $textinfo= $card.$text.". ".strtoupper($row->admin_name);  
+                sms_send($phonearr, $textinfo);
                 $current_sms = $smsavailable - $smscount;
                 DB::update("update admins set available_sms='$current_sms'  where admin_name ='$admin->admin_name'");
             }
@@ -138,17 +133,17 @@ class SmsController extends Controller
       } else {
         return back()->with('danger', 'SMS not available');
       }
-    }
+   
   }
 
   
 
 
 
-    public function index(Request $request){
+      public function index(Request $request){
           $data =  DB::table('eiin_sms')->get();
           return view('maintain.smsinfo',['data'=>$data]);
-     }
+       }
 
 
       
@@ -158,8 +153,9 @@ class SmsController extends Controller
        
 
    public function smsbuyinsert(Request $request){
-    if(Session::has('admin')){
-        $admin=Admin::where('admin_name',Session::get('admin')->admin_name)->first();  
+    
+        $admin_name = $request->header('admin_name'); 
+        $admin = Admin::where('admin_name', $admin_name)->first();
 
         $sms['admin_name']=$admin->admin_name;
         $sms['nameen']=$admin->nameen;
@@ -170,7 +166,7 @@ class SmsController extends Controller
         $sms['created_at']=date('Y-m-d H:i:s');
         DB::table('eiin_sms')->insert($sms);   
        return back()->with('success','Sms Submit  Successfully');
-      }
+      
    }
 
 
@@ -211,11 +207,7 @@ class SmsController extends Controller
   }
 
 
-
-
-
    public function smsstatus($type,$status,$id){
-
      if($status=='deactive'){
          $status1=0;
        }else{

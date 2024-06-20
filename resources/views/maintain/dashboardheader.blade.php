@@ -78,7 +78,7 @@
           Dashboard
      </a>
 
-		 @if(admin_access()->role=='Admin')				
+		 @if(maintain_access()->role=='Admin')				
         <a class="nav-link @yield('maintain_select') " href="{{url('maintain/maintainview')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
            Maintain  View
@@ -114,7 +114,7 @@
 
 				
       
-       @if(admin_access()->admin_view=='Yes' || admin_access()->role=='Admin')							
+       @if(maintain_access()->admin_view=='Yes' || maintain_access()->role=='Admin')							
          <a class="nav-link @yield('admin_select')" href="{{url('maintain/adminview')}}">
             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
           Admin View
@@ -122,7 +122,7 @@
        @else @endif
 
   
-       @if(admin_access()->payment_view=='Yes' || admin_access()->role=='Admin')		
+       @if(maintain_access()->payment_view=='Yes' || maintain_access()->role=='Admin')		
         <a class="nav-link @yield('payment_select') " href="{{url('maintain/payment')}}">
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
            Payment View
@@ -136,7 +136,7 @@
        @else @endif
 
 
-    @if(admin_access()->issue_view=='Yes' || admin_access()->role=='Admin')		
+    @if(maintain_access()->issue_view=='Yes' || maintain_access()->role=='Admin')		
          <a class="nav-link @yield('invoice_select') " href="{{url('maintain/invoice')}}">
             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Invoice View

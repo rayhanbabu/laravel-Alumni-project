@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\File;
 class CommitteeController extends Controller
 {
     
-    public function index($admin_category){
-           $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+    public function index(Request $request, $admin_category){
+         $admin_name = $request->header('admin_name'); 
+         $admin = Admin::where('admin_name', $admin_name)->first();
            $committee=App::where('admin_name',$admin->admin_name)->where('admin_category',$admin_category)
              ->orderBy('id','desc')->get();
           if(isset($_GET['committee_id'])){
@@ -31,19 +32,17 @@ class CommitteeController extends Controller
           
         
 
-    public function fetch($admin_category,$committee_id){
-      if(Session::has('admin')){
-        $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+    public function fetch(Request $request,$admin_category,$committee_id){
+        $admin_name = $request->header('admin_name'); 
+        $admin = Admin::where('admin_name', $admin_name)->first();
         $data=Committee::where('admin_name',$admin->admin_name)->where('category',$admin_category)
         ->where('committee_id',$committee_id)->orderBy('id','desc')->paginate(15);
          return view('admin.committee_data',compact('data'));
-      }
      }
 
 
     public function store(Request $request){
-      if(Session::has('admin')){
-          $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+         $admin_name = $request->header('admin_name'); 
           $validator=\Validator::make($request->all(),[  
              'category' => 'required',
              'name' => 'required',
@@ -66,7 +65,7 @@ class CommitteeController extends Controller
                 $app->designation=$request->input('designation');
                 $app->link=$request->input('link');
                 $app->serial=$request->input('serial');
-                $app->admin_name=$admin->admin_name;
+                $app->admin_name=$admin_name;
                 if($request->hasfile('image')){
                   $image= $request->file('image');
                   $file_name = 'image'.rand() . '.' . $image->getClientOriginalExtension();
@@ -79,7 +78,6 @@ class CommitteeController extends Controller
                   'message'=>'Inserted Data',
                ]);
          }
-        }
       }
 
 
@@ -165,13 +163,13 @@ class CommitteeController extends Controller
     {
      if($request->ajax())
      {
-      $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-     
+
+      $admin_name = $request->header('admin_name'); 
       $sort_by = $request->get('sortby');
       $sort_type = $request->get('sorttype'); 
             $search = $request->get('search');
             $search = str_replace(" ", "%", $search);
-      $data = Committee::where('admin_name',$admin->admin_name)->where('category',$admin_category)
+      $data = Committee::where('admin_name',$admin_name)->where('category',$admin_category)
              ->where('committee_id',$committee_id)
               ->where(function($query) use ($search) {
                   $query->orwhere('name', 'like', '%'.$search.'%');
@@ -184,7 +182,4 @@ class CommitteeController extends Controller
                    
      }
     }
-
-
-
 }

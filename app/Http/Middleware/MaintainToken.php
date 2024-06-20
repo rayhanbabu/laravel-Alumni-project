@@ -17,25 +17,22 @@ class MaintainToken
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
-    {
-        
-        $TOKEN_LOGIN=$request->header('TOKEN_LOGIN');
-        //  if(!$TOKEN_LOGIN){
-        //     $TOKEN_LOGIN=$request->cookie('TOKEN_LOGIN');
-        // }
-        
-        $result=MaintainJWTToken::ReadToken($TOKEN_LOGIN);
-        if($result=="unauthorized"){
-            return response()->json([
-                'status'=>500,
-                'errors'=> 'Unauthorized',
-             ]); 
-            
-        }
-        else{
-             $request->headers->set('email',$result->email);
-             $request->headers->set('member_id',$result->member_id);
-             $request->headers->set('admin_name',$result->admin_name);
+      { 
+
+         // $TOKEN_LOGIN=$request->header('TOKEN_LOGIN');
+         $alumni_maintain=$request->cookie('alumni_maintain');
+         $result=MaintainJWTToken::ReadToken($alumni_maintain);
+         if($result=="unauthorized"){
+              return response()->json([
+                  'status'=>500,
+                  'errors'=> 'Unauthorized',
+               ]); 
+          }else{
+              $request->headers->set('email',$result->email);
+              $request->headers->set('maintain_id',$result->maintain_id);
+              $request->headers->set('maintain_username',$result->maintain_username);
+              $request->headers->set('role',$result->role);
+              $request->headers->set('phone',$result->phone);
              return $next($request);
         }
     }

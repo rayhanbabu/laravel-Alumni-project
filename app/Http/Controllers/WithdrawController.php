@@ -15,14 +15,12 @@ class WithdrawController extends Controller
         return view('admin.withdraw');
     }
 
-  public function fetch(){
-    if(Session::has('admin')){
-      $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-      $data=Withdraw::where('admin_name',$admin->admin_name)
-         ->orderBy('id','desc')->paginate(15);
-       return view('admin.withdraw_data',compact('data'));
+   public function fetch(Request $request){
+       $admin_name = $request->header('admin_name');
+       $data=Withdraw::where('admin_name',$admin_name)
+          ->orderBy('id','desc')->paginate(15);
+         return view('admin.withdraw_data',compact('data'));
     }
-   }
 
    public function store(Request $request){
     $admin= Admin::where('admin_name',$request->input('admin_name'))->first();
@@ -55,31 +53,29 @@ class WithdrawController extends Controller
     }
 
 
-   
-
-
    public function destroy($id){
-      $app=Withdraw::find($id);
-      $app->withdraw_status=5;
-      $app->update();
-      return response()->json([
-         'status'=>200,  
-         'message'=>'Deleted Data',
-       ]);
-  }
+        $app=Withdraw::find($id);
+        $app->withdraw_status=5;
+        $app->update();
+         return response()->json([
+           'status'=>200,  
+           'message'=>'Deleted Data',
+        ]);
+    }
   
 
 
-  function fetch_data(Request $request,$admin_category)
-  {
-   if($request->ajax())
+   function fetch_data(Request $request,$admin_category)
    {
-    $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-    $sort_by = $request->get('sortby');
-    $sort_type = $request->get('sorttype'); 
-          $search = $request->get('search');
-          $search = str_replace(" ", "%", $search);
-      $data = Withdraw::where('admin_name',$admin->admin_name)
+     if($request->ajax())
+     {
+      $admin_name = $request->header('admin_name'); 
+      $admin = Admin::where('admin_name',$admin_name)->first();
+      $sort_by = $request->get('sortby');
+      $sort_type = $request->get('sorttype'); 
+           $search = $request->get('search');
+           $search = str_replace(" ", "%", $search);
+       $data = Withdraw::where('admin_name',$admin->admin_name)
             ->where('admin_category',$admin_category)
             ->where(function($query) use ($search) {
                 $query->orwhere('category', 'like', '%'.$search.'%');
@@ -87,9 +83,9 @@ class WithdrawController extends Controller
                 })
                   ->orderBy($sort_by, $sort_type)
                   ->paginate(15);
-                  return view('admin.app_data', compact('data'))->render();
-                 
+                  return view('admin.app_data', compact('data'))->render();      
         }
       }
  
-}
+
+  }

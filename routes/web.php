@@ -47,31 +47,25 @@ use App\Http\Controllers\CommitteeController;
        return redirect()->back();
    });
 
-   Route::get('/web/12345', [OnlinepaymentController::class,'onlinepaymentupdate']);
+    Route::get('/web/12345', [OnlinepaymentController::class,'onlinepaymentupdate']);
 
-   Route::middleware('MaintainAlready')->group(function(){
-     Route::get('/maintain/login',[MaintainController::class,'loginview']);
-     Route::post('maintain/login',[MaintainController::class,'login']);
+    Route::get('/maintain/login',[MaintainController::class,'login'])->middleware('MaintainTokenExist');
+    Route::post('maintain/login-insert',[MaintainController::class,'login_insert']);
+    Route::post('/maintain/login-verify',[MaintainController::class,'login_verify']);
 
-   });
 
-   Route::get('maintain/forget',[MaintainController::class,'forget']); 
-   Route::post('maintain/forget',[MaintainController::class,'forgetemail']); 
-   Route::post('maintain/forgetcode',[MaintainController::class,'forgetcode']); 
-   Route::post('maintain/confirmpass',[MaintainController::class,'confirmpass']);
+    Route::get('maintain/forget',[MaintainController::class,'forget']); 
+    Route::post('maintain/forget',[MaintainController::class,'forgetemail']); 
+    Route::post('maintain/forgetcode',[MaintainController::class,'forgetcode']); 
+    Route::post('maintain/confirmpass',[MaintainController::class,'confirmpass']);
 
    
   
-
-
-Route::middleware('MaintainIs')->group(function(){
-
-   Route::get('/maintain/logout',[MaintainController::class,'logout']);
-   Route::get('/maintain/dashboard',[MaintainController::class,'dashboard']);
-   Route::get('/maintain/password',[MaintainController::class,'password']);
-   Route::post('maintain/password',[MaintainController::class,'passwordedit']);
-
-    
+   Route::middleware('MaintainToken')->group(function(){
+      Route::get('/maintain/logout',[MaintainController::class,'logout']);
+      Route::get('/maintain/dashboard',[MaintainController::class,'dashboard']);
+      Route::get('/maintain/password',[MaintainController::class,'password']);
+      Route::post('maintain/password',[MaintainController::class,'passwordedit']);
 
      //Only Supper Admin Access 
      Route::middleware('AdminAccess')->group(function(){
@@ -82,31 +76,28 @@ Route::middleware('MaintainIs')->group(function(){
            Route::get('/maintain/edit',[MaintainController::class,'edit']);
            Route::post('/maintain/update',[MaintainController::class,'update']);
 
-          //Data defoult data view
-          Route::get('maintain/dataview',[MaintainController::class,'dataview']);
-          Route::post('maintain/dataedit',[MaintainController::class,'dataedit']);
+           //Data defoult data view
+           Route::get('maintain/dataview',[MaintainController::class,'dataview']);
+           Route::post('maintain/dataedit',[MaintainController::class,'dataedit']);
 
+           //SMS information
+           Route::get('maintain/sms',[SmsController::class,'index']);
+           Route::get('/maintain/sms/fetchall',[SmsController::class,'fetchAll']);
+           Route::post('/maintain/sms/store',[SmsController::class,'store']);
+           Route::get('/maintain/sms/edit',[SmsController::class,'edit']);
+           Route::post('/maintain/sms/update',[SmsController::class,'update']);
+           Route::delete('/maintain/sms/delete',[SmsController::class,'delete']);
+           Route::post('/maintain/smspayment',[SmsController::class,'smspayment']);
+           Route::get('/maintain/sms/{type}/{status}/{id}',[SmsController::class,'smsstatus']);
+           Route::post('onlinesmspdf',[SmsController::class,'onlinesmspdf']);
 
-          //SMS information
-          Route::get('maintain/sms',[SmsController::class,'index']);
-          Route::get('/maintain/sms/fetchall',[SmsController::class,'fetchAll']);
-          Route::post('/maintain/sms/store',[SmsController::class,'store']);
-          Route::get('/maintain/sms/edit',[SmsController::class,'edit']);
-          Route::post('/maintain/sms/update',[SmsController::class,'update']);
-          Route::delete('/maintain/sms/delete',[SmsController::class,'delete']);
-          Route::post('/maintain/smspayment',[SmsController::class,'smspayment']);
-          Route::get('/maintain/sms/{type}/{status}/{id}',[SmsController::class,'smsstatus']);
-          Route::post('onlinesmspdf',[SmsController::class,'onlinesmspdf']);
-
-         //Testinomial
-         Route::get('/homepage/index', [HomepageController::class,'index']);
-         Route::post('/homepage/store', [HomepageController::class,'store']);
-         Route::get('/homepage/fetchall', [HomepageController::class,'fetchAll']);
-         Route::delete('/homepage/delete', [HomepageController::class,'delete']);
-         Route::get('/homepage/edit', [HomepageController::class,'edit']);
-         Route::post('/homepage/update', [HomepageController::class,'update']);
-
-
+           //Testinomial
+           Route::get('/homepage/index', [HomepageController::class,'index']);
+           Route::post('/homepage/store', [HomepageController::class,'store']);
+           Route::get('/homepage/fetchall', [HomepageController::class,'fetchAll']);
+           Route::delete('/homepage/delete', [HomepageController::class,'delete']);
+           Route::get('/homepage/edit', [HomepageController::class,'edit']);
+           Route::post('/homepage/update', [HomepageController::class,'update']);
      });
 
      //admin View Access
@@ -171,24 +162,20 @@ Route::middleware('MaintainIs')->group(function(){
            Route::post('maintain/paymentedit',[OnlinepaymentController::class,'paymentedit']);
            Route::post('onlinepaymentpdf',[OnlinepaymentController::class,'onlinepaymentpdf']);
      
-      });
- 
-        
-});
+       });     
+  });
 
+  Route::get('/admin/login',[AdminController::class,'login'])->middleware('AlumniTokenExist');
+  Route::post('admin/login-insert',[AdminController::class,'login_insert']);
+  Route::post('/admin/login-verify',[AdminController::class,'login_verify']);
 
- Route::middleware('AdminAlready')->group(function(){
-
-        Route::get('/admin/login',[AdminController::class,'loginview']);
-        Route::post('admin/login',[AdminController::class,'login']);
-  });  
 
 Route::get('admin/forget',[AdminController::class,'forget']); 
 Route::post('admin/forget',[AdminController::class,'forgetemail']); 
 Route::post('admin/forgetcode',[AdminController::class,'forgetcode']); 
 Route::post('admin/confirmpass',[AdminController::class,'confirmpass']);
 
-Route::middleware('AdminIs')->group(function(){  
+Route::middleware('AlumniToken')->group(function(){  
 
     Route::get('/admin/logout',[AdminController::class,'logout']);
     Route::get('/admin/dashboard',[adminController::class,'dashboard']);

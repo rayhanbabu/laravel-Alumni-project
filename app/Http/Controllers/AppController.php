@@ -11,38 +11,32 @@ use Illuminate\Support\Facades\Session;
 
 class AppController extends Controller
 {
-    
-      public function index($admin_category){
-
-          return view('admin.app',['admin_category'=>$admin_category]);
+     public function index(Request $request, $admin_category){
+           return view('admin.app',['admin_category'=>$admin_category]);
       }
 
-    public function fetch($admin_category){
-      if(Session::has('admin')){
-        $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-        $data=APP::where('admin_name',$admin->admin_name)->where('admin_category',$admin_category)
-        ->orderBy('id', 'desc')->paginate(15);
+      public function fetch(Request $request, $admin_category){
+         $admin_name = $request->header('admin_name'); 
+         $admin= Admin::where('admin_name',$admin_name)->first();
+         $data=APP::where('admin_name',$admin->admin_name)->where('admin_category',$admin_category)
+          ->orderBy('id', 'desc')->paginate(15);
          return view('admin.app_data',compact('data'));
       }
-     }
 
      public function store(Request $request){
-
-      if(Session::has('admin')){
-         $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
+         $admin_name = $request->header('admin_name'); 
+         $admin= Admin::where('admin_name',$admin_name)->first();
          $validator=\Validator::make($request->all(),[  
-           'category' => 'required',
-           'amount' => 'required',
-        ],
-       );
-      
+             'category' => 'required',
+             'amount' => 'required',
+          ]);
 
-     if($validator->fails()){
-           return response()->json([
-             'status'=>400,
-             'validate_err'=>$validator->messages(),
+       if($validator->fails()){
+            return response()->json([
+              'status'=>400,
+              'validate_err'=>$validator->messages(),
            ]);
-     }else{
+        }else{
                 $app= new App;
                 $app->amount=$request->input('amount');
                 $app->status=$request->input('status');
@@ -50,12 +44,11 @@ class AppController extends Controller
                 $app->admin_category=$request->input('admin_category');
                 $app->admin_name=$admin->admin_name;
                 $app->save();
-               return response()->json([
+                return response()->json([
                  'status'=>200,  
                   'message'=>'Inserted Data',
-               ]);
-         }
-        }
+                ]);
+          }
       }
 
 
@@ -72,22 +65,20 @@ class AppController extends Controller
                     'message'=>'Student not found',
                   ]);
              }
-     }
+       }
 
 
      public function update(Request $request, $id){
-
-      $validator=\Validator::make($request->all(),[
-                    
-         'category' => 'required',
-         'amount' => 'required',
-     ]);
+         $validator=\Validator::make($request->all(),[          
+            'category' => 'required',
+            'amount' => 'required',
+         ]);
 
      if($validator->fails()){
-      return response()->json([
-        'status'=>400,
-        'validate_err'=>$validator->messages(),
-      ]);
+        return response()->json([
+          'status'=>400,
+          'validate_err'=>$validator->messages(),
+        ]);
       }else{
             $app=App::find($id);
             if($app){
@@ -125,24 +116,18 @@ class AppController extends Controller
     {
      if($request->ajax())
      {
-      $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-      $sort_by = $request->get('sortby');
-      $sort_type = $request->get('sorttype'); 
+       $admin_name = $request->header('admin_name'); 
+       $sort_by = $request->get('sortby');
+       $sort_type = $request->get('sorttype'); 
             $search = $request->get('search');
             $search = str_replace(" ", "%", $search);
-      $data = App::where('admin_name',$admin->admin_name)
-              ->where('admin_category',$admin_category)
-              ->where(function($query) use ($search) {
+       $data=App::where('admin_name',$admin_name)
+               ->where('admin_category',$admin_category)
+               ->where(function($query) use ($search) {
                   $query->orwhere('category', 'like', '%'.$search.'%');
                   $query->orWhere('amount', 'like', '%'.$search.'%');
-                  })
-                    ->orderBy($sort_by, $sort_type)
-                    ->paginate(15);
-                    return view('admin.app_data', compact('data'))->render();
-                   
+                  })->orderBy($sort_by, $sort_type)->paginate(15);
+        return view('admin.app_data', compact('data'))->render();             
+        }
      }
-    }
-
-
-
 }

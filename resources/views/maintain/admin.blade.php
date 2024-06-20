@@ -76,20 +76,22 @@
       <tr>
          <th width="10%" >Name bangla </th>
          <th width="10%" >Name English </th>
-         <th width="10%" >Address </th>
          <th width="10%" >Created, Subscrible, Duration, Expired </th>
-         <th width="15%" >version type, Payment</th>
+         <th width="15%" >Username</th>
          <th width="15%" >E-mail</th>
 	   <th width="15%" >Mobile </th>
-         <th width="15%" >Getway Fee </th>
-	   <th width="15%" >Username</th>
-         <th width="15%" >Password</th>
-         <th width="5%" >Updated By </th>
-         <th width="5%" >Updated By Time</th>
          <th width="5%" >Email verify</th>
          <th width="5%" >Status</th>
          <th width="5%" >Edit</th>
          <th width="5%" >Delete</th>
+         <th width="10%" >Address </th>
+         <th width="15%" >Getway Fee </th>
+         <th width="15%" >version type, Payment</th>
+         <th width="15%" >Password</th>
+         <th width="5%" >Updated By </th>
+         <th width="5%" >Updated By Time</th>
+        
+        
       </tr>
   </thead>
   <tbody>
@@ -98,18 +100,14 @@
 	 <tr>
         <td>{{$item->name}}</span></td>
         <td>{{$item->nameen}}</span></td>
-        <td>{{$item->address}}</span></td>
+     
         <td>{{$item->created_date}}, {{$item->subscribe}}, {{$item->payment_duration}}, {{$item->expired_date}} </td>
-        <td>{{$item->version_type}}, {{$item->payment}}</td>
+        <td>{{$item->admin_name}}</td>
+      
         <td>{{$item->email}}</td>
         <td>{{$item->mobile}}</td>
-        <td>{{$item->getway_fee}}</td>
-        <td>{{$item->admin_name}}</td>
-        <td>{{$item->admin_password}}</td>
-        <td>{{$item->updated_by}}</td>
-        <td>{{$item->updated_by_time}}</td>
-       
-   <td>
+
+        <td>
      @if($item->email_verify == 1)         
         <a href="{{ url('maintain/adminlist/email_verify/deactive/'.$item->id) }}" class="btn btn-success btn-sm" >Active<a>     
         @else
@@ -140,10 +138,21 @@
        data-senior_size="{{$item->senior_size}}" data-general_size="{{$item->general_size}}" data-notice_size="{{$item->notice_size}}"
        data-welcome_size="{{$item->welcome_size}}"data-testimonial_size="{{$item->testimonial_size}}" 
        data-bank_name="{{$item->bank_name}}" data-bank_account="{{$item->bank_account}}" data-bank_route="{{$item->bank_route}}"
-       data-slide_size="{{$item->slide_size}}" data-getway_fee="{{$item->getway_fee}}" >Edit</button>
+       data-slide_size="{{$item->slide_size}}" data-getway_fee="{{$item->getway_fee}}" 
+       data-bank_account_name="{{$item->bank_account_name}}" data-admin_login_email="{{$item->admin_login_email}}" 
+       data-address_phone="{{$item->address_phone}}" data-address_email="{{$item->address_email}}" > Edit </button>
     </td>
 
         <td><a  class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to milloff  this month?')"  href="{{ url('maintain/admindelete/'.$item->id)}}">Delete</a></td>
+
+        <td>{{$item->address}}</span></td>
+        <td>{{$item->getway_fee}}</td>
+        <td>{{$item->version_type}}, {{$item->payment}}</td>
+        <td>{{$item->admin_password}}</td>
+        <td>{{$item->updated_by}}</td>
+        <td>{{$item->updated_by_time}}</td>
+       
+
 
 	</tr>
     @endforeach	 
@@ -206,7 +215,11 @@
                    var getway_fee = $(this).data("getway_fee");
                    var bank_name = $(this).data("bank_name");
                    var bank_account = $(this).data("bank_account");
+                   var bank_account_name = $(this).data("bank_account_name");
                    var bank_route = $(this).data("bank_route");
+                   var admin_login_email = $(this).data("admin_login_email");
+                   var address_phone = $(this).data("address_phone");
+                   var address_email = $(this).data("address_email");
                      $('#edit_name').val(name);
                      $('#edit_nameen').val(nameen);
                      $('#edit_address').val(address);
@@ -242,7 +255,11 @@
                      $('#edit_getway_fee').val(getway_fee);
                      $('#edit_bank_name').val(bank_name);
                      $('#edit_bank_account').val(bank_account);
+                     $('#edit_bank_account_name').val(bank_account_name);
                      $('#edit_bank_route').val(bank_route);
+                     $('#edit_admin_login_email').val(admin_login_email);
+                     $('#edit_address_phone').val(address_phone);
+                     $('#edit_address_email').val(address_email);
                      $('#updatemodal').modal('show');
                 });
 
@@ -270,6 +287,7 @@
    {!! csrf_field() !!}
 
            <input type="hidden" name="version_type" value="free" class="form-control" required>
+            Add main website
          <div class="form-group  my-2">
                <label class=""><b>Organization Name(Bangla)</b></label>
                <input type="text" name="name" class="form-control" required>
@@ -536,6 +554,11 @@
          </div> 
 
          <div class="form-group col-sm-6  my-2">
+               <label class=""><b> Bank Account Name  </b></label>
+               <input type="text" id="edit_bank_account_name"  name="bank_account_name" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
                <label class=""><b> Bank Account   </b></label>
                <input type="text" id="edit_bank_account"  name="bank_account" class="form-control" >
          </div> 
@@ -543,6 +566,24 @@
          <div class="form-group col-sm-6  my-2">
                <label class=""><b>Bank Route  </b></label>
                <input type="text" id="edit_bank_route"  name="bank_route" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>  Admin Login Email Send  </b></label>
+               <select class="form-select" name="admin_login_email" id="edit_admin_login_email"  aria-label="Default select example">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option> 
+                 </select>
+         </div> 
+
+         <div class="form-group col-sm-6  my-2">
+               <label class=""><b>Address Phone  </b></label>
+               <input type="text" id="edit_address_phone"  name="address_phone" class="form-control" >
+         </div> 
+
+         <div class="form-group col-sm-6 my-2">
+               <label class=""><b>Address E-mail  </b></label>
+               <input type="text" id="edit_address_email"  name="address_email" class="form-control" >
          </div> 
 
     </div>

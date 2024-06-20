@@ -1,14 +1,13 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Helpers\AlumniJWTToken;
 use Illuminate\Support\Facades\Cookie;
-use App\Helpers\MaintainJWTToken;
 
-class MaintainTokenExist
+class AlumniTokenExist
 {
     /**
      * Handle an incoming request.
@@ -16,13 +15,13 @@ class MaintainTokenExist
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
-     {
-        $alumni_maintain=$request->cookie('alumni_maintain');
-        $result=MaintainJWTToken::ReadToken($alumni_maintain);
-         if($result=="unauthorized"){
-             return $next($request);
-         }else{
-             return redirect('/maintain/dashboard');
+    {
+         $alumni_token=Cookie::get('alumni_token');
+         $result=AlumniJWTToken::ReadToken($alumni_token);
+          if($result=="unauthorized"){
+              return $next($request);
+          }else{
+              return redirect('/admin/dashboard');
           }
-      }
+    }
 }

@@ -3,10 +3,10 @@
 @section('paymentview_select','active')
 @section('content')
  
-<div class="card mt-4 mb-3">
-  <div class="card-header">
-<div class="row">
-               <div class="col-2"> <h5 class="mt-0">Payment View</h5></div>
+  <div class="card mt-4 mb-3">
+         <div class="card-header">
+    <div class="row">
+               <div class="col-2">  <h5 class="mt-0"> Payment View </h5>  </div>
                      <div class="col-4">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                              <form action="{{url('pdf/payment_category')}}" method="POST" enctype="multipart/form-data">

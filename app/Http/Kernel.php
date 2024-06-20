@@ -53,6 +53,9 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $middlewareAliases = [
+        'AlumniMemberToken' => \App\Http\Middleware\AlumniMemberToken::class,
+        'AlumniTokenExist' => \App\Http\Middleware\AlumniTokenExist::class,
+        'AlumniToken' => \App\Http\Middleware\AlumniToken::class,
         'DuClubToken' => \App\Http\Middleware\DuClubToken::class,
         'AdminAccess' => \App\Http\Middleware\AdminAccess::class,
         'AdminViewAccess' => \App\Http\Middleware\AdminViewAccess::class,
@@ -66,10 +69,8 @@ class Kernel extends HttpKernel
         'MaintainTokenExist' => \App\Http\Middleware\MaintainTokenExist::class,
         'MaintainToken' => \App\Http\Middleware\MaintainToken::class,
         'AdminIs' => \App\Http\Middleware\AdminIs::class,
-        'AdminAlready' => \App\Http\Middleware\AdminAlready::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'MaintainIs' => \App\Http\Middleware\MaintainIs::class,
-        'MaintainAlready' => \App\Http\Middleware\MaintainAlready::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,

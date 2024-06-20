@@ -7,6 +7,7 @@ use App\Models\Onlinepayment;
 use App\Models\Withdraw;
 use Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use PDF;
 use App\Exports\UserExport;
@@ -18,43 +19,116 @@ use Illuminate\Support\Facades\validator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
+use App\Helpers\MaintainJWTToken;
 use Illuminate\Support\Str;
+use Exception;
 
 class MaintainController extends Controller
 {
-    function loginview(){
-        return view('maintain.login');
-    }
+   public function login(Request $request)
+   {
+      try{
+          return view('maintain.login'); 
+        }catch (Exception $e) { return  view('errors.error',['error'=>$e]);}
+   }
 
-
-
-    public function login(Request $request){
-        $request->validate([
-            'maintain_phone'=>'required',
-            'maintain_password'=>'required',
+   public function login_insert(Request $request){
+        $validator=\Validator::make($request->all(),[    
+           'phone'=>'required',
+           'password'=>'required',
+         ],
+         [
+           'phone.required'=>'Phone is required',
+           'password.required'=>'Password is required',
          ]);
 
-       $maintain=DB::table('maintains')->where('phone','=',$request->maintain_phone)->first();
-       if($maintain){
-        if($request->maintain_password==$maintain->maintain_password){
-              $request->session()->put('maintain',$maintain);
-              return redirect('/maintain/dashboard'); 
+        if($validator->fails()){
+             return response()->json([
+               'status'=>700,
+               'message'=>$validator->messages(),
+            ]); 
+       }else{
+        $status=1;
+        $username=Maintain::where('phone',$request->phone)->first();
+        if($username){
+                 if($username->maintain_password==$request->password){
+                    if($username->status==$status){
+                          $rand=rand(11111,99999);
+                          DB::update("update maintains set login_code ='$rand' where phone = '$username->phone'");
+                         // SendEmail($username->email,"Maintain Otp code","One Time OTP Code",$rand,"ANCOVA");  
+                          return response()->json([
+                               'status'=>200,
+                               'phone'=>$username->phone,
+                               'email'=>$username->email,
+                           ]);               
+                     }else{
+                        return response()->json([
+                           'status'=>600,
+                           'message'=> 'Acount Inactive',
+                        ]); 
+                     }    
+                 }else{
+                   return response()->json([
+                      'status'=>400,
+                      'message'=> 'Invalid Password',
+                   ]); 
+                 }
         }else{
-            return back()->with('fail','Incorrect Password');
-        }
+             return response()->json([
+                 'status'=>300,
+                 'message'=> 'Invalid Phone Number',
+             ]); 
+         }
+    }
+      //Email($maintain->email,"Maintain Otp code","One Time OTP Code",$otp,"Dining Name");  
+        
+  }
+
+
+  public function login_verify(Request $request){
+   $validator=\Validator::make($request->all(),[    
+       'otp'=>'required|numeric',
+      ],
+       [
+       'otp.required'=>'OTP is required',
+      ]);
+
+     if($validator->fails()){
+          return response()->json([
+            'status'=>700,
+            'message'=>$validator->messages(),
+         ]);
+  }else{
+     $username=Maintain::where('phone',$request->verify_phone)->where('email',$request->verify_email)
+     ->where('login_code',$request->otp)->first();
+     if($username){
+            DB::update("update maintains set login_code ='null' where phone = '$username->phone'");
+            $alumni_maintain=MaintainJWTToken::CreateToken($username->maintain_username,$username->email,
+            $username->id,$username->role,$username->phone);
+            Cookie::queue('alumni_maintain',$alumni_maintain, 60 * 96);
+            return response()->json([
+              'status'=>200,
+              'message'=> 'success',
+           ]);   
      }else{
-        return back()->with('fail','Incorrect Username');
+         return response()->json([
+             'status'=>300,
+             'message'=> "Invalid OTP",
+          ]); 
+      }
+ }
+     
+}
+
+
+
+
+    function dashboard(Request $request){
+          $maintain_id=$request->input('maintain_id');
+          $maintain=DB::table('maintains')->where('id',$maintain_id)->first();
+          return view('maintain.dashboard',['maintain'=>$maintain]); 
+        // return $dashboard->name ;
      }
-
-    }
-
-    function dashboard(){
-        if(Session::has('maintain')){
-            $maintain=Session::get('maintain');
-        }
-       return view('maintain.dashboard',['maintain'=>$maintain]); 
-      // return $dashboard->name ;
-    }
 
 
     public function logout(){
@@ -264,7 +338,7 @@ public function admininsert(request $request){
 
         }else{
 
-            $maintain=Maintain::first();
+            $maintain=Maintain::where('role','admin')->first();
 
             $create_date=date("Y-m-d");
             $subscribe=$maintain->subscribe;
@@ -408,7 +482,6 @@ public function adminedit(request $request){
     $admin->address=$request->input('address');
     $admin->email=$request->input('email');
     $admin->mobile=$request->input('mobile');
-    //$admin->admin_name=$request->input('admin_name');
     $admin->admin_password=$request->input('admin_password');
     $admin->role=$request->input('role');
     $admin->payment=$request->input('payment');
@@ -436,9 +509,13 @@ public function adminedit(request $request){
     $admin->getway_fee=$request->input('getway_fee');
     $admin->bank_name=$request->input('bank_name');
     $admin->bank_account=$request->input('bank_account');
+    $admin->bank_account_name=$request->input('bank_account_name');
     $admin->bank_route=$request->input('bank_route');
-    $admin->updated_by=admin_access()->maintain_name;
+    $admin->updated_by=maintain_access()->maintain_name;
     $admin->updated_by_time=date('Y-m-d H:i:s');
+    $admin->admin_login_email=$request->input('admin_login_email');
+    $admin->address_phone=$request->input('address_phone');
+    $admin->address_email=$request->input('address_email');
     $admin->update();
     return redirect()->back()->with('success','Admin Update Successfuly');
 }
@@ -479,7 +556,6 @@ public function adminstatus($type,$status,$id){
       public function dataedit(Request $request){
               
         $admin= Maintain::find($request->input('id'));
-       
         $admin->payment=$request->input('payment');
         $admin->payment_duration=$request->input('payment_duration');
         $admin->subscribe=$request->input('subscribe');
@@ -514,7 +590,7 @@ public function adminstatus($type,$status,$id){
         $admin->cancel_url=$request->input('cancel_url');
         $admin->init_url=$request->input('init_url');
         $admin->ipn_url=$request->input('ipn_url');
-     
+
         $admin->update();
         return redirect()->back()->with('success','Maintain Update Successfuly');
 
@@ -531,9 +607,9 @@ public function adminstatus($type,$status,$id){
 
 
     public function adminpdf(Request $request){
-         $invoice=$request->input('invoice');
-         $file='Payment_'.$invoice.'.pdf';
-         $admin=Admin::get();
+          $invoice=$request->input('invoice');
+          $file='Payment_'.$invoice.'.pdf';
+          $admin=Admin::get();
 
          $pdf = PDF::loadView('pdf.adminpdf',[
             'title' => 'PDF Title',
@@ -549,16 +625,15 @@ public function adminstatus($type,$status,$id){
         ]);
 
         return $pdf->stream('pdf-file.pdf');
-        //return $pdf->download('pdf-file.pdf');
-    }
+            //return $pdf->download('pdf-file.pdf');
+         }
 
        
 
 
-    public function adminexportview(){
-
-        return view('maintain.adminexport');
-    }
+      public function adminexportview(){
+         return view('maintain.adminexport');
+      }
          
 
 
@@ -627,7 +702,7 @@ public function adminstatus($type,$status,$id){
            }else{
                 $type=1;
                 $payment_time=date('Y-m-d H:i:s');
-                $payment_type=admin_access()->maintain_name;
+                $payment_type=maintain_access()->maintain_name;
            }
 
            $payment_month= date('n');
@@ -639,24 +714,9 @@ public function adminstatus($type,$status,$id){
            $model->withdraw_time=$payment_time;
            $model->withdraw_year=$payment_year; 
            $model->withdraw_month=$payment_month;
-           $model->updated_by=admin_access()->maintain_name;
+           $model->updated_by=maintain_access()->maintain_name;
            $model->updated_by_time=date('Y-m-d H:i:s');  
            $model->update();
-
-
-           $admin= Admin::where('admin_name',$model->admin_name)->first();
-           if($model->withdraw_status==1){
-              $online_cur_amount=$admin->online_cur_amount-$model->withdraw_amount;
-              $online_withdraw=$admin->online_withdraw+$model->withdraw_amount;
-           }else if($model->withdraw_status==0){
-             $online_cur_amount=$admin->online_cur_amount+$model->withdraw_amount;
-             $online_withdraw=$admin->online_withdraw-$model->withdraw_amount;
-           }
-           $updated_by=admin_access()->maintain_name;
-           $updated_by_time=date('Y-m-d H:i:s');
-           DB::update("update admins set online_cur_amount ='$online_cur_amount', 
-           online_withdraw ='$online_withdraw', updated_by ='$updated_by' 
-           , updated_by_time ='$updated_by_time' where admin_name = '$admin->admin_name'");
 
          return back()->with('success','Status update Successfull');        
       }
@@ -686,7 +746,7 @@ public function adminstatus($type,$status,$id){
        $model = Withdraw::find($request->input('id'));
        $model->withdraw_info=$request->input('withdraw_info');
        $model->withdraw_info_update="Admin";
-       $model->updated_by=admin_access()->maintain_name;
+       $model->updated_by=maintain_access()->maintain_name;
        $model->updated_by_time=date('Y-m-d H:i:s');
 
        if($request->hasfile('image')){

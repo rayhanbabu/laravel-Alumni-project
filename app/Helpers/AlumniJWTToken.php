@@ -4,24 +4,22 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Exception;
  
-
-class MaintainJWTToken
+class AlumniJWTToken
 {
-    public static function CreateToken($maintainUsername,$maintainEmail,$maintainID,$role,$phone)
+    public static function CreateToken($id,$name,$email,$phone,$admin_name)
     {
-        //60*3= 3 minite
-        $key =env('JWT_KEY');
-        $payload=[
+          $key =env('JWT_KEY');
+          $payload=[
              'iss'=>'rayhan-token',
              'iat'=>time(),
-             'exp'=>time()+60*60*48,
-             'maintain_username'=>$maintainUsername,
-             'email'=>$maintainEmail,
-             'maintain_id'=>$maintainID,
-             'role'=>$role,
+             'exp'=>time()+60*60*96,
+             'id'=>$id,
+             'email'=>$email,
+             'name'=>$name,
              'phone'=>$phone,
-         ];
-        return JWT::encode($payload,$key,'HS256');
+             'admin_name'=>$admin_name
+          ];
+         return JWT::encode($payload,$key,'HS256');
     }
 
     public static function ReadToken($token)

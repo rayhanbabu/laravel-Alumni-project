@@ -16,11 +16,11 @@ class AdminViewAccess
      */
     public function handle(Request $request, Closure $next)
     {
-        if(admin_access()->role=='Admin' || admin_access()->admin_view=='Yes'){ 
-            return $next($request);
+        if(maintain_access()->role=='Admin' || maintain_access()->admin_view=='Yes'){ 
+             return $next($request);
         }else{
-            return  response('UnAthorized') ;
-        } 
+             return  response('UnAthorized') ;
+         } 
 
       
     }

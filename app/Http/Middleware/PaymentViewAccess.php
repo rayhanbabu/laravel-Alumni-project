@@ -16,7 +16,7 @@ class PaymentViewAccess
      */
     public function handle(Request $request, Closure $next)
     {
-        if(admin_access()->role=='Admin' || admin_access()->payment_view=='Yes'){ 
+        if(maintain_access()->role=='Admin' || maintain_access()->payment_view=='Yes'){ 
             return $next($request);
         }else{
             return  response('UnAthorized') ;

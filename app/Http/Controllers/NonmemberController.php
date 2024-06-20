@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Cookie;
 use App\Models\Nonmember;
 use Illuminate\Http\Request;
 use App\Models\App;
@@ -9,7 +9,7 @@ use App\Models\Admin;
 use Illuminate\Support\Facades\validator;
 use Illuminate\Support\Str;
 use Exception;
-use Illuminate\Support\Facades\Session;
+
 use PDF;
 use Illuminate\Support\Facades\Mail;
 
@@ -326,18 +326,18 @@ class NonmemberController extends Controller
 
 
 
-       public function non_paymentview()
+       public function non_paymentview(Request $request)
        {
-         $data = APP::where('admin_name', Session::get('admin')->admin_name)->where('status', 1)
-         ->where('admin_category','Event')->orderBy('id','desc')->get();
-       
+            $admin_name = $request->header('admin_name'); 
+            $data = APP::where('admin_name',$admin_name)->where('status', 1)
+           ->where('admin_category','Event')->orderBy('id','desc')->get();
          return view('admin.non_paymentview', ['category' => $data]);
        }
      
-       public function non_fetch()
+       public function non_fetch(Request $request)
        {
-         if (Session::has('admin')) {
-           $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
+           $admin_name = $request->header('admin_name'); 
+           $admin = Admin::where('admin_name', $admin_name)->first();
            $data = Nonmember::leftjoin('apps','apps.id','=','nonmembers.category_id')
              ->where('nonmembers.admin_name',$admin->admin_name)
              ->select(
@@ -345,14 +345,14 @@ class NonmemberController extends Controller
                'nonmembers.*'
              )->orderBy('nonmembers.id', 'desc')->paginate(10);
            return view('admin.non_paymentview_data', compact('data'));
-         }
        }
      
      
        function non_fetch_data(Request $request)
        {
          if ($request->ajax()) {
-            $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
+            $admin_name = $request->header('admin_name'); 
+            $admin = Admin::where('admin_name', $admin_name)->first();
             $sort_by = $request->get('sortby');
             $sort_type = $request->get('sorttype');
             $search = $request->get('search');
@@ -379,9 +379,8 @@ class NonmemberController extends Controller
        public function add_non_payment(Request $request)
        {
 
-        if (Session::has('admin')) {
-          $admin = Session::get('admin');
-        }
+        $admin_name = $request->header('admin_name'); 
+        $admin = Admin::where('admin_name', $admin_name)->first();
   
          $request->validate([
            'name' => 'required',

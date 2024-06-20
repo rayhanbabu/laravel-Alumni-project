@@ -1,10 +1,15 @@
 <?php
+
+use App\Helpers\MaintainJWTToken;
+use App\Helpers\AlumniJWTToken;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Magazine;
 use App\Models\Nonmember;
 use App\Models\Invoice;
 use App\Models\Admin;
+use Illuminate\Support\Facades\Cookie;
 
 function prx($arr){
    echo "<pre>";
@@ -23,31 +28,47 @@ function prx($arr){
      return $count;
   }
 
+
+  function SendEmail($email,$subject,$body,$otp,$name){
+   $details = [
+     'subject' => $subject,
+     'otp_code' =>$otp,
+     'body' => $body,
+     'name' => $name,
+   ];
+  Mail::to($email)->send(new \App\Mail\LoginMail($details));
+}
+
   
-  function member_category(){
-    if(Session::has('admin')){
-       $admin=Session::get('admin');
-         $category=DB::table('apps')->where('admin_name',$admin->admin_name)->where('admin_category','Member')->get();
-         return $category;
-       } 
-   }
+   function member_category(){
+         $alumni_token=Cookie::get('alumni_token');
+         $result=AlumniJWTToken::ReadToken($alumni_token);
+         $category=DB::table('apps')->where('admin_name',$result->admin_name)->where('admin_category','Member')->get();
+        return $category;
+       
+    }
 
-     function batch_category(){
-       if(Session::has('admin')){
-            $admin=Session::get('admin');
-            $category=DB::table('apps')->where('admin_name',$admin->admin_name)->where('admin_category','Batch')->get();
+      function batch_category(){
+            $alumni_token=Cookie::get('alumni_token');
+            $result=AlumniJWTToken::ReadToken($alumni_token);
+            $category=DB::table('apps')->where('admin_name',$result->admin_name)->where('admin_category','Batch')->get();
             return $category;
-         } 
-      }
+       }
 
 
-      function profession_category(){
-         if(Session::has('admin')){
-              $admin=Session::get('admin');
-              $category=DB::table('apps')->where('admin_name',$admin->admin_name)->where('admin_category','Profession')->get();
+       function profession_category(){
+            $alumni_token=Cookie::get('alumni_token');
+            $result=AlumniJWTToken::ReadToken($alumni_token);
+            $category=DB::table('apps')->where('admin_name',$result->admin_name)->where('admin_category','Profession')->get();
               return $category;
-           } 
         }
+
+        function alumni_info(){
+          $alumni_info=Cookie::get('alumni_info');
+          $result=unserialize($alumni_info);
+          return $result;
+       }
+
     
   
 
@@ -120,11 +141,11 @@ function get_balance() {
       }
 
 
-   function admin_access(){
-     if(Session::has('maintain')){
-          $maintain=DB::table('maintains')->where('id','=',Session::get('maintain')->id)->first();
-          return $maintain;
-       }
+   function maintain_access(){
+      $alumni_maintain=Cookie::get('alumni_maintain');
+      $result=MaintainJWTToken::ReadToken($alumni_maintain);
+      $maintain=DB::table('maintains')->where('id',$result->maintain_id)->first();
+      return $maintain;   
    }
 
 

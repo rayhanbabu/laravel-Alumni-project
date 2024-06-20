@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Maintain;
 use App\Models\Admin;
 use Session;
-use DB;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class OnlinepaymentController extends Controller
@@ -114,11 +114,11 @@ class OnlinepaymentController extends Controller
        if($status==1){
            $status1=0;
            $paymenttime=date('2010-10-10 10:10:10');
-           $paymenttype=admin_access()->maintain_name;
+           $paymenttype=maintain_access()->maintain_name;
         }else{
            $status1=1;
            $paymenttime=date('Y-m-d H:i:s');
-           $paymenttype=admin_access()->maintain_name;
+           $paymenttype=maintain_access()->maintain_name;
         }
       $payment_date= date('Y-m-d');
       $payment_day= date('d');
@@ -136,14 +136,13 @@ class OnlinepaymentController extends Controller
 
     public function paymentedit(Request $request) {
 
-       $id=  $request->input('inv_id');
-       $des2=  $request->input('des2');
-       $amount2=  $request->input('amount2');
+        $id=  $request->input('inv_id');
+        $des2=  $request->input('des2');
+        $amount2=  $request->input('amount2');
 
-       $invoice = Onlinepayment::find($id);
-       $amount1=$invoice->amount1;
+        $invoice = Onlinepayment::find($id);
+        $amount1=$invoice->amount1;
 
-     
         $model = Onlinepayment::find($id);
         $model->des2=$des2;
         $model->amount2=$amount2;

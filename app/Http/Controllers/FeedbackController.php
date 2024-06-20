@@ -22,11 +22,10 @@ class FeedbackController extends Controller
         return view('admin.issue');
     }
 
-  public function issue_fetch_admin(){
+  public function issue_fetch_admin(Request $request){
 
-    if(Session::has('admin')){
-        $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-    }
+     $admin_name = $request->header('admin_name'); 
+     $admin = Admin::where('admin_name', $admin_name)->first();
      $data=Feedback::leftjoin('members','members.id','=','feedback.member_id')
      ->where('feedback.admin_name',$admin->admin_name)
      ->select('members.member_card','members.name','members.phone','members.email','feedback.*')
@@ -41,9 +40,8 @@ function issue_fetch_data_admin(Request $request)
  {
   if($request->ajax())
   {
-      if(Session::has('admin')){
-           $admin= Admin::where('admin_name',Session::get('admin')->admin_name)->first();
-       }
+    $admin_name = $request->header('admin_name'); 
+    $admin = Admin::where('admin_name', $admin_name)->first();
     
    $sort_by = $request->get('sortby');
    $sort_type = $request->get('sorttype'); 
@@ -114,7 +112,7 @@ public function issue_update(Request $request)
    $model = Feedback::find($request->input('id'));
    $model->feedback=$request->input('feedback');
    $model->feedback_status=$request->input('feedback_status');
-   $model->updated_by=admin_access()->maintain_name;
+   $model->updated_by=maintain_access()->maintain_name;
    $model->updated_by_time=date('Y-m-d H:i:s');
 
    if($request->hasfile('image')){

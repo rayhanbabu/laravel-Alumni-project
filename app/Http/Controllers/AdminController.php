@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\validator;
+use Illuminate\Support\Facades\Cookie;
 use App\Exports\UserExport;
 use App\Models\Member;
+use App\Helpers\AlumniJWTToken;
 use Hash;
 use PDF;
 use Exception;
@@ -23,78 +24,151 @@ use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
-  function loginview()
-  {
-    return view('admin.login');
-  }
-
   public function login(Request $request)
-  {
-    $request->validate([
-      'admin_name' => 'required',
-      'admin_password' => 'required',
-    ]);
-    $status = 1;
-    $ipAddress = $request->ip();
-    $userAgent = $request->header('User-Agent');
-    $admin = DB::table('admins')->where('admin_name','=',$request->admin_name)->first();
-    if ($admin) {
-      if ($request->admin_password == $admin->admin_password){
-        if ($admin->email_verify == $status) {
-           if($admin->status == $status) {
-             DB::update("update admins set user_agent='$userAgent', ip_address='$ipAddress' where id='$admin->id'");
-               $request->session()->put('admin', $admin);
-               return redirect('/admin/dashboard');
-           } else {
-             return back()->with('fail', 'Waiting for account verification');
-           }
-        } else {
-          return back()->with('fail', 'Invalid E-mail.Send URL your mail. Please Click and Verify E-mail');
+    {
+        try {
+            return view('admin.login');
+        } catch (Exception $e) {
+            return  view('errors.error', ['error' => $e]);
         }
-      } else {
-        return back()->with('fail', 'Incorrect Password');
-      }
-    } else {
-      return back()->with('fail', 'Incorrect Username');
     }
-  }
 
-  function dashboard() {
-    if (Session::has('admin')) {
-       $admin = Session::get('admin');
-       $data = Admin::find($admin->id);
-       $member = Invoice::where('payment_type','Online')->where('payment_status',1)->where('admin_name', $data->admin_name)->sum('amount');
-       $nonmember = Nonmember::where('payment_type','Online')->where('payment_status',1)->where('admin_name', $data->admin_name)->sum('amount');
+    public function login_insert(Request $request)
+    {
+        $validator = \Validator::make(
+            $request->all(),
+            [
+                'phone' => 'required',
+                'password' => 'required',
+            ],
+            [
+                'phone.required' => 'Phone is required',
+                'password.required' => 'Password is required',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 700,
+                'message' => $validator->messages(),
+            ]);
+        } else {
+
+            $username = Admin::where('mobile', $request->phone)->first();
+            $status = 1;
+            if ($username) {
+                if ($username->admin_password == $request->password) {
+                    if ($username->status == $status) {
+                         $rand = rand(11111, 99999);
+                         DB::update("update admins set login_code ='$rand' where mobile ='$username->mobile'");
+                        // SendEmail($username->email, "teacher Otp code", "One Time OTP Code", $rand, "ANCOVA");
+                         return response()->json([
+                             'status' => 200,
+                             'phone' => $username->mobile,
+                             'email' => $username->email,
+                         ]);
+                    } else {
+                        return response()->json([
+                            'status' => 600,
+                            'message' => 'Acount Inactive',
+                        ]);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 400,
+                        'message' => 'Invalid Phone Number or Password',
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'status' => 300,
+                    'message' => 'Invalid Phone Number or Password',
+                ]);
+            }
+        }
+    }
+
+
+    public function login_verify(Request $request)
+    {
+        $validator = \Validator::make(
+            $request->all(),
+            [
+                'otp' => 'required|numeric',
+            ],
+            [
+                'otp.required' => 'OTP is required',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 700,
+                'message' => $validator->messages(),
+            ]);
+        } else {
+            $username = Admin::where('mobile', $request->verify_phone)->where('email', $request->verify_email)
+                ->where('login_code', $request->otp)->first();
+            if ($username) {
+                DB::update("update admins set login_code ='null' where mobile = '$username->mobile'");
+                $alumni_token = AlumniJWTToken::CreateToken($username->id, $username->nameen, $username->email, $username->mobile, $username->admin_name);
+                Cookie::queue('alumni_token', $alumni_token, 60 * 96); //96 hour
+                $alumni_info = [
+                     "name" => $username->nameen,"email" => $username->email,
+                     "phone" => $username->mobile,"admin_name" => $username->admin_name
+                ];
+                $alumni_info_array = serialize($alumni_info);
+                Cookie::queue('alumni_info', $alumni_info_array, 60 * 96);
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'success',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 300,
+                    'message' => "Invalid OTP",
+                ]);
+            }
+        }
+    }
+
+
+    public function logout()
+    {
+        Cookie::queue('alumni_token', '', -1);
+        Cookie::queue('alumni_info', '', -1);
+        return redirect('admin/login');
+    }
+
+
+  function dashboard(Request $request) {
+       $admin_name=$request->header('admin_name');
+       $admin_id=$request->header('id');
+       $data = Admin::find($admin_id);
+       $member = Invoice::where('payment_type','Online')->where('payment_status',1)->where('admin_name', $admin_name)->sum('amount');
+       $nonmember = Nonmember::where('payment_type','Online')->where('payment_status',1)->where('admin_name', $admin_name)->sum('amount');
        $total_payment=$member+$nonmember;
-       $all_category= APP::where('admin_name', Session::get('admin')->admin_name)->where('status',1)->orderBy('id','desc')->get();
-       $event_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Event')->where('status', 1)->get();
-       $batch_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Batch')->where('status', 1)->get();
-       $profession_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Profession')->get();
-       $withdraw = Withdraw::where('withdraw_status',1)->where('admin_name', $data->admin_name)->sum('withdraw_amount');
-      }
+       $all_category= APP::where('admin_name',$admin_name)->where('status',1)->orderBy('id','desc')->get();
+       $event_category = App::where('admin_name', $admin_name)->where('admin_category','Event')->where('status', 1)->get();
+       $batch_category = App::where('admin_name', $admin_name)->where('admin_category','Batch')->where('status', 1)->get();
+       $profession_category = App::where('admin_name', $admin_name)->where('admin_category','Profession')->get();
+       $withdraw = Withdraw::where('withdraw_status',1)->where('admin_name', $admin_name)->sum('withdraw_amount');
+      
    
       return view('admin.dashboard', ['admin' => $data, 'all_category'=>$all_category ,'event_category' => $event_category,
          'total_payment' => $total_payment,'withdraw' =>$withdraw ,'batch_category' => $batch_category,'profession_category' => $profession_category]);
   }
 
 
-  public function logout()
-  {
-    if (Session::has('admin')) {
-      Session::pull('admin');
-      return redirect('admin/login');
-    }
-  }
+  
 
 
-  function password()
-  {
-    if (Session::has('admin')) {
-      $admin = Session::get('admin');
-    }
-    return view('admin.password', ['admin' => $admin]);
-    //return 'rayhan';
-  }
+  function password(Request $request)
+   {
+     $id = $request->header('id');
+     $admin=Admin::find($id);
+     return view('admin.password', ['admin' => $admin]);
+   }
 
   function passwordedit(Request $request)
   {
@@ -110,12 +184,14 @@ class AdminController extends Controller
                      lowercase letter and one number '
     ]);
 
+    $id = $request->header('id');
+    $email = $request->header('email');
+
     $email = $request->input('email');
     $n_pass = $request->input('n_pass');
     $c_pass = $request->input('c_pass');
-    if (Session::has('admin')) {
-      $admin = Session::get('admin');
-    }
+   
+    $admin=Admin::find($id);
     if ($email == $admin->email) {
       if ($n_pass == $c_pass) {
 
@@ -228,38 +304,36 @@ class AdminController extends Controller
 
 
 
-  public function member($category_id)
+  public function member(request $request,$category_id)
   {
     try {
-      $status1 = 0;
-      $status = 1;
-      if (Session::has('admin')) {
-        $admin = Session::get('admin');
-        $category = DB::table('apps')->where('admin_name', $admin->admin_name)->where('admin_category', 'Member')
+        $status1 = 0;
+        $status = 1;
+        $admin_name = $request->header('admin_name'); 
+        $category = DB::table('apps')->where('admin_name',$admin_name)->where('admin_category','Member')
           ->where('id', $category_id)->first();
-        if ($category) {
-          $verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin->admin_name)->where('member_verify', $status)->count('id');
-          $not_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin->admin_name)->where('member_verify', $status1)->count('id');
-          $email_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin->admin_name)->where('email_verify', $status1)->count('id');
+
+        if($category) {
+          $verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin_name)->where('member_verify', $status)->count('id');
+          $not_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin_name)->where('member_verify', $status1)->count('id');
+          $email_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin_name)->where('email_verify', $status1)->count('id');
           return view('admin.member', ['category' => $category, 'category_id' => $category_id, 'verify' => $verify, 'not_verify' => $not_verify, 'email_verify' => $email_verify]);
         } else {
           return "Something Error occurred";
         }
-      }
+      
     } catch (Exception $e) {
       return  'something Error';
     }
   }
 
 
-  public function member_fetch($category_id)
+  public function member_fetch(request $request,$category_id)
   {
     try {
-      if (Session::has('admin')) {
-        $admin = Session::get('admin');
-      }
+      $admin_name = $request->header('admin_name'); 
       $data = Member::leftjoin('apps', 'apps.id', '=', 'members.category_id')
-        ->where('members.admin_name', $admin->admin_name)->Where('members.category_id', $category_id)
+        ->where('members.admin_name', $admin_name)->Where('members.category_id', $category_id)
         ->select('apps.category', 'members.*')->orderBy('member_verify', 'asc')->paginate(10);
       return view('admin.member_data', compact('data'));
     } catch (Exception $e) {
@@ -309,27 +383,23 @@ class AdminController extends Controller
 
   function member_fetch_data(Request $request)
   {
-
-    if (Session::has('admin')) {
-      $admin = Session::get('admin');
-    }
-
+    $admin_name = $request->header('admin_name'); 
     if ($request->ajax()) {
-      $sort_by = $request->get('sortby');
-      $sort_type = $request->get('sorttype');
-      $search = $request->get('search');
-      $range = $request->get('range');
-      $search = str_replace(" ", "%", $search);
-      $data = Member::leftjoin('apps', 'apps.id', '=', 'members.category_id')
-        ->where('members.admin_name', $admin->admin_name)->Where('members.category_id', $request->category_id)
+       $sort_by = $request->get('sortby');
+       $sort_type = $request->get('sorttype');
+       $search = $request->get('search');
+       $range = $request->get('range');
+       $search = str_replace(" ", "%", $search);
+       $data = Member::leftjoin('apps', 'apps.id', '=', 'members.category_id')
+        ->where('members.admin_name', $admin_name)->Where('members.category_id', $request->category_id)
         ->where(function ($query) use ($search) {
           $query->where('members.phone', 'like', '%' . $search . '%')
             ->orWhere('member_card', 'like', '%' . $search . '%')
             ->orWhere('name', 'like', '%' . $search . '%')
             ->orWhere('email', 'like', '%' . $search . '%');
-        })->select('apps.category', 'members.*')->orderBy('member_verify', 'asc')->orderBy($sort_by, $sort_type)
-        ->paginate($range);
-      return view('admin.member_data', compact('data'))->render();
+         })->select('apps.category', 'members.*')->orderBy('member_verify', 'asc')->orderBy($sort_by, $sort_type)
+          ->paginate($range);
+         return view('admin.member_data', compact('data'))->render();
     }
   }
 
@@ -371,16 +441,14 @@ class AdminController extends Controller
   public function member_update(Request $request)
   {
 
-        if(Session::has('admin')) {
-             $admin = Session::get('admin');
-        }
+    $admin_name = $request->header('admin_name'); 
 
     $validator = \Validator::make(
       $request->all(),
       [
         'phone' => 'required|unique:members,phone,' . $request->input('edit_id'),
         'email' => 'required|unique:members,email,' . $request->input('edit_id'),
-        'member_card' => 'required|unique:members,member_card,' . $request->input('edit_id') . 'NULL,id,admin_name,' . $admin->admin_name,
+        'member_card' => 'required|unique:members,member_card,' . $request->input('edit_id') . 'NULL,id,admin_name,' . $admin_name,
         'serial' => 'required',
         'image' => 'image|mimes:jpeg,png,jpg|max:400',
       ],
@@ -458,16 +526,13 @@ class AdminController extends Controller
 
   public function member_add(Request $request)
   {
-        if(Session::has('admin')) {
-             $admin = Session::get('admin');
-        }
-
+    $admin_name = $request->header('admin_name'); 
     $validator = \Validator::make(
       $request->all(),
       [
         'phone' => 'required|unique:members,phone',
         'email' => 'required|unique:members,email',
-        'member_card' => 'required|unique:members,member_card,NULL,id,admin_name,' . $admin->admin_name,
+        'member_card' => 'required|unique:members,member_card,NULL,id,admin_name,' . $admin_name,
         'name' => 'required',
         'image' => 'image|mimes:jpeg,png,jpg|max:400',
       ],
@@ -487,7 +552,7 @@ class AdminController extends Controller
         $model->phone = $request->input('phone');
         $model->name = $request->input('name');
         $model->email = $request->input('email');
-        $model->admin_name = $admin->admin_name;
+        $model->admin_name = $admin_name;
         $model->member_password ='Pass246#';
         $model->serial = 0;
         $model->category_id = $request->input('category_id');
@@ -502,21 +567,19 @@ class AdminController extends Controller
     }
   }
 
-
-
-
-
-  public function paymentview()
+  public function paymentview(Request $request)
   {
-     $data = APP::where('admin_name',Session::get('admin')->admin_name)->where('status', 1)->orderBy('id', 'desc')->get();
-     $member = Member::where('admin_name',Session::get('admin')->admin_name)->where('member_verify', 1)->get();
+     $admin_name = $request->header('admin_name'); 
+     $data = APP::where('admin_name',$admin_name)->where('status', 1)->orderBy('id', 'desc')->get();
+     $member = Member::where('admin_name',$admin_name)->where('member_verify', 1)->get();
      return view('admin.paymentview', ['category' => $data, 'member' => $member]);
   }
 
-  public function fetch()
+  public function fetch(Request $request)
   {
-    if (Session::has('admin')) {
-      $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
+      $admin_name = $request->header('admin_name'); 
+      $admin = Admin::where('admin_name', $admin_name)->first();
+    
       $data = Invoice::leftjoin('members', 'members.id', '=', 'invoices.member_id')
         ->leftjoin('apps', 'apps.id', '=', 'invoices.category_id')
         ->where('invoices.admin_name', $admin->admin_name)
@@ -530,13 +593,13 @@ class AdminController extends Controller
         )->orderBy('invoices.id', 'desc')->paginate(10);
       return view('admin.paymentview_data', compact('data'));
     }
-  }
 
 
   function fetch_data(Request $request)
   {
     if ($request->ajax()) {
-      $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
+      $admin_name = $request->header('admin_name'); 
+      $admin = Admin::where('admin_name', $admin_name)->first();
       $sort_by = $request->get('sortby');
       $sort_type = $request->get('sorttype');
       $search = $request->get('search');
@@ -609,10 +672,11 @@ class AdminController extends Controller
 
   public function payment_delete(Request $request)
   {
+    $admin_name = $request->header('admin_name'); 
     $id = $request->id;
     $email = $request->email;
     $invoice = Invoice::where('id', $id)->first();
-    $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
+    $admin = Admin::where('admin_name', $admin_name)->first();
     if ($email == $admin->email) {
       if ($invoice->payment_status == 0) {
         $model = Invoice::find($id);
@@ -645,7 +709,9 @@ class AdminController extends Controller
     $monthyear = $request->input('month');
     $category = $request->input('category');
 
-    $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
+    $admin_name = $request->header('admin_name'); 
+
+    $admin = Admin::where('admin_name', $admin_name)->first();
     $category_name = App::where('id', $category)->first();
 
     if ($_POST['month']) {
@@ -682,7 +748,8 @@ class AdminController extends Controller
 
   public function dataview(Request $request)
   {
-    $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->get();
+    $admin_name = $request->header('admin_name'); 
+    $admin = Admin::where('admin_name', $admin_name)->get();
     return view('admin.dataview', ['admin' => $admin]);
   }
 
@@ -709,7 +776,7 @@ class AdminController extends Controller
 
   public function member_export(Request $request)
   {
-    $admin_name = Session::get('admin')->admin_name;
+    $admin_name = $request->header('admin_name'); 
     $category_id = $request->input('category_id');
     return (new UserExport($admin_name, $category_id))->download('Member_list.csv');
   }
@@ -723,7 +790,8 @@ class AdminController extends Controller
   public function admin_invoice_create(request $request)
   {
     $member_id = $request->input('member_id');
-    $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->first();
+    $admin_name = $request->header('admin_name'); 
+    $admin = Admin::where('admin_name', $admin_name)->first();
     $username = $admin->admin_name;
     $validator = \Validator::make(
       $request->all(),
@@ -806,9 +874,10 @@ class AdminController extends Controller
      $date1 = $request->input('date1');
      $date2 = $request->input('date2');
      $payment_type = $request->input('payment_type');
+     $admin_name = $request->header('admin_name'); 
 
        
-     $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+     $admin = Admin::where('admin_name', $admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
       'header_size','resheader_size','getway_fee','other_link')->first();
   
   
@@ -859,17 +928,18 @@ class AdminController extends Controller
 
   public function payment_report_date(Request $request)
   {
-     $date= $request->input('date');
-     $payment_type = $request->input('payment_type');
+       $date= $request->input('date');
+       $payment_type = $request->input('payment_type');
+       $admin_name = $request->header('admin_name'); 
 
-    $admin = Admin::where('admin_name',Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
-      'header_size','resheader_size','getway_fee','other_link')->first();
+       $admin = Admin::where('admin_name',$admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+        'header_size','resheader_size','getway_fee','other_link')->first();
   
-     $invoice = Invoice::leftjoin('members', 'members.id', '=', 'invoices.member_id')
-         ->leftjoin('apps', 'apps.id', '=', 'invoices.category_id')
-        ->where('invoices.admin_name', $admin->admin_name)->where('payment_date',$date)->where('invoices.payment_status', 1)
-        ->where('payment_type',$payment_type)
-        ->select('members.member_card','members.name','members.phone','apps.category','invoices.*')->orderBy('payment_date', 'asc')->get();
+        $invoice = Invoice::leftjoin('members', 'members.id', '=', 'invoices.member_id')
+          ->leftjoin('apps', 'apps.id', '=', 'invoices.category_id')
+          ->where('invoices.admin_name', $admin->admin_name)->where('payment_date',$date)->where('invoices.payment_status', 1)
+          ->where('payment_type',$payment_type)
+          ->select('members.member_card','members.name','members.phone','apps.category','invoices.*')->orderBy('payment_date', 'asc')->get();
     
         $non_invoice = Nonmember::leftjoin('apps', 'apps.id', '=', 'nonmembers.category_id')
         ->where('nonmembers.admin_name', $admin->admin_name)->where('payment_date',$date)->where('nonmembers.payment_status', 1)
@@ -877,11 +947,11 @@ class AdminController extends Controller
         ->select('apps.category','nonmembers.*')->orderBy('nonmembers.id', 'asc')->get();
 
         return view('print.payment_report_date',[
-        'invoice' => $invoice,
-        'date' => $date,
-        'payment_type' => $payment_type,
-        'admin' => $admin,
-        'non_invoice' => $non_invoice]);
+         'invoice' => $invoice,
+         'date' => $date,
+         'payment_type' => $payment_type,
+         'admin' => $admin,
+         'non_invoice' => $non_invoice]);
   }
 
 
@@ -891,10 +961,11 @@ class AdminController extends Controller
    
      $category= $request->input('category');
      $payment_type = $request->input('payment_type');
+     $admin_name = $request->header('admin_name'); 
 
-    $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
-      'header_size','resheader_size','getway_fee','other_link')->first();
-      $category_name = App::where('id', $category)->first();
+       $admin = Admin::where('admin_name', $admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+       'header_size','resheader_size','getway_fee','other_link')->first();
+        $category_name = App::where('id', $category)->first();
   
      $invoice=Invoice::leftjoin('members','members.id', '=', 'invoices.member_id')
         ->leftjoin('apps', 'apps.id','=','invoices.category_id')
@@ -919,8 +990,8 @@ class AdminController extends Controller
 
   public function event_report(Request $request)
   {
-     
-     $admin = Admin::where('admin_name',Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+     $admin_name = $request->header('admin_name'); 
+     $admin = Admin::where('admin_name',$admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
       'header_size','resheader_size','getway_fee','other_link')->first();
   
       $event_category = App::where('admin_name', $admin->admin_name)->where('admin_category','Event')->where('status', 1)->get();
@@ -946,16 +1017,16 @@ class AdminController extends Controller
 
    public function auto_invoice(Request $request)
     {
-   
-      $admin = Admin::where('admin_name', Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
-      'header_size','resheader_size','getway_fee','other_link')->first();
+       $admin_name = $request->header('admin_name'); 
+       $admin = Admin::where('admin_name',$admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+       'header_size','resheader_size','getway_fee','other_link')->first();
 
-      $invoice=Nonmember::leftjoin('apps','apps.id','=','nonmembers.category_id')
-      ->leftjoin('admins','admins.admin_name','=','nonmembers.admin_name')
-      ->where('nonmembers.admin_name',$admin->admin_name)->where('nonmembers.id',5)
-      ->where('nonmembers.payment_status',1)->where('payment_type','Online')->select(
-      'admins.nameen' ,'admins.address','admins.mobile','admins.email as admin_email'
-      ,'apps.category','nonmembers.*')->orderBy('payment_date', 'asc')->first();
+       $invoice=Nonmember::leftjoin('apps','apps.id','=','nonmembers.category_id')
+         ->leftjoin('admins','admins.admin_name','=','nonmembers.admin_name')
+         ->where('nonmembers.admin_name',$admin->admin_name)->where('nonmembers.id',5)
+         ->where('nonmembers.payment_status',1)->where('payment_type','Online')->select(
+        'admins.nameen' ,'admins.address','admins.mobile','admins.email as admin_email'
+        ,'apps.category','nonmembers.*')->orderBy('payment_date', 'asc')->first();
 
         $data['title']=$invoice->nameen;
         $data['file']=$invoice->nameen;
@@ -972,43 +1043,39 @@ class AdminController extends Controller
         $data['payment_time']=$invoice->payment_time;
         $data['total_amount']=$invoice->total_amount;
 
-        $pdf = PDF::loadView('pdf.auto_invoice',$data);
-         Mail::send('pdf.auto_invoice',$data,function($message) use ($data,$pdf){
-            $message->to($data['email'])
-             ->subject($data['title'])
-             ->attachData($pdf->output(),$data['file'].".pdf");       
-        });
-
-      
-        }
-
-
+          $pdf=PDF::loadView('pdf.auto_invoice',$data);
+              Mail::send('pdf.auto_invoice',$data,function($message) use ($data,$pdf){
+               $message->to($data['email'])
+                 ->subject($data['title'])
+                 ->attachData($pdf->output(),$data['file'].".pdf");       
+               });
+          }
 
         public function member_info(Request $request)
         {
-           
-           $admin = Admin::where('admin_name',Session::get('admin')->admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
-            'header_size','resheader_size','getway_fee','other_link')->first();
+             $admin_name = $request->header('admin_name');  
+             $admin = Admin::where('admin_name',$admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+               'header_size','resheader_size','getway_fee','other_link')->first();
         
           
             $batch_id=$request->input('batch_id');
             $profession_id=$request->input('profession_id');
 
-            $batch_category = App::where('admin_name',Session::get('admin')->admin_name)->where('admin_category','Batch')->where('id',$batch_id)->first();
-            $profession_category = App::where('admin_name',Session::get('admin')->admin_name)->where('admin_category','Profession')->where('id',$profession_id)->first();
+            $batch_category = App::where('admin_name',$admin_name)->where('admin_category','Batch')->where('id',$batch_id)->first();
+            $profession_category = App::where('admin_name',$admin_name)->where('admin_category','Profession')->where('id',$profession_id)->first();
            
             if(!empty($batch_id) && !empty($profession_id)){
-                    $data = Member::where('admin_name',Session::get('admin')->admin_name)
+                    $data = Member::where('admin_name',$admin_name)
                    ->where('batch_id',$batch_id)->where('profession_id',$profession_id)->orderBy('member_card','asc')->orderBy('serial','asc')->get();
                     return view('print.member_info',[ 'data' => $data,'admin' => $admin ,'batch_category'=>$batch_category
                    ,'profession_category'=>$profession_category]);
               }else if(empty($profession_id)){
-                    $data = Member::where('admin_name',Session::get('admin')->admin_name)
+                    $data = Member::where('admin_name',$admin_name)
                     ->where('batch_id',$batch_id)->orderBy('member_card','asc')->orderBy('serial','asc')->get();
                     return view('print.member_info',[ 'data' => $data,'admin' => $admin,'batch_category'=>$batch_category
                     ,'profession_category'=>$profession_category]);
               }else if(empty($batch_id)){
-                    $data = Member::where('admin_name',Session::get('admin')->admin_name)
+                    $data = Member::where('admin_name',$admin_name)
                     ->where('profession_id',$profession_id)->orderBy('member_card','asc')->orderBy('serial','asc')->get();
                     return view('print.member_info',['data' => $data,'admin' => $admin,'batch_category'=>$batch_category
                      ,'profession_category'=>$profession_category]);
