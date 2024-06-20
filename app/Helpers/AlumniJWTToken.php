@@ -12,7 +12,7 @@ class AlumniJWTToken
           $payload=[
              'iss'=>'rayhan-token',
              'iat'=>time(),
-             'exp'=>time()+60*60*96,
+             'exp'=>time()+60*60*24*15,
              'id'=>$id,
              'email'=>$email,
              'name'=>$name,

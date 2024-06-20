@@ -14,7 +14,7 @@ class MaintainJWTToken
         $payload=[
              'iss'=>'rayhan-token',
              'iat'=>time(),
-             'exp'=>time()+60*60*48,
+             'exp'=>time()+60*60*24*6,
              'maintain_username'=>$maintainUsername,
              'email'=>$maintainEmail,
              'maintain_id'=>$maintainID,
