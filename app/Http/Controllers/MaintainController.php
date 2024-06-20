@@ -55,7 +55,7 @@ class MaintainController extends Controller
                     if($username->status==$status){
                           $rand=rand(11111,99999);
                           DB::update("update maintains set login_code ='$rand' where phone = '$username->phone'");
-                         // SendEmail($username->email,"Maintain Otp code","One Time OTP Code",$rand,"ANCOVA");  
+                          //SendEmail($username->email,"Maintain Otp code","One Time OTP Code",$rand,"ANCOVA");  
                           return response()->json([
                                'status'=>200,
                                'phone'=>$username->phone,
@@ -124,25 +124,22 @@ class MaintainController extends Controller
 
 
     function dashboard(Request $request){
-          $maintain_id=$request->input('maintain_id');
+          $maintain_id=$request->header('maintain_id');
           $maintain=DB::table('maintains')->where('id',$maintain_id)->first();
           return view('maintain.dashboard',['maintain'=>$maintain]); 
         // return $dashboard->name ;
      }
 
 
-    public function logout(){
-        if(Session::has('maintain')){
-            Session::pull('maintain');
+     public function logout(){
+           Cookie::queue('alumni_maintain', '', -1);
            return redirect('maintain/login');
-        }
-    }
+       }
 
 
     function password(){
-        if(Session::has('maintain')){
-            $maintain=Session::get('maintain');
-       }
+      $maintain_id=$request->header('maintain_id');
+      $maintain=DB::table('maintains')->where('id',$maintain_id)->first();
        return view('maintain.password',['maintain'=>$maintain]); 
         //return 'rayhan';
     }
@@ -154,9 +151,8 @@ class MaintainController extends Controller
         $email=$request->input('email');
         $n_pass=$request->input('n_pass');
         $c_pass=$request->input('c_pass');
-        if(Session::has('maintain')){
-            $maintain=Session::get('maintain');
-         }
+        $maintain_id=$request->header('maintain_id');
+        $maintain=DB::table('maintains')->where('id',$maintain_id)->first();
          if($email==$maintain->email){
             if($n_pass==$c_pass){
 

@@ -77,7 +77,7 @@
          <th width="10%" >Name bangla </th>
          <th width="10%" >Name English </th>
          <th width="10%" >Created, Subscrible, Duration, Expired </th>
-         <th width="15%" >Username</th>
+         <th width="15%" >Username, Login Code</th>
          <th width="15%" >E-mail</th>
 	   <th width="15%" >Mobile </th>
          <th width="5%" >Email verify</th>
@@ -102,7 +102,7 @@
         <td>{{$item->nameen}}</span></td>
      
         <td>{{$item->created_date}}, {{$item->subscribe}}, {{$item->payment_duration}}, {{$item->expired_date}} </td>
-        <td>{{$item->admin_name}}</td>
+        <td> {{ $item->admin_name }} , {{ $item->login_code }}  </td>
       
         <td>{{$item->email}}</td>
         <td>{{$item->mobile}}</td>

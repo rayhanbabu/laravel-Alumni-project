@@ -61,7 +61,9 @@ class AdminController extends Controller
                     if ($username->status == $status) {
                          $rand = rand(11111, 99999);
                          DB::update("update admins set login_code ='$rand' where mobile ='$username->mobile'");
-                        // SendEmail($username->email, "teacher Otp code", "One Time OTP Code", $rand, "ANCOVA");
+                        if($username->admin_login_email==1){
+                          SendEmail($username->email, "Admin Otp code", "One Time OTP Code", $rand, "ANCOVA");
+                         }
                          return response()->json([
                              'status' => 200,
                              'phone' => $username->mobile,
