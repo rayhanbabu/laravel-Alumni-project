@@ -55,7 +55,7 @@ class MaintainController extends Controller
                     if($username->status==$status){
                           $rand=rand(11111,99999);
                           DB::update("update maintains set login_code ='$rand' where phone = '$username->phone'");
-                          //SendEmail($username->email,"Maintain Otp code","One Time OTP Code",$rand,"ANCOVA");  
+                          SendEmail($username->email,"Maintain Otp code","One Time OTP Code",$rand,"ANCOVA");  
                           return response()->json([
                                'status'=>200,
                                'phone'=>$username->phone,
