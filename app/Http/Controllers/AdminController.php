@@ -560,6 +560,7 @@ class AdminController extends Controller
         $model->category_id = $request->input('category_id');
         $model->member_card = $request->input('member_card');
         $model->batch_id = $request->input('batch_id');
+        $model->session_id = $request->input('session_id');
         $model->save();
         return response()->json([
           'status' => 200,

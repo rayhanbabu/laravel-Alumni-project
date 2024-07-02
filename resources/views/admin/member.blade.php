@@ -136,15 +136,26 @@
           <p class="text-danger err_member_card"></p>
      </div>
 
-     <div class="form-group  my-2">
-           <label for="lname">Batch/Session</label>
+       <div class="form-group  my-2">
+           <label for="lname">Batch<span style="color:red;"> * </span></label>
                  <select class="form-select" name="batch_id" id="batch_id" aria-label="Default select example"  required>
                        <option value="">Select One</option>
-                 @foreach(batch_category() as $category) 
+                   @foreach(batch_category() as $category) 
                          <option value="{{$category->id}}">{{$category->category}}</option>
                      @endforeach
                 </select>
-       </div>         
+         </div>
+         
+         
+          <div class="form-group  my-2">
+                 <label for="lname"> Session </label>
+                 <select class="form-select" name="session_id" id="session_id" aria-label="Default select example">
+                         <option value="">Select One</option>
+                      @foreach(session_category() as $category) 
+                         <option value="{{$category->id}}">{{$category->category}}</option>
+                       @endforeach
+                 </select>
+           </div>     
 
         <div class="form-group  my-2">
                <label> Phone No <span style="color:red;"> * </span></label>
