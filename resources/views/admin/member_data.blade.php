@@ -1,5 +1,5 @@
 <?php
-use Illuminate\Support\Facades\URL;
+   use Illuminate\Support\Facades\URL;
 ?>
 @foreach($data as $row)
 <tr>
@@ -53,6 +53,7 @@ use Illuminate\Support\Facades\URL;
   <td>{{ show_category($row->profession_id)}}</td>
   <td>{{ $row->member_password}}</td>
   <td>{{ $row->id}}</td>
+  
 
 
 
