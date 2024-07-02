@@ -60,11 +60,11 @@
        <tr>
        <th width="15%"> Profile Image </th>
 		   <th width="15%">Certificate</th>
-       <th width="15%">UId</th>
+      
            <th width="8%" class="sorting" data-sorting_type="asc" data-column_name="member_card" style="cursor: pointer">
-           Membership  <span id="member_card_icon"> <i class="fas fa-sort-amount-up-alt"></i></span> </th>
+           M No  <span id="member_card_icon"> <i class="fas fa-sort-amount-up-alt"></i></span> </th>
            <th width="8%" class="sorting" data-sorting_type="asc" data-column_name="serial" style="cursor: pointer">
-           Serial <span id="serial_icon"> <i class="fas fa-sort-amount-up-alt"></i></span> </th>
+           SL <span id="serial_icon"> <i class="fas fa-sort-amount-up-alt"></i></span> </th>
 		       <th width="35%">Name</th>
 	         <th width="20%">Email </th>
            <th width="35%">Mobile</th>
@@ -79,7 +79,11 @@
            Member Verification <span id="member_verify_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
           <th width="5%" >Status</th>
           <th width="5%" >Delete</th>
+          <th width="15%">Batch</th>
+          <th width="15%">Session</th>
+          <th width="15%">Profession</th>
           <th width="5%">Password</th>
+          <th width="15%">UId</th>
       </tr>
 
       <tr>
@@ -143,7 +147,7 @@
        </div>         
 
         <div class="form-group  my-2">
-               <label> Phone   No<span style="color:red;"> * </span></label>
+               <label> Phone No <span style="color:red;"> * </span></label>
                   <input name="phone"  type="text" id="phone" pattern="[0][1][3 4 5 6 7 8 9][0-9]{8}" class="form-control" value="" required />
                  <p class="text-danger err_phone"></p>
         </div>
@@ -239,6 +243,7 @@
                   $('#edit_village').val(response.value.village);
                   $('#edit_profession_id').val(response.value.profession_id);
                   $('#edit_batch_id').val(response.value.batch_id);
+                  $('#edit_session_id').val(response.value.session_id);
                   $('#edit_organization').val(response.value.organization);
                   $("#avatar_image").html(
                 `<img src="/uploads/admin/${response.value.profile_image}" width="100" class="img-fluid img-thumbnail">`);
@@ -493,23 +498,33 @@
          <div class="modal-body p-4 bg-light">
           <div class="row">
 
-              <div class="col-lg-4 my-2">
+              <div class="col-lg-3 my-2">
                     <label> Serial Number<span style="color:red;"> * </span></label>
                     <input name="serial"  type="text" id="edit_serial" class="form-control" value="" required />
                     <p class="text-danger edit_err_serial"></p>
               </div>
 
              
-             <div class="col-lg-4 my-2">
+             <div class="col-lg-3 my-2">
                     <label> MemberShip Number <span style="color:red;"> * </span></label>
                     <input name="member_card"  type="text" id="edit_member_card" class="form-control" value="" required />
                     <p class="text-danger edit_err_member_card"></p>
               </div>
 
-              <div class="col-lg-4 my-2">
-              <label for="lname">Category<span style="color:red;"> * </span></label>
+              <div class="col-lg-3 my-2">
+              <label for="lname">Member Category<span style="color:red;"> * </span></label>
                  <select class="form-select" name="category_id" id="edit_category_id" aria-label="Default select example"  required >
                     @foreach(member_category() as $category) 
+                      <option value="{{$category->id}}">{{$category->category}}</option>
+                    @endforeach
+                </select>
+              </div>
+
+
+              <div class="col-lg-3 my-2">
+              <label for="lname">Session</label>
+                 <select class="form-select" name="session_id" id="edit_session_id" aria-label="Default select example"   >
+                    @foreach(session_category() as $category) 
                       <option value="{{$category->id}}">{{$category->category}}</option>
                     @endforeach
                 </select>

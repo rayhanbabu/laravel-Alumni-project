@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\URL;
   @if(!empty($row->certificate_image))
   <td><a href="<?php echo URL::to('uploads/admin/'.$row->certificate_image) ?>">Certificate</a></td>
   @else <td><a href="">{{$row->certificate_image}}</a></td> @endif
-  <td>{{ $row->id}}</td>
+
   <td>{{ $row->member_card}}</td>
   <td>{{ $row->serial}}</td>
   <td>{{ $row->name}}</td>
@@ -44,10 +44,16 @@ use Illuminate\Support\Facades\URL;
         @else
         <a href="{{ url('admin/member/status/active/'.$row->id) }}" onclick="return confirm('Are you sure you want to Change this status')" class="btn btn-danger btn-sm"> Inactive<a>
             @endif
-  </td>
+   </td>
 
   <td><a href="/admin/member_delete/{{ $row->id }}" onclick="return confirm('Are you sure you want to dalete  this item?')"  class="btn btn-danger btn-sm">Delete</a> </td> 
+
+  <td>{{ show_category($row->batch_id)}}</td>
+  <td>{{ show_category($row->session_id)}}</td>
+  <td>{{ show_category($row->profession_id)}}</td>
   <td>{{ $row->member_password}}</td>
+  <td>{{ $row->id}}</td>
+
 
 
 

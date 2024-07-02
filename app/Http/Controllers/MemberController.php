@@ -120,6 +120,7 @@ class MemberController extends Controller
 
                $model->batch_id = $request->input('batch_id');
                $model->profession_id = $request->input('profession_id');
+               $model->session_id = $request->input('session_id');
 
 
                if ($request->hasfile('profile_image')) {
@@ -484,6 +485,7 @@ class MemberController extends Controller
 
          $model->batch_id = $request->input('batch_id');
          $model->profession_id = $request->input('profession_id');
+         $model->session_id = $request->input('session_id');
 
          $model->bn_name = $request->input('bn_name');
          $model->mother_name = $request->input('mother_name');

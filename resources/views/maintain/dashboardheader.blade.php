@@ -78,39 +78,7 @@
           Dashboard
      </a>
 
-		 @if(maintain_access()->role=='Admin')				
-        <a class="nav-link @yield('maintain_select') " href="{{url('maintain/maintainview')}}">
-         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-           Maintain  View
-        </a>
-       
-        <a class="nav-link @yield('dataview_select') " href="{{url('maintain/dataview')}}">
-          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-          Data View
-        </a>
-
-        <a class="nav-link" href="{{url('maintain/sms')}}">
-      <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-            Sms View
-    </a>
-
-      <a class="nav-link @yield('homepage_select') " href="{{url('homepage/index')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-          Homepage View
-     </a>
-
-
-  <a class="nav-link @yield('export_select') " href="{{url('maintain/adminexport')}}">
-     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-      Admin Export
-   </a>
-				
-  <a class="nav-link @yield('import_select') " href="{{url('maintain/adminimport')}}">
-    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-     Admin Import
-  </a>
-      @else @endif
-
+	
 
 				
       
@@ -150,6 +118,40 @@
 
      @else @endif    
 
+
+
+     @if(maintain_access()->role=='Admin')				
+        <a class="nav-link @yield('maintain_select') " href="{{url('maintain/maintainview')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+           Maintain  View
+        </a>
+       
+        <a class="nav-link @yield('dataview_select') " href="{{url('maintain/dataview')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+          Data View
+        </a>
+
+        <a class="nav-link" href="{{url('maintain/sms')}}">
+      <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+            Sms View
+    </a>
+
+      <a class="nav-link @yield('homepage_select') " href="{{url('homepage/index')}}">
+        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+          Homepage View
+     </a>
+
+
+  <a class="nav-link @yield('export_select') " href="{{url('maintain/adminexport')}}">
+     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+      Admin Export
+   </a>
+				
+  <a class="nav-link @yield('import_select') " href="{{url('maintain/adminimport')}}">
+    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+     Admin Member Import
+  </a>
+      @else @endif
 
   
 
