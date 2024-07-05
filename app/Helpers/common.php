@@ -78,6 +78,13 @@ function prx($arr){
     
  }
 
+   function news_category(){
+      $alumni_token=Cookie::get('alumni_token');
+      $result=AlumniJWTToken::ReadToken($alumni_token);
+      $category=DB::table('weeks')->where('admin_name',$result->admin_name)->where('category_name','Event')->orderBy('serial','asc')->get();
+      return $category;
+    }
+
         function alumni_info(){
           $alumni_info=Cookie::get('alumni_info');
           $result=unserialize($alumni_info);

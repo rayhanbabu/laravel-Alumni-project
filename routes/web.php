@@ -22,6 +22,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\InvoiceMaintainController;
 use App\Http\Controllers\NonmemberController;
 use App\Http\Controllers\CommitteeController;
+use App\Http\Controllers\WeekController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +99,16 @@ use App\Http\Controllers\CommitteeController;
            Route::delete('/homepage/delete', [HomepageController::class,'delete']);
            Route::get('/homepage/edit', [HomepageController::class,'edit']);
            Route::post('/homepage/update', [HomepageController::class,'update']);
+
+
+             //Week  route
+             Route::get('maintain/week-view',[WeekController::class,'week_view']);
+             Route::post('/week/store',[WeekController::class,'store']);
+             Route::get('/week/fetchAll/{admin_name}',[WeekController::class,'fetchAll']);
+             Route::get('/week/edit',[WeekController::class,'edit']);
+             Route::post('/week/update',[WeekController::class,'update']);
+             Route::delete('/week/delete',[WeekController::class,'delete']);
+  
      });
 
      //admin View Access
@@ -217,14 +228,14 @@ Route::middleware('AlumniToken')->group(function(){
     Route::post('admin/dataedit',[AdminController::class,'dataedit']);
 
       //Notice
-       Route::get('/admin/notice',[NoticeController::class,'index']);
-       Route::get('/admin/notice_fetch',[NoticeController::class,'fetch']);
-       Route::get('/admin/notice/fetch_data',[NoticeController::class,'fetch_data']); 
+       Route::get('/admin/notice/{category}',[NoticeController::class,'index']);
+       Route::get('/admin/notice_fetch/{category}',[NoticeController::class,'fetch']);
+       Route::get('/admin/notice/fetch_data/{category}',[NoticeController::class,'fetch_data']); 
 
-       Route::get('/admin/notice_create',[NoticeController::class,'notice_create']);
+       Route::get('/admin/notice_create/{category}',[NoticeController::class,'notice_create']);
        Route::post('/admin/notice_insert',[NoticeController::class,'store']); 
-       Route::get('/admin/notice_view/{id}',[NoticeController::class,'view']);
-       Route::get('/admin/notice_edit/{id}',[NoticeController::class,'edit']);
+       Route::get('/admin/notice_view/{category}/{id}',[NoticeController::class,'view']);
+       Route::get('/admin/notice_edit/{category}/{id}',[NoticeController::class,'edit']);
        Route::post('/admin/notice_update/{id}',[NoticeController::class,'update']);
        Route::get('/admin/notice_delete/{id}',[NoticeController::class,'destroy']);
 

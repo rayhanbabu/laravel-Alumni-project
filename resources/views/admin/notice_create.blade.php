@@ -12,7 +12,7 @@
                      </div>
                      <div class="col-3">
                          <div class="d-grid gap-2 d-md-flex ">
-                         <a class="btn btn-primary" href="{{url('/admin/notice')}}" role="button">Back</a>  
+                         <a class="btn btn-primary" href="{{url('/admin/notice/'.$category)}}" role="button">Back</a>  
               </div>
         </div> 
  </div> 
@@ -49,21 +49,11 @@
             <input type="date" name="date" id="date" class="form-control" placeholder=""  required>
           </div>
 
+          <input type="hidden" name="category"  id="category" value="{{$category}}">
+
           <div class="col-sm-4 my-2">
-             <label for="lname">Category<span style="color:red;"> * </span></label>
-                 <select class="form-select" name="category" id="category" aria-label="Default select example"  required >
-                      <option value="Notice">Notice</option>
-                      <option value="Meeting">Meeting</option>
-                      <option value="Upcoming">Upcoming</option>
-                      <option value="Past">Past</option>
-                      <option value="Constitution">Constitution</option>
-                      <option value="History">History</option>
-                      <option value="Others">Others</option>
-                      <option value="Contact">Contact</option>
-                      <option value="Document">Document</option>
-                      <option value="Dashboard">Dashboard</option>
-                      <option value="Membership">Membership</option>
-                 </select>
+             <label for="lname">Serial</label>
+             <input type="number" name="serial" id="serial" value="0" class="form-control" placeholder="" >
           </div>
 
           <div class="col-sm-4 my-2">

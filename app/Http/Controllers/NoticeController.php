@@ -18,18 +18,18 @@ use Illuminate\Support\Str;
 class NoticeController extends Controller
 {
    
-    public function index(){
-        return view('admin.notice');
-    }
+      public function index(Request $request ,$category){
+         return view('admin.notice',['category'=>$category]);
+      }
 
-    public function fetch(Request $request){
+    public function fetch(Request $request,$category){
           $admin_name = $request->header('admin_name'); 
           $admin = Admin::where('admin_name', $admin_name)->first();
-          $data=DB::table('notices')->where('admin_name',$admin->admin_name)->orderBy('id','desc')->paginate(10);
+          $data=DB::table('notices')->where('admin_name',$admin->admin_name)->where('category',$category)->orderBy('id','desc')->paginate(10);
           return view('admin.notice_data',compact('data'));
      }
 
-    function fetch_data(Request $request)
+    function fetch_data(Request $request,$category)
       {
         $admin_name = $request->header('admin_name'); 
         if($request->ajax())
@@ -39,6 +39,7 @@ class NoticeController extends Controller
               $search = $request->get('search');
               $search = str_replace(" ", "%", $search);
             $data=DB::table('notices')->where('admin_name',$admin_name)
+                ->where('category',$category)
                ->where(function($query) use ($search) {
                $query->orwhere('serial', 'like', '%'.$search.'%');
                $query->orWhere('title', 'like', '%'.$search.'%');
@@ -52,8 +53,8 @@ class NoticeController extends Controller
      }
 
 
-    public function notice_create (){
-        return view('admin.notice_create');
+    public function notice_create ($category){
+        return view('admin.notice_create',['category' => $category]);
       }
 
 
@@ -68,7 +69,7 @@ class NoticeController extends Controller
          $admin_name = $request->header('admin_name'); 
 
          $model= new Notice;
-         $model->serial=1;
+         $model->serial=$request->input('serial');
          $model->date=$request->input('date');
          $model->category=$request->input('category');
          $model->admin_name=$admin_name;
@@ -87,15 +88,15 @@ class NoticeController extends Controller
      }
 
 
-     public function view($id){
+     public function view($category,$id){
          $data = Notice::find($id);
-         return view('admin.notice_view',['data'=>$data]);
+         return view('admin.notice_view',['data'=>$data,'category'=>$category]);
       }
 
 
-     public function edit($id){
+     public function edit($category, $id){
          $data = Notice::find($id);
-         return view('admin.notice_edit',compact('data'));
+         return view('admin.notice_edit',['data'=>$data,'category'=>$category]);
      }
 
      public function update(Request $request, $id) {
@@ -136,7 +137,7 @@ class NoticeController extends Controller
             File::delete($path);
           }
          $post->delete();
-         return redirect('/admin/notice')->with('success','Data Deleted  successfully');
+         return redirect()->back()->with('success','Data Deleted Successfuly');
       }
 
   }
