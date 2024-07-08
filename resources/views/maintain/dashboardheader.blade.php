@@ -22,6 +22,10 @@
         <script src="{{asset('dashboardfornt\js\jquery-3.5.1.js')}}"></script>
         <script src="{{asset('dashboardfornt\js\jquery.dataTables.min.js')}}"></script>
         <script src="{{asset('dashboardfornt\js\dataTables.bootstrap5.min.js')}}"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"  />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" ></script>
+
        
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -78,23 +82,19 @@
           Dashboard
      </a>
 
-	
-
-				
-      
        @if(maintain_access()->admin_view=='Yes' || maintain_access()->role=='Admin')							
-         <a class="nav-link @yield('admin_select')" href="{{url('maintain/adminview')}}">
-            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-          Admin View
-         </a>
+          <a class="nav-link @yield('admin_select')" href="{{url('maintain/adminview')}}">
+              <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+             Admin View
+          </a>
        @else @endif
 
   
        @if(maintain_access()->payment_view=='Yes' || maintain_access()->role=='Admin')		
-        <a class="nav-link @yield('payment_select') " href="{{url('maintain/payment')}}">
+          <a class="nav-link @yield('payment_select') " href="{{url('maintain/payment')}}">
               <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-           Payment View
-         </a>
+             Admin Payment
+          </a>
 
          <a class="nav-link @yield('withdraw_select') " href="{{url('maintain/withdraw')}}">
           <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -121,6 +121,12 @@
 
 
      @if(maintain_access()->role=='Admin')				
+
+         
+     <a class="nav-link  @yield('weel_select') " href="{{url('maintain/week-view')}}">
+        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+          Client Event Category
+     </a>
         <a class="nav-link @yield('maintain_select') " href="{{url('maintain/maintainview')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
            Maintain  View

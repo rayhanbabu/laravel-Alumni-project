@@ -73,6 +73,27 @@
     </div>
 
 
+    <div class="col-sm-2 p-2">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+             <form action="{{url('pdf/group_report')}}" method="POST" enctype="multipart/form-data">
+                 {!! csrf_field() !!}
+                 <select class="form-select" name="category" id="category" aria-label="Default select example" required> 
+                       <option value="">Select One</option>
+                       <option value="batch_id">Batch</option>
+                       <option value="profession_id">Profession</option>
+                       <option value="session_id">Session</option>
+                </select>
+           </div>
+      </div>
+
+      <div class="col-sm-4  p-2">
+         <div class="d-grid gap-2 d-md-flex ">
+             <button type="submit" name="search" class="btn btn-primary">Group Wise Report</button>
+             </form>
+        </div>
+    </div>
+
+
 </div>
 
 <div class="row">

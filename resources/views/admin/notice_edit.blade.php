@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="row mt-4 mb-3">
-               <div class="col-6"> <h4 class="mt-0">News & Event Edit</h4></div>
+               <div class="col-6"> <h4 class="mt-0">{{$category}} Edit</h4></div>
                      <div class="col-3">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             
@@ -12,7 +12,7 @@
                      </div>
                      <div class="col-3">
                          <div class="d-grid gap-2 d-md-flex ">
-                         <a class="btn btn-primary" href="{{url('/admin/notice')}}" role="button">Back</a>  
+                         <a class="btn btn-primary" href="{{url('/admin/notice/'.$category)}}" role="button">Back</a>  
               </div>
         </div> 
  </div> 
@@ -46,26 +46,14 @@
       <div class="row">
           <div class="col-sm-4 my-2">
               <label for="name"> Date <span style="color:red;"> * </span> </label>
-             <input type="date" name="date" id="name"  value="{{$data->date}}"class="form-control" placeholder=""  required>
+             <input type="date" name="date" id="name"  value="{{$data->date}}"  class="form-control" placeholder=""  required>
           </div>
 
-        <div class="col-sm-4 my-2">
-             <label for="lname">Category<span style="color:red;"> * </span></label>
-                 <select class="form-select" name="category" id="category" aria-label="Default select example"  required >
-                      <option value="{{$data->category}}" selected>{{$data->category}}</option>
-                      <option value="Notice">Notice</option>
-                      <option value="Meeting">Meeting</option>
-                      <option value="Upcoming">Upcoming</option>
-                      <option value="Past">Past</option>
-                      <option value="Constitution">Constitution</option>
-                      <option value="History">History</option>
-                      <option value="Others">Others</option>
-                      <option value="Contact">Contact</option>
-                      <option value="Document">Document</option>
-                      <option value="Dashboard">Dashboard</option>
-                      <option value="Membership">Membership</option>
-                 </select>
+          <div class="col-sm-4 my-2">
+             <label for="lname">Serial</label>
+             <input type="number" name="serial" id="serial"  value="{{$data->serial}}" class="form-control" >
           </div>
+
 
           <div class="col-sm-4 my-2">
               <label for="name">Image Optional (Max Size:400KB)</label>

@@ -158,6 +158,7 @@
 
 
    @endif
+
     <a class="nav-link @yield('Life_Member_select')  @yield('Member_select')  @yield('Executive_select')
      collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
      <div class="sb-nav-link-icon "><i class="fas fa-columns"></i></div>
@@ -191,12 +192,20 @@
         </nav>
     </div>
 	
-		
-      
-     <a class="nav-link @yield('notice_select')" href="{{url('admin/notice')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-           News & Event 
-     </a>
+  <a class="nav-link 
+     collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts5" aria-expanded="false" aria-controls="collapseLayouts">
+     <div class="sb-nav-link-icon "><i class="fas fa-columns"></i></div>
+         News & Events
+     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+  </a>
+   <div class="collapse" id="collapseLayouts5" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+      <nav class="sb-sidenav-menu-nested nav">
+               @foreach(news_category() as $row)                   
+                 <a class="nav-link @yield('news_select')" href="{{url('/admin/notice/'.$row->week)}}">{{$row->week}} </a>                  
+               @endforeach
+      </nav>
+     
+ </div>
 
 
 

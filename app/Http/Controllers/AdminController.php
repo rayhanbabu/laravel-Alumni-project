@@ -528,6 +528,7 @@ class AdminController extends Controller
 
   public function member_add(Request $request)
   {
+
     $admin_name = $request->header('admin_name'); 
     $validator = \Validator::make(
       $request->all(),
@@ -566,8 +567,8 @@ class AdminController extends Controller
           'status' => 200,
           'message' => ' Updated Successfull'
         ]);
-     
     }
+
   }
 
   public function paymentview(Request $request)
@@ -1047,7 +1048,7 @@ class AdminController extends Controller
         $data['total_amount']=$invoice->total_amount;
 
           $pdf=PDF::loadView('pdf.auto_invoice',$data);
-              Mail::send('pdf.auto_invoice',$data,function($message) use ($data,$pdf){
+               Mail::send('pdf.auto_invoice',$data,function($message) use ($data,$pdf){
                $message->to($data['email'])
                  ->subject($data['title'])
                  ->attachData($pdf->output(),$data['file'].".pdf");       
@@ -1085,9 +1086,22 @@ class AdminController extends Controller
                   }else{
               return "Please Select Batch/Session or Prefession";
             }
-             
-
-           
+              
         }
 
-}
+        public function group_report(Request $request)
+        {
+          $admin_name = $request->header('admin_name');  
+          $category=$request->input('category');
+
+          $admin = Admin::where('admin_name',$admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+          'header_size','resheader_size','getway_fee','other_link')->first();
+           
+          $data = Member::where('admin_name',$admin_name)->select($category,DB::raw('count(id) as id'))
+          ->groupBy($category)->orderBy($category,'asc')->get();
+
+         
+         return view('print.group_report',['data' => $data,'admin' => $admin,'category'=>$category]);
+      
+        }
+    }

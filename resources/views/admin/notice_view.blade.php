@@ -7,7 +7,7 @@
 @section('content')
 
 <div class="row mt-4 mb-3">
-               <div class="col-6"> <h4 class="mt-0">News & Event  View</h4></div>
+               <div class="col-6"> <h4 class="mt-0">{{$category}}  View</h4></div>
                      <div class="col-3">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             
@@ -15,7 +15,7 @@
                      </div>
                      <div class="col-3">
                          <div class="d-grid gap-2 d-md-flex ">
-                         <a class="btn btn-primary" href="{{url('/admin/notice')}}" role="button">Back</a>  
+                         <a class="btn btn-primary" href="{{url('/admin/notice/'.$category)}}" role="button">Back</a>  
               </div>
         </div> 
  </div> 

@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="row mt-4 mb-3">
-               <div class="col-6"> <h4 class="mt-0">News & Event</h4></div>
+               <div class="col-6"> <h4 class="mt-0"> {{$category}}</h4></div>
                      <div class="col-3">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             
@@ -12,12 +12,12 @@
                      </div>
                      <div class="col-3">
                          <div class="d-grid gap-2 d-md-flex ">
-                         <a class="btn btn-primary" href="{{url('/admin/notice_create')}}" role="button">Add</a>
+                         <a class="btn btn-primary" href="{{url('/admin/notice_create/'.$category)}}" role="button">Add</a>
               </div>
         </div> 
  </div> 
 
- <div class="form-group  mx-2 my-2">
+           <div class="form-group  mx-2 my-2">
                            @if(Session::has('fail'))
                    <div  class="alert alert-danger"> {{Session::get('fail')}}</div>
                                 @endif
@@ -27,7 +27,7 @@
                            @if(Session::has('success'))
                    <div  class="alert alert-success"> {{Session::get('success')}}</div>
                                 @endif
-                             </div>
+                  </div>
 
 
 <div id="success_message"></div>
@@ -90,7 +90,7 @@ $(document).ready(function(){
          function fetch(){
             $.ajax({
              type:'GET',
-             url:'/admin/notice_fetch',
+             url:'/admin/notice_fetch/{{$category}}',
              datType:'json',
              success:function(response){
                     $('tbody').html('');
@@ -102,7 +102,7 @@ $(document).ready(function(){
 
     function fetch_data(page, sort_type="", sort_by="", search=""){
         $.ajax({
-        url:"/admin/notice/fetch_data?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
+        url:"/admin/notice/fetch_data/{{$category}}?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search,
         success:function(data)
         {
          $('tbody').html('');
@@ -153,12 +153,8 @@ $(document).ready(function(){
            var search = $('#search').val();
           fetch_data(page, reverse_order, column_name, search);
           });
+}); 
 
-
-    
-
-
-});  
 </script>   
   
 

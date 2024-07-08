@@ -71,12 +71,18 @@ function prx($arr){
      }
 
      function show_category($id){
-       $alumni_token=Cookie::get('alumni_token');
-       $result=AlumniJWTToken::ReadToken($alumni_token);
-       $category=DB::table('apps')->where('id',$id)->where('admin_name',$result->admin_name)->first();
-     return $category?$category->category:"";
-    
- }
+         $alumni_token=Cookie::get('alumni_token');
+         $result=AlumniJWTToken::ReadToken($alumni_token);
+         $category=DB::table('apps')->where('id',$id)->where('admin_name',$result->admin_name)->first();
+         return $category?$category->category:"";
+     }
+
+   function news_category(){
+      $alumni_token=Cookie::get('alumni_token');
+      $result=AlumniJWTToken::ReadToken($alumni_token);
+      $category=DB::table('weeks')->where('admin_name',$result->admin_name)->where('category_name','Event')->orderBy('serial','asc')->get();
+      return $category;
+    }
 
         function alumni_info(){
           $alumni_info=Cookie::get('alumni_info');
