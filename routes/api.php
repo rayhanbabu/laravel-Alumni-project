@@ -74,6 +74,7 @@ use App\Http\Controllers\HomepageController;
        Route::get('/{username}/membersearch', [TestimonialController::class,'apimembersearch']);
        Route::get('/{username}/member_category', [TestimonialController::class,'apimembercategory']);
        Route::get('/{username}/batch_category', [TestimonialController::class,'apibatchcategory']);
+       Route::get('/{username}/session_category', [TestimonialController::class,'apisessioncategory']);
        Route::get('/{username}/profession_category', [TestimonialController::class,'apiprofessioncategory']);
        Route::get('/{username}/committee_category', [TestimonialController::class,'apicommitteecategory']);
        Route::get('/{username}/committee_list/{committee_id}', [TestimonialController::class,'committee_list']);

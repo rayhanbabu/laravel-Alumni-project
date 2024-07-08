@@ -303,7 +303,7 @@ Route::middleware('AlumniToken')->group(function(){
         Route::post('/expre/update', [ExpreController::class, 'update']);
 
 
-         //Payment View 
+        //Payment View 
         Route::get('/admin/paymentview',[AdminController::class,'paymentview']);
         Route::get('/admin/payment_fetch',[AdminController::class,'fetch']);
         Route::get('/admin/payment/fetch_data',[AdminController::class,'fetch_data']);
@@ -345,6 +345,7 @@ Route::middleware('AlumniToken')->group(function(){
          Route::post('/pdf/payment_category_report',[AdminController::class,'payment_category_report']);
          Route::post('/pdf/event_report',[AdminController::class,'event_report']);
          Route::post('/pdf/member_info',[AdminController::class,'member_info']);
+         Route::post('/pdf/group_report',[AdminController::class,'group_report']);
       
          Route::get('/auto_invoice', [AdminController::class,'auto_invoice']);
          
