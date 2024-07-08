@@ -1097,7 +1097,7 @@ class AdminController extends Controller
           $admin = Admin::where('admin_name',$admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
           'header_size','resheader_size','getway_fee','other_link')->first();
            
-          $data = Member::where('member_verify',1)->where('admin_name',$admin_name)->select($category,DB::raw('count(id) as id'))
+          $data = Member::where('admin_name',$admin_name)->select($category,DB::raw('count(id) as id'))
           ->groupBy($category)->orderBy($category,'asc')->get();
 
          
