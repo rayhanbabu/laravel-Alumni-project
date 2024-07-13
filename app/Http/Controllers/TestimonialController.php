@@ -431,6 +431,26 @@ public function delete(Request $request) {
              }
 
 
+             public function apihome_update($username){
+              $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email','program_desc','program_title','program_status',
+                  'mobile','admin_name','header_size','resheader_size','text1','text2','text3','blood_size','address_phone'
+                  ,'address_email','address_email','counter1','counter2','counter3','counter4'
+                  ,'counter_name1','counter_name2','counter_name3','counter_name4')->first();
+              $slide = Magazine::where('category','Slide')->where('text4','Slide')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
+              $slide1 = Magazine::where('category','Slide')->where('text4','Slide')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->first();
+              $welcome = Magazine::where('category','Welcome')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
+              $test = Magazine::where('category','Testimonial')->where('admin_name',$admin->admin_name)->orderBy('serial', 'asc')->get();
+              $logu = Magazine::where('category','Slide')->where('text4','Logu')->where('admin_name',$admin->admin_name)->first();
+              $logu = Magazine::where('category','Slide')->where('text4','HeaderLogu')->where('admin_name',$admin->admin_name)->first();
+              
+               return response()->json([
+                   'admin'=>$admin,'slide'=>$slide,'slide1'=>$slide1,
+                   'welcome'=>$welcome,'test'=>$test,'logu'=>$logu
+               ]);
+
+         }
+
+
              public function apinotice($username,$category) {
               $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email',
                    'mobile','admin_name','header_size','resheader_size')->first();

@@ -208,10 +208,6 @@
  </div>
 
 
-
-
-  
-
      <a class="nav-link " href="{{url('admin/app/Member')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
              Member Category
@@ -234,7 +230,7 @@
 
      <a class="nav-link @yield('dataview_select')" href="{{url('admin/dataview')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-           Registartion & Token  Setup
+           Registartion , Token & Counter Setup
      </a>
 
      <a class="nav-link @yield('withdraw_select')" href="{{url('admin/withdraw')}}">
