@@ -773,6 +773,15 @@ class AdminController extends Controller
     $admin->program_desc = $request->input('program_desc');
     $admin->program_status = $request->input('program_status');
 
+    $admin->counter1 = $request->input('counter1');
+    $admin->counter_name1 = $request->input('counter_name1');
+    $admin->counter2 = $request->input('counter2');
+    $admin->counter_name2 = $request->input('counter_name2');
+    $admin->counter3 = $request->input('counter3');
+    $admin->counter_name3 = $request->input('counter_name3');
+    $admin->counter4 = $request->input('counter4');
+    $admin->counter_name4 = $request->input('counter_name4');
+
     $admin->update();
     return redirect()->back()->with('success', 'Token Setup Update Successfuly');
   }

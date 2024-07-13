@@ -65,6 +65,7 @@ use App\Http\Controllers\HomepageController;
         //public APi
         Route::get('/{username}', [TestimonialController::class,'apiusername']);
         Route::get('/{username}/home', [TestimonialController::class,'apihome']);
+        Route::get('/{username}/home_update', [TestimonialController::class,'apihome_update']);
         //category= History, Notice, Upcoming, Past, Constitution, Contact, Others, Document 
         Route::get('/{username}/notice/{category}', [TestimonialController::class, 'apinotice']);
 

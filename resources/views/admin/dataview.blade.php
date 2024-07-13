@@ -36,6 +36,12 @@
          <th width="10%" >Token 4 </th>
          <th width="10%" >Token 5 </th>
          <th width="15%" >Token 6 </th>
+
+         <th width="15%" > Counter 1 </th>
+         <th width="15%" > Counter 2 </th>
+         <th width="15%" > Counter 3 </th>
+         <th width="15%" > Counter 4 </th>
+
          <th width="5%" >Edit</th>
         
       </tr>
@@ -53,6 +59,11 @@
         <td>{{$item->token4}}</td>
         <td>{{$item->token5}}</td>
         <td>{{$item->token6}}</td>
+
+        <td>{{$item->counter_name1}} , {{$item->counter1}}</td>
+        <td>{{$item->counter_name2}} , {{$item->counter2}}</td>
+        <td>{{$item->counter_name3}} , {{$item->counter3}}</td>
+        <td>{{$item->counter_name4}} , {{$item->counter4}}</td>
        
 
     <td>
@@ -61,7 +72,12 @@
            data-token4="{{$item->token4}}" data-token5="{{$item->token5}}" data-token6="{{$item->token6}}"
            data-program_title="{{$item->program_title}}" data-program_desc="{{$item->program_desc}}"
            data-program_status="{{$item->program_status}}" 
-          >Edit</button>
+           data-counter_name1="{{$item->counter_name1}}" data-counter1="{{$item->counter1}}"
+           data-counter_name2="{{$item->counter_name2}}" data-counter2="{{$item->counter2}}"
+           data-counter_name3="{{$item->counter_name3}}" data-counter3="{{$item->counter3}}"
+           data-counter_name4="{{$item->counter_name4}}" data-counter4="{{$item->counter4}}"
+         
+           >Edit</button>
     </td>
 
       
@@ -100,6 +116,15 @@
                    var program_title = $(this).data("program_title"); 
                    var program_desc = $(this).data("program_desc");
                    var program_status = $(this).data("program_status");
+
+                   var counter_name1 = $(this).data("counter_name1");
+                   var counter1 = $(this).data("counter1");
+                   var counter_name2 = $(this).data("counter_name2");
+                   var counter2 = $(this).data("counter2");
+                   var counter_name3 = $(this).data("counter_name3");
+                   var counter3 = $(this).data("counter3");
+                   var counter_name4 = $(this).data("counter_name4");
+                   var counter4 = $(this).data("counter4");
                  
                  
                    
@@ -114,6 +139,15 @@
                      $('#edit_program_title').val(program_title);
                      $('#edit_program_desc').val(program_desc);
                      $('#edit_program_status').val(program_status);
+
+                     $('#edit_counter_name1').val(counter_name1);
+                     $('#edit_counter1').val(counter1);
+                     $('#edit_counter_name2').val(counter_name2);
+                     $('#edit_counter2').val(counter2);
+                     $('#edit_counter_name3').val(counter_name3);
+                     $('#edit_counter3').val(counter3);
+                     $('#edit_counter_name4').val(counter_name4);
+                     $('#edit_counter4').val(counter4);
                     
                      $('#updatemodal').modal('show');
                 });
@@ -166,35 +200,81 @@
               </div> 
        
 
-          <div class="form-group  col-sm-12  my-2">
+          <div class="form-group  col-sm-4  my-2">
                <label class=""><b>Token 1</b></label>
                <input type="text" id="edit_token1"  name="token1" class="form-control" >
           </div> 
 
-          <div class="form-group  col-sm-12  my-2">
+          <div class="form-group  col-sm-4  my-2">
                <label class=""><b>Token 2</b></label>
                <input type="text" id="edit_token2"  name="token2" class="form-control" >
           </div>
 
-          <div class="form-group  col-sm-12  my-2">
+          <div class="form-group  col-sm-4  my-2">
                <label class=""><b>Token 3</b></label>
                <input type="text" id="edit_token3"  name="token3" class="form-control" >
           </div>
 
-           <div class="form-group  col-sm-12  my-2">
+           <div class="form-group  col-sm-4  my-2">
                <label class=""><b>Token 4</b></label>
                <input type="text" id="edit_token4"  name="token4" class="form-control" >
            </div>
 
-          <div class="form-group  col-sm-12  my-2">
+          <div class="form-group  col-sm-4  my-2">
                <label class=""><b>Token 5</b></label>
                <input type="text" id="edit_token5"  name="token5" class="form-control" >
           </div>
 
-          <div class="form-group  col-sm-12  my-2">
+          <div class="form-group  col-sm-4  my-2">
                <label class=""><b>Token 6</b></label>
                <input type="text" id="edit_token6"  name="token6" class="form-control" >
           </div>
+
+          <div class="form-group  col-sm-4  my-2">
+               <label class=""><b> Counter Name 1</b></label>
+               <input type="text" id="edit_counter_name1"  name="counter_name1" class="form-control" >
+          </div>
+
+          <div class="form-group  col-sm-2  my-2">
+               <label class=""><b> Counter 1</b></label>
+               <input type="number" id="edit_counter1"  name="counter1" class="form-control" >
+          </div>
+
+
+          <div class="form-group  col-sm-4  my-2">
+               <label class=""><b> Counter Name 2</b></label>
+               <input type="text" id="edit_counter_name2"  name="counter_name2" class="form-control" >
+          </div>
+
+          <div class="form-group  col-sm-2  my-2">
+               <label class=""><b> Counter 2</b></label>
+               <input type="number" id="edit_counter2"  name="counter2" class="form-control" >
+          </div>
+
+
+          <div class="form-group  col-sm-4  my-2">
+               <label class=""><b> Counter Name 3</b></label>
+               <input type="text" id="edit_counter_name3"  name="counter_name3" class="form-control" >
+          </div>
+
+          <div class="form-group  col-sm-2  my-2">
+               <label class=""><b> Counter 3</b></label>
+               <input type="number" id="edit_counter3"  name="counter3" class="form-control" >
+          </div>
+
+
+          <div class="form-group  col-sm-4  my-2">
+               <label class=""><b> Counter Name 4</b></label>
+               <input type="text" id="edit_counter_name4"  name="counter_name4" class="form-control" >
+          </div>
+
+          <div class="form-group  col-sm-2  my-2">
+               <label class=""><b> Counter 4</b></label>
+               <input type="number" id="edit_counter4"  name="counter4" class="form-control" >
+          </div>
+
+
+
 
          
 
