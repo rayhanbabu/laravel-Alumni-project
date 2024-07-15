@@ -110,7 +110,6 @@ class NoticeController extends Controller
         $model = Notice::find($id);
         $model->serial=1;
         $model->date=$request->input('date');
-        $model->category=$request->input('category');
         $model->title=$request->input('title');
         $model->text=$request->input('text');
 

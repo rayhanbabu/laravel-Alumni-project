@@ -175,7 +175,10 @@
  </div>
 
 		
-
+ <a class="nav-link @yield('committee_select')" href="{{url('admin/committee/Committee')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+               Committee
+        </a>
 
 
 
@@ -282,10 +285,7 @@
      </a>
 
     
-       <a class="nav-link @yield('committee_select')" href="{{url('admin/committee/Committee')}}">
-          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-              Former Committee
-        </a>
+       
 
 
 
