@@ -27,7 +27,7 @@ class DonormemberController extends Controller
              'email' =>'required',
               'phone' =>'required',
              'address' =>'required',
-              'net_amount' =>'required|numeric|min:20',
+              'net_amount' =>'required|numeric|min:15',
            ]);
 
       if ($admin) {
