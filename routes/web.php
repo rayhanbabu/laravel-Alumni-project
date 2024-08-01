@@ -23,6 +23,7 @@ use App\Http\Controllers\InvoiceMaintainController;
 use App\Http\Controllers\NonmemberController;
 use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\WeekController;
+use App\Http\Controllers\DonormemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,17 +37,17 @@ use App\Http\Controllers\WeekController;
 */
 
 
-   //Route::get('/', function () {
-   //      return view('welcome');
-  // });
+    //Route::get('/', function () {
+    //      return view('welcome');
+    // });
 
   
 
 
-   Route::get('locale/{locale}',function($locale){
-       Session::put('locale',$locale);
-       return redirect()->back();
-   });
+    Route::get('locale/{locale}',function($locale){
+          Session::put('locale',$locale);
+          return redirect()->back();
+     });
 
     Route::get('/web/12345', [OnlinepaymentController::class,'onlinepaymentupdate']);
 
@@ -164,7 +165,7 @@ use App\Http\Controllers\WeekController;
  
           // Payment  Edit Access
       Route::middleware('PaymentEditAccess')->group(function(){
-          //withdraw
+           //withdraw
            Route::get('/maintain/withdraw/{operator}/{status}/{id}', [MaintainController::class,'withdraw_status']);
            Route::post('/maintain/withdraw_update',[MaintainController::class,'withdraw_update']); 
 
@@ -247,7 +248,7 @@ Route::middleware('AlumniToken')->group(function(){
        Route::get('/testimonial/edit', [TestimonialController::class, 'edit']);
        Route::post('/testimonial/update', [TestimonialController::class, 'update']);
 
-         //Magazine //Notice //Slide //Welcome Message
+        //Magazine //Notice //Slide //Welcome Message
         Route::get('/magazine/index/{member}', [MagazineController::class,'index']);
         Route::post('/magazine/store', [MagazineController::class,'store']);
         Route::get('/magazine/fetchall/{member}',[MagazineController::class,'fetchAll']);
@@ -319,7 +320,17 @@ Route::middleware('AlumniToken')->group(function(){
         Route::post('/admin/non_payment_update',[NonmemberController::class,'non_payment_update']);
         Route::post('/admin/add_non_payment',[NonmemberController::class,'add_non_payment']);
         Route::get('/admin/non_payment_status/{id}',[NonmemberController::class,'non_payment_status']);
-         
+       
+
+        //Donor Payment View 
+        Route::get('/admin/donor_paymentview',[DonormemberController::class,'donor_paymentview']);
+        Route::get('/admin/donor_payment_fetch',[DonormemberController::class,'donor_fetch']);
+        Route::get('/admin/donor_payment/fetch_data',[DonormemberController::class,'donor_fetch_data']);
+        Route::post('/admin/donor_payment_update',[DonormemberController::class,'donor_payment_update']);
+        Route::post('/admin/donor_payment',[DonormemberController::class,'add_donor_payment']);
+        Route::get('/admin/donor_payment_status/{id}',[DonormemberController::class,'donor_payment_status']); 
+
+
         //Form Customize
         Route::get('/form/customize', [FormController::class,'customize']);
         Route::post('/form/customize_update', [FormController::class,'customize_update']);
@@ -366,11 +377,24 @@ Route::middleware('AlumniToken')->group(function(){
 
      //Mon Member aamarpay Getway
      Route::get('nonmember_epay/{username}/{tran_id}',[NonmemberController::class,'nonmember_amarpay_epay'])->name('nonmember_amarpay_epay');
-     Route::get('nonmember_amarpay_payment/{tran_id}',[NonmemberController::class,'nonmember_amarpay_payment'])->name('nonmember_amarpay_payment');
+     Route::get('nonmember_amarpay_payment/{tran_id}',[NonmemberController::class,'nonmember_amarpay_payment'])->name('nonmember_amarpay_payment');  
      //You need declear your success & fail route in "app\Middleware\VerifyCsrfToken.php"
      Route::post('nonmember_amarpay_success',[NonmemberController::class,'nonmember_amarpay_success'])->name('nonmember_amarpay_success');
      Route::post('nonmember_amarpay_fail',[NonmemberController::class,'nonmember_amarpay_fail'])->name('nonmember_amarpay_fail');
      Route::get('nonmember_amarpay_cancel',[NonmemberController::class,'nonmember_amarpay_cancel'])->name('nonmember_amarpay_cancel');
+
+
+
+       //Donor Member aamarpay Getway
+       Route::get('donormember_epay/{username}/{tran_id}',[DonormemberController::class,'donormember_amarpay_epay'])->name('donormember_amarpay_epay');
+       Route::get('donormember_amarpay_payment/{tran_id}',[DonormemberController::class,'donormember_amarpay_payment'])->name('donormember_amarpay_payment');  
+       //You need declear your success & fail route in "app\Middleware\VerifyCsrfToken.php"
+       Route::post('donormember_amarpay_success',[DonormemberController::class,'donormember_amarpay_success'])->name('donormember_amarpay_success');
+       Route::post('donormember_amarpay_fail',[DonormemberController::class,'donormember_amarpay_fail'])->name('donormember_amarpay_fail');
+       Route::get('donormember_amarpay_cancel',[DonormemberController::class,'donormember_amarpay_cancel'])->name('donormember_amarpay_cancel');
+  
+     
+
 
     //registration
     Route::get('/', [HomepageController::class, 'homepage']);

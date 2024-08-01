@@ -13,5 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'amarpay_success','amarpay_fail' ,'nonmember_amarpay_success','nonmember_amarpay_fail'
+        ,'donormember_amarpay_success','donormember_amarpay_fail'
     ];
 }

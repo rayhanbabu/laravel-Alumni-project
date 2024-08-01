@@ -11,6 +11,7 @@ use App\Http\Controllers\DuclubController;
 use App\Models\Testimonial;
 use App\Http\Controllers\NonmemberController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\DonormemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +24,9 @@ use App\Http\Controllers\HomepageController;
 |
 */
 
-  Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-       return $request->user();
-  });
+     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+          return $request->user();
+     });
 
     
          //member api
@@ -92,13 +93,19 @@ use App\Http\Controllers\HomepageController;
        Route::post('{username}/nonmember_invoice_create', [NonmemberController::class,'nonmember_invoice_create']);
        Route::get('{username}/nonmember_invoice_view/{tran_id}', [NonmemberController::class,'nonmember_invoice_view']);
       
-       // Geolocation
+
+       //Donor Member Payment Api
+       Route::post('{username}/donormember_invoice_create', [DonormemberController::class,'donormember_invoice_create']);
+       Route::get('{username}/donormember_invoice_view/{tran_id}', [DonormemberController::class,'donormember_invoice_view']);
+       
+       
+         // Geolocation
        Route::get('/{username}/divisions', [TestimonialController::class, 'apidivisions']);
        Route::get('/{username}/districts/{division_id}', [TestimonialController::class, 'apidistricts']);
        Route::get('/{username}/upazilas/{district_id}', [TestimonialController::class, 'apiupazilas']);
        Route::get('/{username}/unions/{upazilla_id}', [TestimonialController::class, 'apiunions']);
        
-       //category =Gallery
+       //category = Gallery
        Route::get('/{username}/magazine/{category}', [TestimonialController::class, 'apimagazine']);
        Route::get('/{username}/expre', [TestimonialController::class, 'apiexpre']);
       
