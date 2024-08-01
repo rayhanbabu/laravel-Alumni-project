@@ -512,6 +512,8 @@ public function adminedit(request $request){
     $admin->admin_login_email=$request->input('admin_login_email');
     $admin->address_phone=$request->input('address_phone');
     $admin->address_email=$request->input('address_email');
+    $admin->donor_gateway_status=$request->input('donor_gateway_status');
+    $admin->gateway_charge_add=$request->input('gateway_charge_add');
     $admin->update();
     return redirect()->back()->with('success','Admin Update Successfuly');
 }

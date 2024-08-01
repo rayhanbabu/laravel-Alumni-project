@@ -206,34 +206,38 @@
                @foreach(news_category() as $row)                   
                  <a class="nav-link @yield('news_select')" href="{{url('/admin/notice/'.$row->week)}}">{{$row->week}} </a>                  
                @endforeach
-      </nav>
-     
+      </nav>   
  </div>
 
+ <a class="nav-link @yield('Welcome_select') @yield('Gallery_select') @yield('Slide_select')
+            @yield('bloodsearch_select') @yield('Link_select') @yield('expre_select') @yield('dataview_select')
+     collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsweb" aria-expanded="false" aria-controls="collapseLayouts">
+     <div class="sb-nav-link-icon "><i class="fas fa-columns"></i></div>
+        Web Customize
+     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+  </a>
 
-     <a class="nav-link " href="{{url('admin/app/Member')}}">
-         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             Member Category
-     </a>
+   <div class="collapse" id="collapseLayoutsweb" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+      <nav class="sb-sidenav-menu-nested nav">          
+                 <a class="nav-link @yield('Welcome_select')" href="{{url('/magazine/index/Welcome')}}">Welcome Message </a>
+                 <a class="nav-link @yield('Gallery_select')" href="{{url('/magazine/index/Gallery')}}">Gallery </a> 
+                 <a class="nav-link @yield('Slide_select')" href="{{url('/magazine/index/Slide')}}">Slider </a>  
+                 <a class="nav-link @yield('bloodsearch_select')" href="{{url('/bloodsearch')}}">Blood Search </a> 
+                 <a class="nav-link @yield('Link_select')" href="{{url('/magazine/index/Link')}}">Link & Image Link </a> 
+                 <a class="nav-link @yield('expre_select')" href="{{url('/expre/index')}}"> Former president, Secretary & Donor  </a>                   
+                 <a class="nav-link @yield('dataview_select')" href="{{url('admin/dataview')}}"> Registartion , Token & Counter Setup </a> 
+            </nav>   
+ </div>
 
-     <a class="nav-link " href="{{url('admin/app/Event')}}">
-         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             Event Create
-     </a>
-
+    
      <a class="nav-link @yield('paymentview_select')" href="{{url('admin/paymentview')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-             Payment View
+            Member Payment 
      </a>
 
      <a class="nav-link @yield('non_paymentview_select')" href="{{url('admin/non_paymentview')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-           Non  Member Payment View
-     </a>
-
-     <a class="nav-link @yield('dataview_select')" href="{{url('admin/dataview')}}">
-         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-           Registartion , Token & Counter Setup
+           Non  Member Payment 
      </a>
 
      <a class="nav-link @yield('withdraw_select')" href="{{url('admin/withdraw')}}">
@@ -246,49 +250,6 @@
               Payment Issue
          </a>
 
-
-     <a class="nav-link @yield('bloodsearch_select')" href="{{url('/bloodsearch')}}">
-       <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-           Blood Search
-   </a>
-
-     <a class="nav-link @yield('Welcome_select')" href="{{url('/magazine/index/Welcome')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-           Welcome 
-     </a>
-
-      <a class="nav-link @yield('Link_select')" href="{{url('/magazine/index/Link')}}">
-          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-              Image/Pdf Link  
-      </a>
-
-
-  
-
-     <a class="nav-link @yield('Gallery_select')" href="{{url('/magazine/index/Gallery')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-           Gallery 
-     </a>
-
-
-    
-   
-
-     <a class="nav-link @yield('Slide_select')" href="{{url('/magazine/index/Slide')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-           Slider
-     </a>
-
-     <a class="nav-link @yield('expre_select')" href="{{url('/expre/index')}}">
-        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-            Former president, Secretary & Donor
-     </a>
-
-    
-       
-
-
-
    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseattansetting" aria-expanded="false" aria-controls="collapseLayouts">
      <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
        Setting
@@ -300,9 +261,17 @@
             <a class="nav-link" href="{{url('admin/app/Session')}}">Session</a>
             <a class="nav-link" href="{{url('admin/app/Profession')}}"> Profession</a>
             <a class="nav-link" href="{{url('admin/app/Committee')}}"> Committee</a>
+            <a class="nav-link" href="{{url('admin/app/Member')}}"> Member Category</a>
+            <a class="nav-link" href="{{url('admin/app/Event')}}">Event Create</a>
         </nav>
     </div>
 
+      <b class="m-2"> Donor Panel</b>
+
+      <a class="nav-link @yield('donor_paymentview_select')" href="{{url('admin/donor_paymentview')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+           Donor Payment 
+     </a>
 
   </div>
  </div>
