@@ -53,17 +53,7 @@ class WithdrawController extends Controller
     }
 
 
-   public function destroy($id){
-        $app=Withdraw::find($id);
-        $app->withdraw_status=5;
-        $app->update();
-         return response()->json([
-           'status'=>200,  
-           'message'=>'Deleted Data',
-        ]);
-    }
-  
-
+   
 
    function fetch_data(Request $request,$admin_category)
    {

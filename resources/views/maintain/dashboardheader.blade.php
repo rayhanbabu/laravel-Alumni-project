@@ -161,7 +161,10 @@
 
   
 
-	
+      <a class="nav-link @yield('donorwithdraw_select') " href="{{url('maintain/donorwithdraw')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              Donor Withdraw
+         </a>
 
 
 

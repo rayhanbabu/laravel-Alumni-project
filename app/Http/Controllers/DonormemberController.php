@@ -144,9 +144,9 @@ class DonormemberController extends Controller
            $store_id ='amaderthikana';
            $signature_key ='e270a2a831529d4e89721ee48d3d8499';
 
-        // $url ='https://sandbox.aamarpay.com';
-        // $store_id ="aamarpaytest";
-        // $signature_key ='dbb74894e82415a2f7ff0ec3a97e4183';   
+         // $url ='https://sandbox.aamarpay.com';
+         // $store_id ="aamarpaytest";
+         // $signature_key ='dbb74894e82415a2f7ff0ec3a97e4183';   
 
 
         $curl = curl_init();

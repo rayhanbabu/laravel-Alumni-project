@@ -16,6 +16,8 @@ use Hash;
 use PDF;
 use Exception;
 use App\Models\App;
+use App\Models\Donormember;
+use App\Models\Donorwithdraw;
 use App\Models\Invoice;
 use App\Models\Nonmember;
 use App\Models\Withdraw;
@@ -881,7 +883,6 @@ class AdminController extends Controller
 
   public function payment_report(Request $request)
   {
-
      // $month = date('n', strtotime($_POST['month']));
      // $year = date('Y', strtotime($_POST['month']));
      $date1 = $request->input('date1');
@@ -1100,6 +1101,7 @@ class AdminController extends Controller
 
         public function group_report(Request $request)
         {
+
           $admin_name = $request->header('admin_name');  
           $category=$request->input('category');
 
@@ -1109,8 +1111,47 @@ class AdminController extends Controller
           $data = Member::where('admin_name',$admin_name)->select($category,DB::raw('count(id) as id'))
           ->groupBy($category)->orderBy($category,'asc')->get();
 
-         
          return view('print.group_report',['data' => $data,'admin' => $admin,'category'=>$category]);
       
         }
+
+      
+  function donor_dashboard(Request $request) {
+      $admin_name=$request->header('admin_name');
+      $admin_id=$request->header('id');
+      $data = Admin::find($admin_id);
+      $donormember = Donormember::where('payment_type','Online')->where('payment_status',1)->where('admin_name', $admin_name)->sum('amount');
+      $donorwithdraw = Donorwithdraw::where('withdraw_status',1)->where('admin_name', $admin_name)->sum('withdraw_amount');
+   
+      return view('admin.donor_dashboard', ['admin' => $data ,'donormember'=>$donormember 
+        ,'donorwithdraw'=>$donorwithdraw]);
     }
+
+
+
+    public function donor_payment_report(Request $request)
+    {
+      // $month = date('n', strtotime($_POST['month']));
+      // $year = date('Y', strtotime($_POST['month']));
+      $date1 = $request->input('date1');
+      $date2 = $request->input('date2');
+      $payment_type = $request->input('payment_type');
+      $admin_name = $request->header('admin_name'); 
+
+       $admin = Admin::where('admin_name', $admin_name)->select('id','name','nameen', 'address','email', 'mobile', 'admin_name',
+        'header_size','resheader_size','getway_fee','other_link')->first();
+  
+        $donor_invoice = Donormember::where('admin_name', $admin->admin_name)
+        ->whereBetween('payment_date', [$date1, $date2])->where('payment_status', 1)
+        ->where('payment_type',$payment_type)
+        ->select('donormembers.*')->orderBy('id','asc')->get();
+     
+       return view('print.donor_payment_report',[
+           'date1' => $date1,
+           'date2' => $date2,
+           'payment_type' => $payment_type,
+           'admin' => $admin,
+           'donor_invoice' => $donor_invoice]);
+      }
+
+   }

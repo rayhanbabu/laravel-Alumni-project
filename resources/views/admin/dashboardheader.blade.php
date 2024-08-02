@@ -189,9 +189,9 @@
      </a>
        <div class="collapse" id="collapseattansms" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
          <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="{{url('/smsview')}}">SMS Send</a>
-            <a class="nav-link" href="{{url('smsbuy')}}"> SMS Buy</a>
-            <a class="nav-link" href="{{url('smsdetails')}}"> SMS Details</a>
+            <a class="nav-link" href="{{url('/smsview')}}"> SMS Send </a>
+            <a class="nav-link" href="{{url('smsbuy')}}"> SMS Buy </a>
+            <a class="nav-link" href="{{url('smsdetails')}}"> SMS Details </a>
         </nav>
     </div>
 	
@@ -266,12 +266,25 @@
         </nav>
     </div>
 
+    @if($admin->donor_gateway_status==1)
       <b class="m-2"> Donor Panel</b>
+
+
+      <a class="nav-link @yield('donor_dashboard_select')" href="{{url('admin/donor_dashboard')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+           Donor Dashboard 
+     </a>
 
       <a class="nav-link @yield('donor_paymentview_select')" href="{{url('admin/donor_paymentview')}}">
          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
            Donor Payment 
      </a>
+
+     <a class="nav-link @yield('donor_withdraw_select')" href="{{url('admin/donorwithdraw')}}">
+         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+           Donor Withdraw 
+     </a>
+     @endif
 
   </div>
  </div>
