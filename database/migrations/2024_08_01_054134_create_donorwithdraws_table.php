@@ -8,14 +8,13 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * withdraw_status
-        
      */
     public function up(): void
-    { 
-        Schema::create('withdraws', function (Blueprint $table) {
+    {
+        Schema::create('donorwithdraws', function (Blueprint $table) {
             $table->id();
             $table->string('admin_name');
+            $table->foreign('admin_name')->references('admin_name')->on('admins');
             $table->string('bank_name');
             $table->string('bank_account');
             $table->string('bank_route');
@@ -28,6 +27,10 @@ return new class extends Migration
             $table->integer('withdraw_year')->nullable();
             $table->integer('withdraw_month')->nullable();
             $table->text('withdraw_info')->nullable();
+            $table->string('withdraw_info_update')->nullable();
+            $table->string('image')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('updated_by_time')->nullable();
             $table->timestamps();
         });
     }
@@ -37,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('withdraws');
+        Schema::dropIfExists('donorwithdraws');
     }
 };

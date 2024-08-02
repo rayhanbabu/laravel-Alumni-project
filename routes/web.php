@@ -24,6 +24,7 @@ use App\Http\Controllers\NonmemberController;
 use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\WeekController;
 use App\Http\Controllers\DonormemberController;
+use App\Http\Controllers\DonorwithdrawController;
 
 /*
 |--------------------------------------------------------------------------
@@ -173,8 +174,17 @@ use App\Http\Controllers\DonormemberController;
            Route::post('/onlinepaymentstatus',[OnlinepaymentController::class,'onlinepaymentstatus']);
            Route::post('maintain/paymentedit',[OnlinepaymentController::class,'paymentedit']);
            Route::post('onlinepaymentpdf',[OnlinepaymentController::class,'onlinepaymentpdf']);
-     
-       });     
+    
+           Route::get('/maintain/donorwithdraw/',[DonorwithdrawController::class,'donorwithdraw_index']);
+           Route::get('/maintain/donorwithdraw_fetch/',[DonorwithdrawController::class,'donorwithdraw_fetch']);
+           Route::get('/maintain/donorwithdraw/fetch_data/',[DonorwithdrawController::class,'donorwithdraw_fetch_data']);
+           Route::post('/maintain/donorwithdraw',[DonorwithdrawController::class,'store']);
+           Route::post('/maintain/donorwithdraw_update',[DonorwithdrawController::class,'donorwithdraw_update']);
+    
+          });     
+
+   
+      
   });
 
   Route::get('/admin/login',[AdminController::class,'login'])->middleware('AlumniTokenExist');
@@ -329,6 +339,15 @@ Route::middleware('AlumniToken')->group(function(){
         Route::post('/admin/donor_payment_update',[DonormemberController::class,'donor_payment_update']);
         Route::post('/admin/donor_payment',[DonormemberController::class,'add_donor_payment']);
         Route::get('/admin/donor_payment_status/{id}',[DonormemberController::class,'donor_payment_status']); 
+
+        //AdminDonor Withdraw 
+        Route::get('/admin/donorwithdraw/',[DonorwithdrawController::class,'admin_donorwithdraw_index']);
+        Route::get('/admin/donorwithdraw_fetch/',[DonorwithdrawController::class,'admin_donorwithdraw_fetch']);
+        Route::get('/admin/donorwithdraw/fetch_data/',[DonorwithdrawController::class,'admin_donorwithdraw_fetch_data']);
+        
+        //Donor Dashboard
+        Route::get('/admin/donor_dashboard/',[AdminController::class,'donor_dashboard']);
+        Route::post('/pdf/donor_payment_report',[AdminController::class,'donor_payment_report']);
 
 
         //Form Customize

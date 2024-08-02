@@ -12,21 +12,15 @@
            <a href="#"  class="btn btn-danger btn-sm"> canceled<a>
             @else
              <a href="#"  class="btn btn-warning btn-sm"> Pending<a>
-            @endif
-          </td>
-
+          @endif
+         </td>
             <td>{{ $row->withdraw_type}}</td>
             <td>{{ $row->withdraw_info}}, {{ $row->withdraw_info_update}}</td>
             <td> <img src="{{ asset('/uploads/admin/'.$row->image) }}" width="100" class="img-thumbnail" alt="Image"></td>
-            <td> <button type="button"  data-withdraw_id="{{$row->id}}"  data-withdraw_info="{{$row->withdraw_info}}" 
-                  data-withdraw_status="{{$row->withdraw_status}}"  class="edit btn btn-info btn-sm">Edit </button> </td>
-
-       
-     
-        <td>{{ $row->updated_by}}</td>
-        <td>{{ $row->updated_by_time}}</td>
-               
-      </tr>
+           
+            <td>{{ $row->updated_by}}</td>
+            <td>{{ $row->updated_by_time}}</td>     
+        </tr>
  @endforeach
 
       <tr class="pagin_link">

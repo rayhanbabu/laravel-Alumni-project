@@ -12,73 +12,11 @@
                       </div>
                       <div class="col-3">
                          <div class="d-grid gap-2 d-md-flex ">
-                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddModal">
-                           Add
-                         </button>         
+                                  
                 </div>
           </div> 
     </div> 
 
-
- 
-
-
-  <!-- Modal Edit -->
-  <div class="modal fade" id="EditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Edit</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-<form method="post" id="edit_form" enctype="multipart/form-data" >
-   <div class="modal-body">
- 
-
-      <input type="hidden" name="edit_id"  id="edit_id" >
-
-                                
-      <div class="form-group  my-2">
-	      	<label><b>Category name</b></label>
-	        <input name="category" id="edit_category" type="text"   class="form-control"  required/>
-          <p class="text-danger err_category"></p>
-     </div>
-
-     <div class="form-group  my-2">
-	      	<label><b> Amount (TK)</b></label>
-	        <input name="amount" id="edit_amount" type="number"   class="form-control"  required/>
-          <p class="text-danger err_amount"></p>
-     </div>
-
-    <div class="form-group  my-2">
-         <label for="lname">Category Show Member</label>
-                <select class="form-select" name="status" id="edit_status" aria-label="Default select example"  >
-                      <option value="1">Show</option>
-                      <option value="0">Hidden</option>
-                </select>
-     </div>         
-
-
-    <div class="loader">
-            <img src="{{ asset('images/abc.gif') }}" alt="" style="width: 50px;height:50px;">
-        </div><br>
- 
-<input type="submit" id="edit_btn"  value="Update" class="btn btn-success" />
-
-
-   </div>
-   </form> 
-
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>   
-
- <!-- Modal Edit End-->
 
 
 

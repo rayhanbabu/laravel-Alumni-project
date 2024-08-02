@@ -690,55 +690,13 @@ public function adminstatus($type,$status,$id){
   }
 
 
-  public function withdraw_status($operator,$status,$id){
-    
-    if($operator=='status'){  
-         if($status=='deactive'){
-                $type=0;
-                $payment_time=date('2010-10-10 10:10:10');
-                $payment_type='';
-           }else{
-                $type=1;
-                $payment_time=date('Y-m-d H:i:s');
-                $payment_type=maintain_access()->maintain_name;
-           }
-
-           $payment_month= date('n');
-           $payment_year= date('Y');
-
-           $model=Withdraw::find($id);
-           $model->withdraw_status=$type; 
-           $model->withdraw_type=$payment_type; 
-           $model->withdraw_time=$payment_time;
-           $model->withdraw_year=$payment_year; 
-           $model->withdraw_month=$payment_month;
-           $model->updated_by=maintain_access()->maintain_name;
-           $model->updated_by_time=date('Y-m-d H:i:s');  
-           $model->update();
-
-         return back()->with('success','Status update Successfull');        
-      }
-      else if($operator=='verify'){
-           if($status=='deactive'){
-                $type=0;
-           }else{
-                $type=1;
-            }
-         return back()->with('success','Status update Successfull');     
-            
-    }else{ return back()->with('fail','Something Rong');}
-
-
-      //}catch (Exception $e) { return  'something is Rong'; }
-    }
-
-
     public function withdraw_update(Request $request)
     {
 
        $validated = $request->validate([
             'image' =>'image|mimes:jpeg,png,jpg|max:512000',
             'withdraw_info'=>'required',
+            'withdraw_status'=>'required',
         ]);
 
        $model = Withdraw::find($request->input('id'));
@@ -746,6 +704,7 @@ public function adminstatus($type,$status,$id){
        $model->withdraw_info_update="Admin";
        $model->updated_by=maintain_access()->maintain_name;
        $model->updated_by_time=date('Y-m-d H:i:s');
+       $model->withdraw_status=$request->input('withdraw_status');
 
        if($request->hasfile('image')){
            $path=public_path('uploads/admin/').$model->image;
