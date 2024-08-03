@@ -425,7 +425,9 @@ Route::middleware('AlumniToken')->group(function(){
     Route::post('/web/insert', [MaintainController::class, 'webinsert']);
     Route::get('/email_verify/{email2}', [MaintainController::class, 'email_verify']);
    
-    
+      Route::get('web/privacy-policy', function () {
+        return view('web.privacy-policy');
+       });
       /* 
    Route::get('/testimonial', [TestimonialController::class,'testimonial']);
    Route::get('/langhome', [TestimonialController::class,'langhome']);
