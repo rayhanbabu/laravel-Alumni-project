@@ -248,7 +248,7 @@
      <a class="nav-link @yield('issue_select') " href="{{url('admin/issue')}}">
           <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
               Payment Issue
-         </a>
+      </a>
 
    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseattansetting" aria-expanded="false" aria-controls="collapseLayouts">
      <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
