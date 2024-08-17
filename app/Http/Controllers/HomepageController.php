@@ -284,6 +284,14 @@ public function update(Request $request ){
        }
 
 
+       public function maintain_homepage(Request $request,$category){
+        $du_term=Homepage::where('babu',$category)->orderBy('serial','asc')->get();
+          return response()->json([
+            'status'=>'success',  
+             'data'=>$du_term,
+          ]);
+      }
+
 
 
 
