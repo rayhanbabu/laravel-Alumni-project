@@ -171,6 +171,7 @@
                          <option value="GallaryDuClub">GallaryDuClub</option> 
                          <option value="ContactDuClub">ContactDuClub</option> 
                          <option value="PrivacyDuClub">PrivacyDuClub</option> 
+                         <option value="TermDuClub">TermDuClub</option> 
                     </select>
             </div>
           </div>
