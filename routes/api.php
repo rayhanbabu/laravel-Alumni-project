@@ -122,6 +122,7 @@ use App\Http\Controllers\DonormemberController;
 
        Route::get('/dumess/api/term', [HomepageController::class,'du_term']);
        Route::get('/dumess/api/privacy', [HomepageController::class,'du_privacy']);
+       Route::get('/maintain/HomePage/{category}', [HomepageController::class,'maintain_homepage']);
 
   Route::middleware('DuClubToken')->group(function(){ 
        Route::get('/duclub/api/member_ledger', [DuclubController::class,'member_ledger']);

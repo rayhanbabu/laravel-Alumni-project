@@ -59,6 +59,13 @@
                          <option value="DUCLUB">DUCLUB</option>
                          <option value="TermDu">TermDu</option> 
                          <option value="PolicyDu">PolicyDu</option> 
+                         <option value="HomeDuClub">HomeDuClub</option> 
+                         <option value="TraditionDuClub">TraditionDuClub</option> 
+                         <option value="MembershipDuClub">MembershipDuClub</option> 
+                         <option value="EventDuClub">EventDuClub</option> 
+                         <option value="GallaryDuClub">GallaryDuClub</option> 
+                         <option value="ContactDuClub">ContactDuClub</option> 
+
                    </select>
               </div>
           </div>
@@ -155,6 +162,12 @@
                           <option value="DUCLUB">DUCLUB</option>
                           <option value="TermDu">TermDu</option> 
                           <option value="PolicyDu">PolicyDu</option> 
+                          <option value="HomeDuClub">HomeDuClub</option> 
+                         <option value="TraditionDuClub">TraditionDuClub</option> 
+                         <option value="MembershipDuClub">MembershipDuClub</option> 
+                         <option value="EventDuClub">EventDuClub</option> 
+                         <option value="GallaryDuClub">GallaryDuClub</option> 
+                         <option value="ContactDuClub">ContactDuClub</option> 
                     </select>
             </div>
           </div>
