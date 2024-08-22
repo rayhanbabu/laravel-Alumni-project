@@ -34,7 +34,6 @@ class MemberController extends Controller
          [
             'name' => 'required',
             'category_id' => 'required',
-            'degree_category' => 'required',
             'blood' => 'required',
             'member_password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
             'phone' => 'required|max:15|unique:members,phone',
@@ -68,6 +67,7 @@ class MemberController extends Controller
                  }else{  $model->member_card = $member_card; }
                $model->admin_name = $request->username;
                $model->name = $request->input('name');
+               $model->last_name = $request->input('last_name');
                $model->degree_category = $request->input('degree_category');
                $model->member_password = $request->input('member_password');
                $model->gender = $request->input('gender');
@@ -448,6 +448,13 @@ class MemberController extends Controller
       } else {
          $model = Member::find($member_id);
          $model->name = $request->input('name');
+         $model->bn_name = $request->input('bn_name');
+         $model->last_name = $request->input('last_name');
+         $model->mother_name = $request->input('mother_name');
+         $model->father_name = $request->input('father_name');
+         $model->nid = $request->input('nid');
+         $model->about_self = $request->input('about_self');
+
          $model->gender = $request->input('gender');
          $model->country = $request->input('country');
          $model->degree_category = $request->input('degree_category');
@@ -487,11 +494,7 @@ class MemberController extends Controller
          $model->profession_id = $request->input('profession_id');
          $model->session_id = $request->input('session_id');
 
-         $model->bn_name = $request->input('bn_name');
-         $model->mother_name = $request->input('mother_name');
-         $model->father_name = $request->input('father_name');
-         $model->nid = $request->input('nid');
-         $model->about_self = $request->input('about_self');
+         
 
          if ($request->hasfile('profile_image')) {
             $file = $_FILES['profile_image']['tmp_name'];
