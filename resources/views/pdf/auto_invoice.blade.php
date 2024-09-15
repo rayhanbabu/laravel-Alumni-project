@@ -40,6 +40,13 @@ th, td {
              {{$name}}<br>
              {{$phone}} <br>
              {{$email}} <br>
+              @if($registration)
+                  Registration : {{$registration}}<br>
+              @endif
+              @if($department)
+                  Department : {{$department}}<br>
+              @endif
+            
             Invoice Id: {{$tran_id}}
          
         </h5>
