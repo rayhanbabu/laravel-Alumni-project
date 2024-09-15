@@ -23,7 +23,7 @@ th, td {
 
         <h3>{{$file}}</h3>
           <h5> 
-            {{$address}}<br>
+           
             {{$admin_mobile}}<br>
             {{$admin_email}}
          </h5>   
@@ -40,6 +40,7 @@ th, td {
              {{$name}}<br>
              {{$phone}} <br>
              {{$email}} <br>
+             {{$address}}<br>
               @if($registration)
                   Registration : {{$registration}}<br>
               @endif
