@@ -40,7 +40,19 @@ class NonmemberController extends Controller
             $app = App::where('admin_name', $request->username)->where('id', $request->input('category_id'))
                ->where('admin_category','Event')->first();
                if ($app) {
-                 $amount=$app->amount+$admin->blood_size;
+                   $member_count=Nonmember::where('admin_name', $request->username)->where('payment_status',1)
+                      ->where('gender',$request->input('gender'))->get();
+                
+                       if($request->input('gender')=="Male"){
+                            $number=2;
+                       }else if($request->input('gender')=="Female"){
+                            $number=1;
+                       }else{
+                             $number=0;
+                       }
+              if($member_count->count()<$number) {
+
+                  $amount=$app->amount+$admin->blood_size;
                   $total_amount = $amount + ($amount * $admin->getway_fee) / 100;
                   $model = new Nonmember;
                   $model->category_id = $request->input('category_id');
@@ -56,6 +68,11 @@ class NonmemberController extends Controller
                   $model->getway_fee = $admin->getway_fee;
                   $model->total_amount = $total_amount;
                   $model->web_link = $admin->other_link;
+
+                  $model->department = $request->input('department');
+                  $model->registration = $request->input('registration');
+                  $model->resident = $request->input('resident');
+                  $model->gender = $request->input('gender');
                   $model->save();
 
                   return response()->json([
@@ -63,6 +80,13 @@ class NonmemberController extends Controller
                     'tran_id' => $model->tran_id,
                     'message' => 'Invoice Create Successfull',
                  ]);
+
+                }else{
+                     return response()->json([
+                         'status' => 600,
+                         'message' => 'Registration Seat Fill-up Complete',
+                     ]);
+                }
 
                 }else{
                      return response()->json([
