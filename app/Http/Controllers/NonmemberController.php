@@ -306,6 +306,9 @@ class NonmemberController extends Controller
        $data['payment_time']=$invoice->payment_time;
        $data['total_amount']=$invoice->total_amount;
 
+       $data['registration']=$invoice->registration;
+       $data['department']=$invoice->department;
+
        $pdf = PDF::loadView('pdf.auto_invoice',$data);
         Mail::send('pdf.auto_invoice',$data,function($message) use ($data,$pdf){
            $message->to($data['email'])
