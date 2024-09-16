@@ -45,9 +45,9 @@ class NonmemberController extends Controller
                     ->where('gender',$request->input('gender'))->where('registration_type',$request->input('registration_type'))->get();
                 
                        if($request->input('gender')=="Male"){
-                            $number=350;
+                            $number=1;
                        }else if($request->input('gender')=="Female"){
-                            $number=250;
+                            $number=1;
                        }else{
                              $number=0;
                        }
