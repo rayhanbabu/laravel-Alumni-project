@@ -99,6 +99,8 @@
 		  <th  width="10%">Payment Status</th>
       <th  width="10%">Payment Type</th>
       <th  width="10%">Payment Info</th>
+      <th  width="10%"> Registration No </th>
+      <th  width="10%"> Registration Type </th>
 		
       </tr>
     </thead>

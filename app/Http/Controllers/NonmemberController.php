@@ -28,29 +28,32 @@ class NonmemberController extends Controller
              'email' => 'required',
              'phone' => 'required',
              'address' => 'required',
+             'registration' => 'required|max:15|unique:nonmembers,registration',
            ]);
 
       if ($admin) {
          if ($validator->fails()) {
             return response()->json([
-               'status' => 700,
-               'message' => $validator->messages(),
+               'status' => 600,
+               'message' => "Registration Number Already Exists",
             ]);
          } else {
             $app = App::where('admin_name', $request->username)->where('id', $request->input('category_id'))
                ->where('admin_category','Event')->first();
                if ($app) {
-                   $member_count=Nonmember::where('admin_name', $request->username)->where('payment_status',1)
-                      ->where('gender',$request->input('gender'))->get();
+                   $member_count=Nonmember::where('admin_name',$request->username)->where('payment_status',1)
+                    ->where('gender',$request->input('gender'))->where('registration_type',$request->input('registration_type'))->get();
                 
                        if($request->input('gender')=="Male"){
-                            $number=2;
+                            $number=350;
                        }else if($request->input('gender')=="Female"){
-                            $number=1;
+                            $number=250;
                        }else{
                              $number=0;
                        }
-              if($member_count->count()<$number) {
+        if($request->input('registration_type')=="Paid"){
+
+            if($member_count->count()<$number) {
 
                   $amount=$app->amount+$admin->blood_size;
                   $total_amount = $amount + ($amount * $admin->getway_fee) / 100;
@@ -73,6 +76,7 @@ class NonmemberController extends Controller
                   $model->registration = $request->input('registration');
                   $model->resident = $request->input('resident');
                   $model->gender = $request->input('gender');
+                  $model->registration_type = $request->input('registration_type');
                   $model->save();
 
                   return response()->json([
@@ -87,6 +91,40 @@ class NonmemberController extends Controller
                          'message' => 'Registration Seat Fill-up Complete',
                      ]);
                 }
+        }else{
+                
+          $amount=$app->amount+$admin->blood_size;
+          $total_amount = $amount + ($amount * $admin->getway_fee) / 100;
+          $model = new Nonmember;
+          $model->category_id = $request->input('category_id');
+          $model->admin_name = $request->username;
+          $model->name = $request->input('name');
+          $model->phone = $request->input('phone');
+          $model->email = $request->input('email');
+          $model->address = $request->input('address');
+          $model->passing_year = $request->input('passing_year');
+          $model->designation = $request->input('designation');
+          $model->tran_id = Str::random(10);
+          $model->amount = $amount;
+          $model->getway_fee = $admin->getway_fee;
+          $model->total_amount = $total_amount;
+          $model->web_link = $admin->other_link;
+
+          $model->department = $request->input('department');
+          $model->registration = $request->input('registration');
+          $model->resident = $request->input('resident');
+          $model->gender = $request->input('gender');
+          $model->registration_type = $request->input('registration_type');
+          $model->save();
+
+          return response()->json([
+            'status' => 200,
+            'tran_id' => $model->tran_id,
+            'message' => 'Invoice Create Successfull',
+         ]);
+
+        }
+
 
                 }else{
                      return response()->json([
@@ -394,6 +432,8 @@ class NonmemberController extends Controller
                $query->orwhere('nonmembers.email', 'like', '%' . $search . '%');
                $query->orwhere('nonmembers.id', 'like', '%' . $search . '%');
                $query->orwhere('apps.category', 'like', '%' . $search . '%');
+               $query->orwhere('nonmembers.registration', 'like', '%' . $search . '%');
+               $query->orwhere('nonmembers.registration_type', 'like', '%' . $search . '%');
              })->select('apps.category', 'nonmembers.*')
               ->orderBy($sort_by, $sort_type)->paginate(10);
             return view('admin.non_paymentview_data', compact('data'))->render();
