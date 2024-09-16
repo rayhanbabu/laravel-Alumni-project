@@ -45,9 +45,9 @@ class NonmemberController extends Controller
                     ->where('gender',$request->input('gender'))->where('registration_type',$request->input('registration_type'))->get();
                 
                        if($request->input('gender')=="Male"){
-                            $number=1;
+                            $number=330;
                        }else if($request->input('gender')=="Female"){
-                            $number=1;
+                            $number=270;
                        }else{
                              $number=0;
                        }
@@ -88,7 +88,8 @@ class NonmemberController extends Controller
                 }else{
                      return response()->json([
                          'status' => 600,
-                         'message' => 'Registration Seat Fill-up Complete',
+                         'message' => 'আমরা আন্তরিক দু:খিত অডিটোরিয়াম সকল  সিট বুক হয়ে গেছে। অনুগ্রহ করে রেজিষ্ট্রেশন টাইপ ফ্রী দিয়ে
+                          রেজিষ্ট্রেশন করুন। TSC তে আপনাদের জন্য ব্যাবস্থা করা হবে',
                      ]);
                 }
         }else{
