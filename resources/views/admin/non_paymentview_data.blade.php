@@ -31,6 +31,8 @@
            @endif
                   <td>{{ $row->payment_type}}</td>
                   <td>{{ $row->payment_method}} {{ $row->payment_time}}</td>
+                  <td>{{ $row->registration}}</td>
+                  <td>{{ $row->registration_type}}</td>
                
          
    
