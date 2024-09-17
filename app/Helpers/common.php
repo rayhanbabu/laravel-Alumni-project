@@ -48,6 +48,15 @@ function prx($arr){
        
     }
 
+    function event_category(){
+      $alumni_token=Cookie::get('alumni_token');
+      $result=AlumniJWTToken::ReadToken($alumni_token);
+      $category=DB::table('apps')->where('admin_name',$result->admin_name)->where('admin_category','Event')->get();
+     return $category;
+    
+ }
+
+
       function batch_category(){
             $alumni_token=Cookie::get('alumni_token');
             $result=AlumniJWTToken::ReadToken($alumni_token);
