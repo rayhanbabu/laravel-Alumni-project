@@ -8,8 +8,9 @@ use DB;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class UserExport implements FromQuery
+class UserExport implements FromQuery,WithHeadings
 {
     use Exportable;
 
@@ -20,8 +21,31 @@ class UserExport implements FromQuery
       
     }
 
-    
 
+    public function headings(): array{
+        return [
+            'name',
+            'email',
+            'member_card',
+            'serial',
+            'category_id',
+            'phone',
+            'degree_category',
+            'gender',
+            'blood',
+            'country',
+            'city',
+            'occupation',
+            'organization',
+            'designation',
+            'affiliation',
+            'training',
+            'expertise',
+        ];
+     }
+
+
+   
     public function query()
     {
         //return Invoice::query()->where('invoice_year', $this->year);

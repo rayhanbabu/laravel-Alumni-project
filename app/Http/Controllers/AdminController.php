@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\validator;
 use Illuminate\Support\Facades\Cookie;
 use App\Exports\UserExport;
+use App\Exports\NonMemberExport;
 use App\Models\Member;
 use App\Helpers\AlumniJWTToken;
 use Hash;
@@ -794,6 +795,15 @@ class AdminController extends Controller
     $admin_name = $request->header('admin_name'); 
     $category_id = $request->input('category_id');
     return (new UserExport($admin_name, $category_id))->download('Member_list.csv');
+  }
+
+
+  public function non_member_export(Request $request)
+  {
+    $admin_name = $request->header('admin_name'); 
+    $category_id = $request->input('category_id');
+    $payment_status = $request->input('payment_status');
+    return (new NonMemberExport($admin_name, $category_id,$payment_status))->download($admin_name.$category_id.'-'.$payment_status.'-Non_Member_list.csv');
   }
 
 

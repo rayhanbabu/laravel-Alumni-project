@@ -6,18 +6,28 @@
 <div class="card mt-4 mb-3">
   <div class="card-header">
 <div class="row ">
-               <div class="col-4"> <h5 class="mt-0">Non Member Payment View</h5></div>
-                     <div class="col-4">
-                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                             <form action="{{url('pdf/payment_category')}}" method="POST" enctype="multipart/form-data">
+               <div class="col-3"> <h5 class="mt-0">Non Member Payment View</h5></div>
+                     <div class="col-3">
+                       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                             <form action="{{url('non_member/export')}}" method="POST" enctype="multipart/form-data">
                                   {!! csrf_field() !!}
+                                  <select class="form-select" name="category_id" id="category_id" aria-label="Default select example" required>
+                    @foreach(event_category() as $row)
+                    <option value="{{$row->id}}">{{$row->category}}</option>
+                    @endforeach
+                </select>
                                      
-                         </div>
+                        </div>
                      </div>
 
-                     <div class="col-1">
+                     <div class="col-2">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                           
+                         <select class="form-select" name="payment_status" id="payment_status" aria-label="Default select example" required>
+                              <option value="">Select Payment Status</option>
+                                <option value="0">Unpaid</option>
+                                <option value="1">Paid</option>
+                   
+                          </select>
                          
                          </div>
                      </div>
@@ -25,7 +35,7 @@
                      <div class="col-1">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                             
-                     
+                            <button type="submit" name="search" class="btn btn-primary btn-sm"> Export  </button>
 					                   </form>   
                          </div>
                      </div>

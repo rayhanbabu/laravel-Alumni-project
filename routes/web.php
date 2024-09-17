@@ -234,6 +234,7 @@ Route::middleware('AlumniToken')->group(function(){
     Route::get('/admin/member/{operator}/{status}/{id}', [AdminController::class, 'memberstatus']);
     Route::get('/admin/member_delete/{id}', [AdminController::class, 'member_delete']);
     Route::post('/member/export',[AdminController::class,'member_export']); 
+    Route::post('/non_member/export',[AdminController::class,'non_member_export']); 
 
     Route::get('admin/dataview',[AdminController::class,'dataview']);
     Route::post('admin/dataedit',[AdminController::class,'dataedit']);
