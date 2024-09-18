@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Member;
+use App\Models\Nonmember;
 use PhpOffice\PhpSpreadsheet\Writer\Ods\Meta;
 use Exception;
 
@@ -431,7 +432,7 @@ public function delete(Request $request) {
              }
 
 
-             public function apihome_update($username){
+          public function apihome_update($username){
               $admin= Admin::where('admin_name',$username)->select('id','name','nameen','address','email','program_desc','program_title','program_status',
                   'mobile','admin_name','header_size','resheader_size','text1','text2','text3','blood_size','address_phone'
                   ,'address_email','address_email','counter1','counter2','counter3','counter4'
@@ -443,10 +444,10 @@ public function delete(Request $request) {
               $logu = Magazine::where('category','Slide')->where('text4','Logu')->where('admin_name',$admin->admin_name)->first();
               $logu = Magazine::where('category','Slide')->where('text4','HeaderLogu')->where('admin_name',$admin->admin_name)->first();
               
-               return response()->json([
-                   'admin'=>$admin,'slide'=>$slide,'slide1'=>$slide1,
-                   'welcome'=>$welcome,'test'=>$test,'logu'=>$logu
-               ]);
+             return response()->json([
+                  'admin'=>$admin,'slide'=>$slide,'slide1'=>$slide1,
+                  'welcome'=>$welcome,'test'=>$test,'logu'=>$logu
+              ]);
 
          }
 
@@ -726,6 +727,30 @@ public function testimonial() {
        $test=DB::select("select * from  
        testimonials where babu='1' AND lang='Null' OR  babu='1' AND lang='$lang'");
         return view('admin.langhome',['test'=>$test]);
+   }
+
+
+   public function non_member_search($username,$registration,$status){
+           
+      if($status=="registration"){
+           $nonmembr=Nonmember::where('admin_name',$username)->where('registration',$registration)->first();
+      }else{
+          $nonmembr=Nonmember::where('admin_name',$username)->where('id',$registration)->first();
+      }
+       
+       if($nonmembr){
+            return response()->json([
+              'status'=>'success',
+              'data'=>$nonmembr  
+            ],200); 
+       }else{
+            return response()->json([
+               'status'=>'fail',
+               'message'=>"Data not Found"  
+            ],200); 
+        }
+       
+     
    }
 
 

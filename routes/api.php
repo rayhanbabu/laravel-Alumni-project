@@ -108,6 +108,10 @@ use App\Http\Controllers\DonormemberController;
        //category = Gallery
        Route::get('/{username}/magazine/{category}', [TestimonialController::class, 'apimagazine']);
        Route::get('/{username}/expre', [TestimonialController::class, 'apiexpre']);
+
+
+       // Status Search
+       Route::get('/{username}/non_member_search/{registration}/{status}', [TestimonialController::class, 'non_member_search']);
       
 
        //Payment Getway
