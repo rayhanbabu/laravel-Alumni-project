@@ -187,31 +187,31 @@ use App\Http\Controllers\DonorwithdrawController;
       
   });
 
-  Route::get('/admin/login',[AdminController::class,'login'])->middleware('AlumniTokenExist');
-  Route::post('admin/login-insert',[AdminController::class,'login_insert']);
-  Route::post('/admin/login-verify',[AdminController::class,'login_verify']);
+   Route::get('/admin/login',[AdminController::class,'login'])->middleware('AlumniTokenExist');
+   Route::post('admin/login-insert',[AdminController::class,'login_insert']);
+   Route::post('/admin/login-verify',[AdminController::class,'login_verify']);
 
 
-Route::get('admin/forget',[AdminController::class,'forget']); 
-Route::post('admin/forget',[AdminController::class,'forgetemail']); 
-Route::post('admin/forgetcode',[AdminController::class,'forgetcode']); 
-Route::post('admin/confirmpass',[AdminController::class,'confirmpass']);
+   Route::get('admin/forget',[AdminController::class,'forget']); 
+   Route::post('admin/forget',[AdminController::class,'forgetemail']); 
+   Route::post('admin/forgetcode',[AdminController::class,'forgetcode']); 
+   Route::post('admin/confirmpass',[AdminController::class,'confirmpass']);
 
-Route::middleware('AlumniToken')->group(function(){  
+   Route::middleware('AlumniToken')->group(function(){  
 
-    Route::get('/admin/logout',[AdminController::class,'logout']);
-    Route::get('/admin/dashboard',[adminController::class,'dashboard']);
-    Route::get('/admin/password',[AdminController::class,'password']);
-    Route::post('admin/password',[AdminController::class,'passwordedit']);
+     Route::get('/admin/logout',[AdminController::class,'logout']);
+     Route::get('/admin/dashboard',[adminController::class,'dashboard']);
+     Route::get('/admin/password',[AdminController::class,'password']);
+     Route::post('admin/password',[AdminController::class,'passwordedit']);
 
-    //Application  
-    Route::get('/admin/app/{admin_category}',[AppController::class,'index']);
-    Route::post('/admin/app',[AppController::class,'store']);
-    Route::get('/admin/app_fetch/{admin_category}',[AppController::class,'fetch']);
-    Route::get('/admin/app/fetch_data/{admin_category}',[AppController::class,'fetch_data']);
-    Route::get('/admin/app_edit/{id}',[AppController::class,'edit']);
-    Route::post('/admin/app_update/{id}',[AppController::class,'update']);
-    Route::delete('/admin/app_delete/{id}',[AppController::class,'destroy']);
+     //Application  
+     Route::get('/admin/app/{admin_category}',[AppController::class,'index']);
+     Route::post('/admin/app',[AppController::class,'store']);
+     Route::get('/admin/app_fetch/{admin_category}',[AppController::class,'fetch']);
+     Route::get('/admin/app/fetch_data/{admin_category}',[AppController::class,'fetch_data']);
+     Route::get('/admin/app_edit/{id}',[AppController::class,'edit']);
+     Route::post('/admin/app_update/{id}',[AppController::class,'update']);
+     Route::delete('/admin/app_delete/{id}',[AppController::class,'destroy']);
 
 
      //committee 
