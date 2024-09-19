@@ -179,7 +179,7 @@ class NonmemberController extends Controller
     {
       //try {
        
-        $data=Nonmember::where('tran_id',$tran_id)->first();
+        $data=Nonmember::where('tran_id',$tran_id)->orderBy('id','desc')->first();
   
     
         $tran_id = $tran_id;  //unique transection id for every transection 
