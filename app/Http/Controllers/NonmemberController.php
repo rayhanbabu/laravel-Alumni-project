@@ -28,7 +28,7 @@ class NonmemberController extends Controller
              'email' => 'required',
              'phone' => 'required',
              'address' => 'required',
-             'registration' => 'required|max:15|unique:nonmembers,registration',
+             'registration' => 'required|max:15',
            ]);
 
       if ($admin) {
@@ -47,7 +47,7 @@ class NonmemberController extends Controller
                        if($request->input('gender')=="Male"){
                             $number=330;
                        }else if($request->input('gender')=="Female"){
-                            $number=270;
+                            $number=230;
                        }else{
                              $number=0;
                        }
@@ -179,7 +179,7 @@ class NonmemberController extends Controller
     {
       //try {
        
-        $data=Nonmember::where('tran_id',$tran_id)->first();
+        $data=Nonmember::where('tran_id',$tran_id)->orderBy('id','desc')->first();
   
     
         $tran_id = $tran_id;  //unique transection id for every transection 
