@@ -733,9 +733,9 @@ public function testimonial() {
    public function non_member_search($username,$registration,$status){
            
       if($status=="registration"){
-           $nonmembr=Nonmember::where('admin_name',$username)->where('registration',$registration)->first();
+           $nonmembr=Nonmember::where('admin_name',$username)->where('registration',$registration)->get();
       }else{
-          $nonmembr=Nonmember::where('admin_name',$username)->where('id',$registration)->first();
+          $nonmembr=Nonmember::where('admin_name',$username)->where('id',$registration)->get();
       }
        
        if($nonmembr){
