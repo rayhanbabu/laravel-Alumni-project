@@ -4,6 +4,7 @@
                   <td>{{ $row->category}}</td>
                   @if($row->admin_category=="Event" || $row->admin_category=="Member") 
                      <td>{{ $row->amount}}</td>
+                     <td>{{ $row->seat_no}}</td>
                   @endif
                   <td>
           @if($row->status == 1)

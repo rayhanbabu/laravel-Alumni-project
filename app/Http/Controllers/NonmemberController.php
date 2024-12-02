@@ -41,19 +41,13 @@ class NonmemberController extends Controller
             $app = App::where('admin_name', $request->username)->where('id', $request->input('category_id'))
                ->where('admin_category','Event')->first();
                if ($app) {
-                   $member_count=Nonmember::where('admin_name',$request->username)->where('payment_status',1)
-                    ->where('gender',$request->input('gender'))->where('registration_type',$request->input('registration_type'))->get();
-                
-                       if($request->input('gender')=="Male"){
-                            $number=330;
-                       }else if($request->input('gender')=="Female"){
-                            $number=230;
-                       }else{
-                             $number=0;
-                       }
-        if($request->input('registration_type')=="Paid"){
 
-            if($member_count->count()<$number) {
+              $member_count=Nonmember::where('admin_name',$request->username)->where('payment_status',1)
+                ->where('category_id',$request->input('category_id'))->get();
+                
+              
+   
+            if($member_count->count()< $app->seat_no) {
 
                   $amount=$app->amount+$admin->blood_size;
                   $total_amount = $amount + ($amount * $admin->getway_fee) / 100;
@@ -88,43 +82,12 @@ class NonmemberController extends Controller
                 }else{
                      return response()->json([
                          'status' => 600,
-                         'message' => 'আমরা আন্তরিক দু:খিত অডিটোরিয়াম সকল  সিট বুক হয়ে গেছে। অনুগ্রহ করে রেজিষ্ট্রেশন টাইপ ফ্রী দিয়ে
+                         'message' => "Seat already Booked",
+                         'message1' => 'আমরা আন্তরিক দু:খিত অডিটোরিয়াম সকল  সিট বুক হয়ে গেছে। অনুগ্রহ করে রেজিষ্ট্রেশন টাইপ ফ্রী দিয়ে
                           রেজিষ্ট্রেশন করুন। TSC তে আপনাদের জন্য ব্যাবস্থা করা হবে',
                      ]);
                 }
-        }else{
-                
-          $amount=$app->amount+$admin->blood_size;
-          $total_amount = $amount + ($amount * $admin->getway_fee) / 100;
-          $model = new Nonmember;
-          $model->category_id = $request->input('category_id');
-          $model->admin_name = $request->username;
-          $model->name = $request->input('name');
-          $model->phone = $request->input('phone');
-          $model->email = $request->input('email');
-          $model->address = $request->input('address');
-          $model->passing_year = $request->input('passing_year');
-          $model->designation = $request->input('designation');
-          $model->tran_id = Str::random(10);
-          $model->amount = $amount;
-          $model->getway_fee = $admin->getway_fee;
-          $model->total_amount = $total_amount;
-          $model->web_link = $admin->other_link;
-
-          $model->department = $request->input('department');
-          $model->registration = $request->input('registration');
-          $model->resident = $request->input('resident');
-          $model->gender = $request->input('gender');
-          $model->registration_type = $request->input('registration_type');
-          $model->save();
-
-          return response()->json([
-            'status' => 200,
-            'tran_id' => $model->tran_id,
-            'message' => 'Invoice Create Successfull',
-         ]);
-
-        }
+       
 
 
                 }else{

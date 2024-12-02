@@ -42,6 +42,7 @@ class AppController extends Controller
                 $app->status=$request->input('status');
                 $app->category=$request->input('category');
                 $app->admin_category=$request->input('admin_category');
+                $app->seat_no=$request->input('seat_no');
                 $app->admin_name=$admin->admin_name;
                 $app->save();
                 return response()->json([
@@ -84,6 +85,7 @@ class AppController extends Controller
             if($app){
                  $app->amount=$request->input('amount');
                  $app->status=$request->input('status');
+                 $app->seat_no=$request->input('seat_no');
                  $app->category=$request->input('category');
                  $app->update();   
               return response()->json([
