@@ -47,6 +47,12 @@
 	          <input name="amount" id="amount" type="number"   class="form-control"  required/>
             <p class="text-danger err_category"></p>
         </div>
+
+        <div class="form-group  my-2">
+	        	<label><b>Available Seat </b></label>
+	          <input name="seat_no" id="seat_no" type="number"   class="form-control"  required/>
+            <p class="text-danger err_seat_no"></p>
+        </div>
      @else
          <input type="hidden" name="amount"  id="amount" value="0" >
      @endif
@@ -112,6 +118,12 @@
 	        <input name="amount" id="edit_amount" type="number"   class="form-control"  required/>
           <p class="text-danger err_amount"></p>
      </div>
+
+     <div class="form-group  my-2">
+	        	<label><b>Available Seat </b></label>
+	          <input name="seat_no" id="edit_seat_no" type="number"   class="form-control"  required/>
+            <p class="text-danger err_seat_no"></p>
+        </div>
      @else
          <input type="hidden" name="amount"  id="amount" value="0" >
      @endif
@@ -172,6 +184,7 @@
                 @if($admin_category=="Event" || $admin_category=="Member") 
                   <th width="35%" class="sorting" data-sorting_type="asc" data-column_name="amount" style="cursor: pointer">Amount
                     <span id="amount_icon"><i class="fas fa-sort-amount-up-alt"></span></th>
+                    <th  width="10%">Available Seat</th>
                 @endif
              <th  width="10%">Status</th>
 		         <th  width="10%"></th>
@@ -316,6 +329,7 @@ $(document).ready(function(){
                   $('#edit_status').val(response.edit_value.status);
                   $('#edit_amount').val(response.edit_value.amount);
                   $('#edit_category').val(response.edit_value.category);
+                  $('#edit_seat_no').val(response.edit_value.seat_no);
                   $('#edit_id').val(edit_id);
                 }
              }
