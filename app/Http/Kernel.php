@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $middlewareAliases = [
+        'DuClubAccess' => \App\Http\Middleware\DuClubAccess::class,
         'AlumniMemberToken' => \App\Http\Middleware\AlumniMemberToken::class,
         'AlumniTokenExist' => \App\Http\Middleware\AlumniTokenExist::class,
         'AlumniToken' => \App\Http\Middleware\AlumniToken::class,

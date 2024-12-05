@@ -65,10 +65,17 @@ use App\Http\Controllers\DonorwithdrawController;
    
   
    Route::middleware('MaintainToken')->group(function(){
-      Route::get('/maintain/logout',[MaintainController::class,'logout']);
-      Route::get('/maintain/dashboard',[MaintainController::class,'dashboard']);
-      Route::get('/maintain/password',[MaintainController::class,'password']);
-      Route::post('maintain/password',[MaintainController::class,'passwordedit']);
+
+        Route::get('/maintain/logout',[MaintainController::class,'logout']);
+        Route::get('/maintain/dashboard',[MaintainController::class,'dashboard']);
+        Route::get('/maintain/password',[MaintainController::class,'password']);
+        Route::post('maintain/password',[MaintainController::class,'passwordedit']);
+
+        Route::middleware('DuClubAccess')->group(function(){
+           //Data defoult data view
+           Route::get('maintain/dataview',[MaintainController::class,'dataview']);
+           Route::post('maintain/dataedit',[MaintainController::class,'dataedit']);
+         });
 
      //Only Supper Admin Access 
      Route::middleware('AdminAccess')->group(function(){
@@ -79,9 +86,7 @@ use App\Http\Controllers\DonorwithdrawController;
            Route::get('/maintain/edit',[MaintainController::class,'edit']);
            Route::post('/maintain/update',[MaintainController::class,'update']);
 
-           //Data defoult data view
-           Route::get('maintain/dataview',[MaintainController::class,'dataview']);
-           Route::post('maintain/dataedit',[MaintainController::class,'dataedit']);
+          
 
            //SMS information
            Route::get('maintain/sms',[SmsController::class,'index']);

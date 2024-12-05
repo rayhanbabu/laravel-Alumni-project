@@ -212,6 +212,14 @@
                   </select>
             </div>
 
+            <div class="col-lg-6 my-2">
+                  <label class=""><b>DU Club Access</b></label>
+                   <select class="form-select" name="duclub" id="duclub" aria-label="Default select example">
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                  </select>
+            </div>
+
 
          
             <ul id="edit_errorlist"> </ul>
@@ -347,6 +355,8 @@
                $("#edit_admin_edit").val(response.data.admin_edit);
                $("#edit_issue_view").val(response.data.issue_view);
                $("#edit_issue_edit").val(response.data.issue_edit);
+               $("#edit_issue_edit").val(response.data.issue_edit);
+               $("#duclub").val(response.data.duclub);
           }
         });
       });

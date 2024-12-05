@@ -30,6 +30,17 @@
  <table class="table table-bordered" id="employee_data">
     <thead>
       <tr>
+        
+       @if(maintain_access()->duclub=='Yes')
+          <th width="10%" > Id </th>
+          <th width="10%" > Onwer name </th>
+          <th width="10%" > Registration Status </th>
+          <th width="10%" > Deadline Status </th>
+          <th width="10%" > Program Title  </th>
+          <th width="10%" > Program Description </th>
+          <th width="10%" > Program Year </th>
+          <th width="10%" > Message </th>
+       @else  
          <th width="10%" >Onwer name </th>
          <th width="10%" >Payment </th>
          <th width="10%" >Version Type </th>
@@ -56,7 +67,7 @@
          <th width="10%" >cancel_url</th>
          <th width="10%" >ipn_url </th>
          <th width="10%" >init_url </th>
-
+        @endif
          <th width="5%" >Edit</th>
         
       </tr>
@@ -65,6 +76,17 @@
 
 	@foreach($maintain as $item)
 	 <tr>
+
+       @if(maintain_access()->duclub=='Yes')
+           <td>{{$item->id}}</td>
+           <td>{{$item->name}} </td>
+           <td>{{$item->registration_status}} </td>
+           <td>{{$item->deadline_status}} </td>
+           <td>{{$item->program_title}} </td>
+           <td>{{$item->program_desc}} </td>
+           <td>{{$item->program_year}}  </td>
+           <td>{{$item->message}} </td>
+      @else 
         <td>{{$item->name}}</span></td>
       
         <td>{{$item->payment}}</td>
@@ -94,6 +116,7 @@
         <td>{{$item->ipn_url}}</td>
         <td>{{$item->init_url}}</td>
        
+        @endif
 
     <td>
       <button type="button" name="edit" id="{{$item->id}}" class="btn btn-success btn-sm edit" 
@@ -109,7 +132,11 @@
        data-welcome_size="{{$item->welcome_size}}"data-testimonial_size="{{$item->testimonial_size}}"data-slide_size="{{$item->slide_size}}" 
        data-store_id="{{$item->store_id}}" data-store_password="{{$item->store_password}}" data-currency="{{$item->currency}}"
        data-success_url="{{$item->success_url}}" data-fail_url="{{$item->fail_url}}" data-cancel_url="{{$item->cancel_url}}" 
-       data-ipn_url="{{$item->ipn_url}}" data-init_url="{{$item->init_url}}" >Edit</button>
+       data-ipn_url="{{$item->ipn_url}}" data-init_url="{{$item->init_url}}"
+
+       data-program_title="{{$item->program_title}}" data-program_desc="{{$item->program_desc}}"
+       data-program_year="{{$item->program_year}}" data-message="{{$item->message}}"
+       data-deadline_status="{{$item->deadline_status}}" data-registration_status="{{$item->registration_status}}"  >Edit</button>
     </td>
 
       
@@ -172,6 +199,13 @@
                   var cancel_url = $(this).data("cancel_url");
                   var init_url = $(this).data("init_url");
                   var ipn_url = $(this).data("ipn_url");
+
+                  var registration_status = $(this).data("registration_status");
+                  var deadline_status = $(this).data("deadline_status");
+                  var program_title = $(this).data("program_title");
+                  var program_desc = $(this).data("program_desc");
+                  var program_year = $(this).data("program_year");
+                  var message = $(this).data("message");
                  
                    
                      $('#edit_id').val(id);
@@ -208,6 +242,15 @@
                      $('#edit_cancel_url').val(cancel_url);
                      $('#edit_ipn_url').val(ipn_url);
                      $('#edit_init_url').val(init_url);
+
+                     $('#registration_status').val(registration_status);
+                     $('#deadline_status').val(deadline_status);
+                     $('#program_title').val(program_title);
+                     $('#program_desc').val(program_desc);
+                     $('#program_year').val(program_year);
+                     $('#message').val(message);
+
+
                      $('#updatemodal').modal('show');
                 });
 
@@ -238,7 +281,48 @@
 
          <div class="row px-3">
 
-       
+         @if(maintain_access()->duclub=='Yes')
+
+          <div class="form-group col-sm-6  mb-4">
+             <label class=""><b> Registation Status</b></label>
+              <select class="form-select" id="registration_status"  name="registration_status" aria-label="Default select example" required>
+                   <option selected>Select One</option>
+                   <option value="0">No</option>
+                   <option value="1">Yes</option>
+              </select>
+           </div>  
+           
+           
+           <div class="form-group col-sm-6  mb-4">
+             <label class=""><b> Deadline Status</b></label>
+              <select class="form-select" id="deadline_status"  name="deadline_status" aria-label="Default select example" required>
+                   <option selected>Select One</option>
+                   <option value="0">No</option>
+                   <option value="1">Yes</option>
+              </select>
+           </div>   
+         
+           <div class="form-group  col-sm-6  my-2">
+               <label class=""><b>Program Title </b></label>
+               <input type="text" id="program_title"  name="program_title" class="form-control" required>
+          </div> 
+
+          <div class="form-group  col-sm-6  my-2">
+               <label class=""><b>Program Description </b></label>
+               <input type="text" id="program_desc"  name="program_desc" class="form-control" required>
+          </div> 
+
+          <div class="form-group  col-sm-6  my-2">
+               <label class=""><b>Program Year </b></label>
+               <input type="number" id="program_year"  name="program_year" class="form-control" required>
+          </div> 
+
+          <div class="form-group  col-sm-6  my-2">
+               <label class=""><b> Message </b></label>
+               <input type="text" id="message"  name="message" class="form-control" required>
+          </div> 
+
+         @else
 
           <div class="form-group  col-sm-6  my-2">
                <label class=""><b>Yearly Payment</b></label>
@@ -407,8 +491,10 @@
                <label class=""><b>init_url  </b></label>
                <input type="text" id="edit_init_url"  name="init_url" class="form-control" >
          </div> 
-         
 
+
+         
+         @endif
 
 
 

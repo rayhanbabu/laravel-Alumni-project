@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>@yield('page_title')</title>
+        <title> @yield('page_title') </title>
         <link rel="icon" type="image/png" href="{{asset('images/ancovabr.png')}}">
 
       
@@ -101,6 +101,11 @@
               Withdraw  View
          </a>
 
+         <a class="nav-link @yield('donorwithdraw_select') " href="{{url('maintain/donorwithdraw')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+              Donor Withdraw
+         </a>
+
        @else @endif
 
 
@@ -132,10 +137,7 @@
            Maintain  View
         </a>
        
-        <a class="nav-link @yield('dataview_select') " href="{{url('maintain/dataview')}}">
-          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-          Data View
-        </a>
+      
 
         <a class="nav-link" href="{{url('maintain/sms')}}">
       <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -159,12 +161,12 @@
   </a>
       @else @endif
 
-  
-
-      <a class="nav-link @yield('donorwithdraw_select') " href="{{url('maintain/donorwithdraw')}}">
+      @if(maintain_access()->duclub=='Yes' || maintain_access()->role=='Admin')	
+       <a class="nav-link @yield('dataview_select') " href="{{url('maintain/dataview')}}">
           <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-              Donor Withdraw
-         </a>
+          Data View
+        </a>
+        @endif
 
 
 
