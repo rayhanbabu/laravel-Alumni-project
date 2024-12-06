@@ -800,10 +800,10 @@ class AdminController extends Controller
 
   public function non_member_export(Request $request)
   {
-    $admin_name = $request->header('admin_name'); 
-    $category_id = $request->input('category_id');
-    $payment_status = $request->input('payment_status');
-    return (new NonMemberExport($admin_name, $category_id,$payment_status))->download($admin_name.$category_id.'-'.$payment_status.'-Non_Member_list.csv');
+     $admin_name = $request->header('admin_name'); 
+     $category_id = $request->input('category_id');
+     $payment_status = $request->input('payment_status');
+     return (new NonMemberExport($admin_name,$category_id,$payment_status))->download($admin_name.$category_id.'-'.$payment_status.'-Non_Member_list.csv');
   }
 
 

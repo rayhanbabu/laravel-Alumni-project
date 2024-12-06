@@ -36,7 +36,7 @@ function prx($arr){
      'body' => $body,
      'name' => $name,
    ];
-  Mail::to($email)->send(new \App\Mail\LoginMail($details));
+   Mail::to($email)->send(new \App\Mail\LoginMail($details));
 }
 
   

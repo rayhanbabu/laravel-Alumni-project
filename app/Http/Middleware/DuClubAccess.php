@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class AdminEditAccess
+class DuClubAccess
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,10 @@ class AdminEditAccess
      */
     public function handle(Request $request, Closure $next)
     {
-        if(maintain_access()->role=='Admin' || maintain_access()->admin_edit=='Yes'){ 
+        if(maintain_access()->role=='Admin' || maintain_access()->duclub=='Yes'){ 
              return $next($request);
          }else{
-             return  response('UnAthorized');
+             return  response('Unathorized');
          } 
     }
 }

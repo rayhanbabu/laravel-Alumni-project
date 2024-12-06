@@ -8,6 +8,11 @@ use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use App\Helpers\DuClubJWTToken;
+use App\Models\Maintain;
+use App\Models\Duevent;
+use Yajra\DataTables\DataTables;
+use App\Exports\DuClubEventExport;
+
 
 class DuclubController extends Controller
 {
@@ -286,6 +291,104 @@ class DuclubController extends Controller
     }
 
 
+
+
+
+    public function duclub_info(request $request)
+     {
+          $data= Maintain::where("id",3)->select('id','registration_status','deadline_status'
+          ,'program_title','program_desc','program_year','message')->get();
+          return response()->json([
+               'status' =>'success',
+               'data' =>$data,
+           ],200);
+     }
+
+
+     public function event_registation(request $request)
+     {
+        $duclub_id=$request->header('duclub_id');
+        $year=$request->input("year");
+        $invite=$request->input("invite");
+
+        $data= Duevent::where("duclub_id",$duclub_id)->where("year",$year)->get();
+        
+        if($data->count()>0){
+             return response()->json([
+                'status' =>'fail',
+                'data' =>"Event Registation Already Exist",
+             ],200);
+         }else{
+          $model= new Duevent;
+          $model->year=$year;
+          $model->duclub_id=$duclub_id;
+          $model->invite=$invite;
+          $model->save();
+
+          return response()->json([
+            'status'=>'success',  
+            'message'=>'Event Registation Successfull',
+          ],200);
+
+         }
+
+     }
+
+
+
+     public function event_registation_show(request $request)
+      {
+
+          $duclub_id=$request->header('duclub_id');
+          $year=$request->year;
+          $data= Duevent::where("duclub_id",$duclub_id)->where("year",$year)->get();
+
+          if($data->count()>0){
+              return response()->json([
+                   'status' =>'success',
+                   'message' => $data,
+              ],200);
+          }else{
+              return response()->json([
+                   'status' =>'fail',
+                   'message' =>"Not Registration",
+              ],200);
+          }
+       
+      }
+
+
+
+      public function duclub_event(Request $request){
+        if ($request->ajax()) {
+             $data = Duevent::leftjoin('duclubs','duclubs.id','=','duevents.duclub_id')
+             ->select('duclubs.phone','duclubs.name','duclubs.designation'
+             ,'duclubs.dept','duevents.*')->latest()->get();
+             return Datatables::of($data)
+                ->addIndexColumn()
+                 ->addColumn('edit', function($row){
+                   $btn = '<a href="/admin/brand/manage/'.$row->id.'" class="edit btn btn-primary btn-sm">Edit</a>';
+                   return $btn;
+               })
+               ->addColumn('delete', function($row){
+                 $btn = '<a href="/admin/brand/delete/'.$row->id.'" onclick="return confirm(\'Are you sure you want to delete this item?\')" class="delete btn btn-danger btn-sm">Delete</a>';
+                 return $btn;
+             })
+               ->rawColumns(['edit','delete'])
+               ->make(true);
+            }
+          return view('maintain.duclubevent');  
+      }
+
+
+
+      
+  public function duclubevent_export(Request $request)
+  {
+    
+      $year = $request->input('year');
+      return (new DuClubEventExport($year))->download($year.'-DU_Club_list.csv');
+  }
 
 
 

@@ -133,6 +133,9 @@ use App\Http\Controllers\DonormemberController;
        Route::post('/duclub/api/product_add', [DuclubController::class,'product_add']);
        Route::get('/duclub/api/pending_product_view', [DuclubController::class,'pending_product_view']);
        Route::get('/duclub/api/product_delete/{saleID}', [DuclubController::class,'product_delete']);
+       Route::get('/duclub/api/duclub_info', [DuclubController::class,'duclub_info']);
+       Route::post('/duclub/api/event_registation', [DuclubController::class,'event_registation']);
+       Route::get('/duclub/api/event_registation_show/{year}', [DuclubController::class,'event_registation_show']);
   }); 
         
       

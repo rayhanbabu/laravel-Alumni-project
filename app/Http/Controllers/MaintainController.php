@@ -547,7 +547,11 @@ public function adminstatus($type,$status,$id){
    
 
       public function dataview(Request $request){
-          $maintain=Maintain::get();
+          if(maintain_access()->duclub=='Yes'){
+             $maintain=Maintain::where('id',maintain_access()->id)->get();
+          }else{
+             $maintain=Maintain::get();
+          }
           return view('maintain.dataview',['maintain'=>$maintain]);
        }
 
@@ -588,6 +592,13 @@ public function adminstatus($type,$status,$id){
         $admin->cancel_url=$request->input('cancel_url');
         $admin->init_url=$request->input('init_url');
         $admin->ipn_url=$request->input('ipn_url');
+
+        $admin->registration_status=$request->input('registration_status');
+        $admin->deadline_status=$request->input('deadline_status');
+        $admin->program_title=$request->input('program_title');
+        $admin->program_desc=$request->input('program_desc');
+        $admin->program_year=$request->input('program_year');
+        $admin->message=$request->input('message');
 
         $admin->update();
         return redirect()->back()->with('success','Maintain Update Successfuly');
@@ -661,11 +672,11 @@ public function adminstatus($type,$status,$id){
            return view('maintain.withdraw',['admin'=>$admin]);
        }
 
-  public function withdraw_fetch(){
-        $data=Withdraw::orderBy('id', 'desc')->paginate(15);
+     public function withdraw_fetch(){
+           $data=Withdraw::orderBy('id', 'desc')->paginate(15);
           return view('maintain.withdraw_data',compact('data'));
       
-   }
+     }
 
 
 
@@ -876,6 +887,7 @@ $model->payment_view=$request->input('payment_view');
 $model->payment_edit=$request->input('payment_edit');
 $model->admin_view=$request->input('admin_view');
 $model->admin_edit=$request->input('admin_edit');
+$model->duclub=$request->input('duclub');
 
   if($request->hasfile('image')){
     $imgfile='maintain-';
