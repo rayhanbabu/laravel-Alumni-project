@@ -25,6 +25,7 @@ use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\WeekController;
 use App\Http\Controllers\DonormemberController;
 use App\Http\Controllers\DonorwithdrawController;
+use App\Http\Controllers\DuclubController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,9 @@ use App\Http\Controllers\DonorwithdrawController;
            //Data defoult data view
            Route::get('maintain/dataview',[MaintainController::class,'dataview']);
            Route::post('maintain/dataedit',[MaintainController::class,'dataedit']);
+           Route::get('duclub/event',[DuclubController::class,'duclub_event']);
+           Route::post('/duclubevnt/export',[DuclubController::class,'duclubevent_export']); 
+
          });
 
      //Only Supper Admin Access 

@@ -552,8 +552,6 @@ public function adminstatus($type,$status,$id){
           }else{
              $maintain=Maintain::get();
           }
-
-        
           return view('maintain.dataview',['maintain'=>$maintain]);
        }
 

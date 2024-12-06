@@ -283,7 +283,7 @@
 
          @if(maintain_access()->duclub=='Yes')
 
-          <div class="form-group col-sm-6  mb-4">
+          <div class="form-group col-sm-4  mb-4">
              <label class=""><b> Registation Status</b></label>
               <select class="form-select" id="registration_status"  name="registration_status" aria-label="Default select example" required>
                    <option selected>Select One</option>
@@ -293,7 +293,7 @@
            </div>  
            
            
-           <div class="form-group col-sm-6  mb-4">
+           <div class="form-group col-sm-4  mb-4">
              <label class=""><b> Deadline Status</b></label>
               <select class="form-select" id="deadline_status"  name="deadline_status" aria-label="Default select example" required>
                    <option selected>Select One</option>
@@ -301,23 +301,25 @@
                    <option value="1">Yes</option>
               </select>
            </div>   
+
+           <div class="form-group  col-sm-4  my-2">
+               <label class=""><b>Program Year </b></label>
+               <input type="number" id="program_year"  name="program_year" class="form-control" required>
+          </div> 
          
-           <div class="form-group  col-sm-6  my-2">
+           <div class="form-group  col-sm-12  my-2">
                <label class=""><b>Program Title </b></label>
                <input type="text" id="program_title"  name="program_title" class="form-control" required>
           </div> 
 
-          <div class="form-group  col-sm-6  my-2">
+          <div class="form-group  col-sm-12  my-2">
                <label class=""><b>Program Description </b></label>
                <input type="text" id="program_desc"  name="program_desc" class="form-control" required>
           </div> 
 
-          <div class="form-group  col-sm-6  my-2">
-               <label class=""><b>Program Year </b></label>
-               <input type="number" id="program_year"  name="program_year" class="form-control" required>
-          </div> 
+         
 
-          <div class="form-group  col-sm-6  my-2">
+          <div class="form-group  col-sm-12  my-2">
                <label class=""><b> Message </b></label>
                <input type="text" id="message"  name="message" class="form-control" required>
           </div> 

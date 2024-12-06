@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Helpers\DuClubJWTToken;
 use App\Models\Maintain;
 use App\Models\Duevent;
+use Yajra\DataTables\DataTables;
+use App\Exports\DuClubEventExport;
+
 
 class DuclubController extends Controller
 {
@@ -352,8 +355,43 @@ class DuclubController extends Controller
               ],200);
           }
        
-
       }
+
+
+
+      public function duclub_event(Request $request){
+        if ($request->ajax()) {
+             $data = Duevent::leftjoin('duclubs','duclubs.id','=','duevents.duclub_id')
+             ->select('duclubs.phone','duclubs.name','duclubs.designation'
+             ,'duclubs.dept','duevents.*')->latest()->get();
+             return Datatables::of($data)
+                ->addIndexColumn()
+                 ->addColumn('edit', function($row){
+                   $btn = '<a href="/admin/brand/manage/'.$row->id.'" class="edit btn btn-primary btn-sm">Edit</a>';
+                   return $btn;
+               })
+               ->addColumn('delete', function($row){
+                 $btn = '<a href="/admin/brand/delete/'.$row->id.'" onclick="return confirm(\'Are you sure you want to delete this item?\')" class="delete btn btn-danger btn-sm">Delete</a>';
+                 return $btn;
+             })
+               ->rawColumns(['edit','delete'])
+               ->make(true);
+            }
+          return view('maintain.duclubevent');  
+      }
+
+
+
+      
+  public function duclubevent_export(Request $request)
+  {
+    
+      $year = $request->input('year');
+      return (new DuClubEventExport($year))->download($year.'-DU_Club_list.csv');
+  }
+
+
+
 
 
 

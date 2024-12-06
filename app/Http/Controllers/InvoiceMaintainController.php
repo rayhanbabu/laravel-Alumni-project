@@ -8,24 +8,23 @@ use App\Models\Invoice;
 class InvoiceMaintainController extends Controller
 {
     
-    public function invoice_index(){
-        return view('maintain.invoice');
-    }
+      public function invoice_index(){
+           return view('maintain.invoice');
+      }
 
 
 
-     public function maintain_invoice_fetch(){
+      public function maintain_invoice_fetch(){
            $data=Invoice::leftjoin('members','members.id','=','invoices.member_id')
                ->leftjoin('apps','apps.id','=','invoices.category_id')
                ->select('members.member_card','members.name','members.phone'
                ,'apps.category','invoices.*')->orderBy('invoices.id','desc')->paginate(10);
            return view('maintain.invoice_data',compact('data'));
-      }
+       }
 
 
 
-  function maintain_invoice_fetch_data(Request $request)
-   {
+  function maintain_invoice_fetch_data(Request $request){
     if($request->ajax())
     {
      $sort_by = $request->get('sortby');
