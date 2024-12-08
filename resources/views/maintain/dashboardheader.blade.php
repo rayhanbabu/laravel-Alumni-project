@@ -112,8 +112,14 @@
     @if(maintain_access()->issue_view=='Yes' || maintain_access()->role=='Admin')		
          <a class="nav-link @yield('invoice_select') " href="{{url('maintain/invoice')}}">
             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-              Invoice View
+              Invoice 
          </a>
+
+         <a class="nav-link @yield('non_invoice_select') " href="{{url('maintain/non_invoice')}}">
+            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+             Non Invoice 
+         </a>
+
 
         <a class="nav-link @yield('issue_select') " href="{{url('maintain/issue')}}">
           <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>

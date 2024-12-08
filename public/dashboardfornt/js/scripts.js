@@ -27,11 +27,11 @@ window.addEventListener('DOMContentLoaded', event => {
 
 
 
-$( function() {
-    $( ".datepicker" ).datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat:"yy-mm-dd",
-	     yearRange: "2000:2025",
-    });
-  });
+// $( function() {
+//     $( ".datepicker" ).datepicker({
+//       changeMonth: true,
+//       changeYear: true,
+//       dateFormat:"yy-mm-dd",
+// 	     yearRange: "2000:2025",
+//     });
+//   });

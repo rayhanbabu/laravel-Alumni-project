@@ -50,6 +50,7 @@
                          <td> Invite Person</td>
                          <td> Dept </td>
                          <td> Designation </td>
+                         <td> Delete </td>
                         
                       </tr>
                    </thead>
@@ -88,7 +89,7 @@
             {data: 'invite', name: 'invite'},
             {data: 'dept', name: 'dept'},
             {data: 'designation', name: 'designation'},
-          
+            {data: 'delete', name: 'delete'},         
        ]
    });
 });

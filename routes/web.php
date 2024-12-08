@@ -77,6 +77,7 @@ use App\Http\Controllers\DuclubController;
            Route::get('maintain/dataview',[MaintainController::class,'dataview']);
            Route::post('maintain/dataedit',[MaintainController::class,'dataedit']);
            Route::get('duclub/event',[DuclubController::class,'duclub_event']);
+           Route::get('duclub/event/delete/{id}',[DuclubController::class,'duclub_event_delete']);
            Route::post('/duclubevnt/export',[DuclubController::class,'duclubevent_export']); 
 
          });
@@ -149,9 +150,9 @@ use App\Http\Controllers\DuclubController;
        Route::get('/maintain/issue/fetch_data/',[FeedbackController::class,'issue_fetch_data']);
 
         //Invoice View
-       Route::get('/maintain/invoice/',[InvoiceMaintainController::class,'invoice_index']);
-       Route::get('/maintain/invoice_fetch/',[InvoiceMaintainController::class,'maintain_invoice_fetch']);
-       Route::get('/maintain/invoice/fetch_data',[InvoiceMaintainController::class,'maintain_invoice_fetch_data']);
+       Route::get('/maintain/invoice',[InvoiceMaintainController::class,'invoice_index']);
+       Route::get('/maintain/non_invoice',[InvoiceMaintainController::class,'non_invoice_index']);
+    
        
      });
 
@@ -159,6 +160,7 @@ use App\Http\Controllers\DuclubController;
     Route::middleware('IssueEditAccess')->group(function(){
           Route::post('/maintain/issue_update',[FeedbackController::class,'issue_update']); 
           Route::post('/maintain/invoice_update',[InvoiceMaintainController::class,'invoice_update']); 
+          Route::post('/maintain/non_invoice_update',[InvoiceMaintainController::class,'non_invoice_update']); 
     });
 
 
