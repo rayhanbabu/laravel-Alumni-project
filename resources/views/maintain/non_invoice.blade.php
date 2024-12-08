@@ -1,12 +1,12 @@
 @extends('maintain/dashboardheader')
 @section('page_title','Maintain Panel')
-@section('invoice_select','active')
+@section('non_invoice_select','active')
 @section('content')
 
 <div class="card mt-2 mb-2 shadow-sm">
        <div class="card-header">
        <div class="row ">
-               <div class="col-4">  <h5 class="mt-0">Member Invoice Details </h5>  </div>
+               <div class="col-4">  <h5 class="mt-0">Non Member Invoice Details </h5>  </div>
                        <div class="col-4">
                           
                          </div>
@@ -45,7 +45,6 @@
                      <th  width="10%">Admin Name</th>
                      <th >Invoice ID</th>
                      <th  width="10%"> Name</th> 
-                     <th  width="10%">Card No</th>
                      <th  width="10%">Phone</th>
 		                 <th  width="10%">Amount</th>
                     <th  width="10%">Payment Status</th>
@@ -97,7 +96,7 @@ $(document).ready(function(){
        processing: true,
        serverSide: true,
        ajax: {
-           url: "{{ url('/maintain/invoice') }}",
+           url: "{{ url('/maintain/non_invoice') }}",
            error: function(xhr, error, code) {
                console.log(xhr.responseText);
            }
@@ -108,7 +107,6 @@ $(document).ready(function(){
             {data: 'admin_name', name: 'admin_name'},
             {data: 'tran_id', name: 'tran_id'},
             {data: 'name', name: 'name'},
-            {data: 'member_card', name: 'member_card'},
             {data: 'phone', name: 'phone'},
             {data: 'total_amount', name: 'total_amount'},
             {data: 'payment_status', name: 'payment_status'},
@@ -168,7 +166,7 @@ $(document).ready(function(){
       </div>
 
       <div class="modal-body">
-      <form method="post" action="{{url('maintain/invoice_update')}}"  class="myform"  enctype="multipart/form-data" >
+      <form method="post" action="{{url('maintain/non_invoice_update')}}"  class="myform"  enctype="multipart/form-data" >
          {!! csrf_field() !!}
 
             <input type="hidden" id="edit_invoice_id" name="id" class="form-control">

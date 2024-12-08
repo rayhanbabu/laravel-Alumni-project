@@ -371,7 +371,7 @@ class DuclubController extends Controller
                    return $btn;
                })
                ->addColumn('delete', function($row){
-                 $btn = '<a href="/admin/brand/delete/'.$row->id.'" onclick="return confirm(\'Are you sure you want to delete this item?\')" class="delete btn btn-danger btn-sm">Delete</a>';
+                 $btn = '<a href="/duclub/event/delete/'.$row->id.'" onclick="return confirm(\'Are you sure you want to delete this item?\')" class="delete btn btn-danger btn-sm">Delete</a>';
                  return $btn;
              })
                ->rawColumns(['edit','delete'])
@@ -383,12 +383,19 @@ class DuclubController extends Controller
 
 
       
-  public function duclubevent_export(Request $request)
-  {
-    
-      $year = $request->input('year');
+     public function duclubevent_export(Request $request)
+     {
+       $year = $request->input('year');
       return (new DuClubEventExport($year))->download($year.'-DU_Club_list.csv');
-  }
+     }
+
+
+      public function duclub_event_delete(Request $request){
+            $id=$request->id;
+            $data= Duevent::find($id);
+            $data->delete();
+            return back()->with('success','Data Deleted successfull');
+      }
 
 
 
