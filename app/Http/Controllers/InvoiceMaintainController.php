@@ -77,6 +77,7 @@ public function invoice_update(Request $request)
    $model->payment_status=$request->input('payment_status');
    $model->payment_time=date('Y-m-d H:i:s');
    $model->payment_date=$payment_date; 
+   $model->payment_type="Online"; 
    $model->payment_year=$payment_year; 
    $model->payment_month=$payment_month;  
    $model->payment_day=$payment_day; 
@@ -151,6 +152,7 @@ $model->payment_method=$request->input('payment_method');
 $model->bank_tran=$request->input('bank_tran');
 $model->payment_status=$request->input('payment_status');
 $model->payment_time=date('Y-m-d H:i:s');
+$model->payment_type="Online"; 
 $model->payment_date=$payment_date; 
 $model->payment_year=$payment_year; 
 $model->payment_month=$payment_month;  
