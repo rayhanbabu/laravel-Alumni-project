@@ -41,7 +41,7 @@ class DuclubController extends Controller
    
     public function duclub_login(Request $request, $phone)
     {
-      try {  
+      // try {  
         $otp=rand(1000,9999);
         $response = Http::get('https://dhakauniversityclub.com/api/getMember?mobile='.$phone);
         if ($response->successful()) {
@@ -110,12 +110,12 @@ class DuclubController extends Controller
              ],501);
         }
         
-       } catch (Exception $e) {
-           return response()->json([
-              'status' => 501,
-              'message' => 'Something error',
-           ],501);
-      }
+      //  } catch (Exception $e) {
+      //      return response()->json([
+      //         'status' => 501,
+      //         'message' => 'Something error',
+      //      ],501);
+      // }
 
     }
 
