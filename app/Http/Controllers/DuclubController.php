@@ -46,11 +46,13 @@ class DuclubController extends Controller
         $response = Http::get('https://dhakauniversityclub.com/api/getMember?mobile='.$phone);
         if ($response->successful()) {
         $data = $response->json();
-        if($data['status']=='success'){
+        //  return $data;
+        //  die();
+        if($data["status"] === "success"){
               $member= Duclub::updateOrCreate(['phone' => $phone],['phone'=>$phone ,'otp'=>$otp
               ,'member_id'=>$data['data']['id'] ,'member_card'=>$data['data']['member_code']
-              ,'name'=>$data['data']['name'] ,'designation'=>$data['data']['designation']
-              ,'dept'=>$data['data']['dept'] ,'email'=>$data['data']['email']
+              ,'name'=>$data['data']['name'] ,'designation'=>$data['data']['designationTitle']
+              ,'dept'=>$data['data']['deptTitle'] ,'email'=>$data['data']['email']
             ]); 
              
                 //     $subject='DU Club OTP';  
