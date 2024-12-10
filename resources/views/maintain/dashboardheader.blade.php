@@ -10,7 +10,6 @@
         <title> @yield('page_title') </title>
         <link rel="icon" type="image/png" href="{{asset('images/ancovabr.png')}}">
 
-      
         <link rel="stylesheet" href="{{asset('dashboardfornt/css/styles.css')}}">
         <link rel="stylesheet" href="{{asset('dashboardfornt/css/solaiman.css')}}">
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
