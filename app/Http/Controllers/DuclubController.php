@@ -51,7 +51,7 @@ class DuclubController extends Controller
           //return  $type = gettype($data);
            return response()->json([
                'type' =>  gettype($data),
-               'value'=> $data['status'],
+               'value'=> $data,
                'message' => "Internal Server Error",
            ],200);
 
