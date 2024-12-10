@@ -45,13 +45,18 @@ class DuclubController extends Controller
         $otp=rand(1000,9999);
         $response = Http::get('https://dhakauniversityclub.com/api/getMember?mobile='.$phone);
         if ($response->successful()) {
-       // $data = $response->json();
+           $data = $response->json();
+ 
 
-          $data1 = $response->body(); // Get the raw JSON
-          $data = json_decode($data1, true); 
+          //return  $type = gettype($data);
+           return response()->json([
+               'type' =>  gettype($data),
+               'value'=> $data['status'],
+               'message' => "Internal Server Error",
+           ],200);
 
-          return $data["status"];
-          die();
+           die();
+
         if($data["status"] === "success"){
               $member= Duclub::updateOrCreate(['phone' => $phone],['phone'=>$phone ,'otp'=>$otp
               ,'member_id'=>$data['data']['id'] ,'member_card'=>$data['data']['member_code']
