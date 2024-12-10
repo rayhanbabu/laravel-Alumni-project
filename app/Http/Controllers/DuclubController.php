@@ -42,13 +42,10 @@ class DuclubController extends Controller
     public function duclub_login(Request $request, $phone)
     {
        // try {  
+
+  
         $otp=rand(1000,9999);
-       //  $response = Http::withOptions(['verify' => false])->get('https://dhakauniversityclub.com/api/getMember?mobile='.$phone);
-       
-          $response = Http::withOptions(['verify' => false])
-          ->withHeaders(['Host' => 'dhakauniversityclub.com'])
-          ->get('https://dhakauniversityclub.com/api/getMember?mobile='.$phone);
-       
+         $response = Http::withOptions(['verify' => false])->get('https://dhakauniversityclub.com/api/getMember?mobile='.$phone);
           if ($response->successful()) {
            $data = $response->json();
         
