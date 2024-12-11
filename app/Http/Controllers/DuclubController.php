@@ -42,7 +42,9 @@ class DuclubController extends Controller
     {
       // try {    
       $dayName=$request->dayName;
-       $response = Http::get('https://dhakauniversityclub.com/api/getProductByDay?dayName='.$dayName.'');
+      \Log::debug('https://dhakauniversityclub.com/api/getProductByDay?dayName='.$dayName.'');
+         $response = Http::get('https://dhakauniversityclub.com/api/getProductByDay?dayName='.$dayName.'');
+         \Log::debug(json_decode($response->body()));
        if ($response->successful()) {
            $data = $response->json();
             return response()->json([
