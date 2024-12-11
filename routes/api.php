@@ -122,6 +122,7 @@ use App\Http\Controllers\DonormemberController;
        Route::get('/duclub/api/product_view', [DuclubController::class,'product_view']);
        Route::get('/duclub/api/login/{phone}', [DuclubController::class,'duclub_login']);
        Route::get('/duclub/api/VerifyLogin/{phone}/{otp}',[DuclubController::class, 'duclub_VerifyLogin']);
+       Route::get('/duclub/api/product_view1', [DuclubController::class,'product_view1']);
 
 
        Route::get('/dumess/api/term', [HomepageController::class,'du_term']);
