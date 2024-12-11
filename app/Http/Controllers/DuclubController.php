@@ -38,6 +38,27 @@ class DuclubController extends Controller
     }
 
 
+    public function product_view1(request $request)
+    {
+      // try {    
+      $dayName=$request->dayName;
+       $response = Http::get('https://dhakauniversityclub.com/api/getProductByDay?dayName='.$dayName.'');
+       if ($response->successful()) {
+           $data = $response->json();
+            return response()->json([
+               'status' =>'success',
+               'data' => $data,
+            ],200);
+          }
+      //  } catch (Exception $e) {
+      //      return response()->json([
+      //         'status' => 501,
+      //         'message' => 'Somting Error',
+      //      ],501);
+      // }
+    }
+
+
    
     public function duclub_login(Request $request, $phone)
     {
