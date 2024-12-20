@@ -35,7 +35,6 @@ use App\Http\Controllers\DonormemberController;
 
        Route::get('{username}/forget_password/{email}', [MemberController::class, 'forget_password']);
 
-
           Route::middleware('ForgetToken')->group(function(){
               Route::get('{username}/forget_code/{forget_code}', [MemberController::class, 'forget_code']);
               Route::post('{username}/confirm_password/{forget_code}', [MemberController::class, 'confirm_password']);

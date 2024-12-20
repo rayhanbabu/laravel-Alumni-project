@@ -189,6 +189,7 @@
        <div class="collapse" id="collapseattan_committee" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
          <nav class="sb-sidenav-menu-nested nav">
             <a class="nav-link" href="{{url('/committee/unit')}}"> Committee Unit </a>
+            <a class="nav-link" href="{{url('/committee/university')}}"> University </a>
             <a class="nav-link" href="{{url('/committee/year')}}"> Committee Year </a>
             <a class="nav-link" href="{{url('/committee/list')}}"> Committee List </a>
         </nav>
