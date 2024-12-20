@@ -28,7 +28,7 @@ class NonmemberController extends Controller
              'email' => 'required',
              'phone' => 'required',
              'address' => 'required',
-             'registration' => 'required|max:15',
+             'registration' => 'required',
            ]);
 
       if ($admin) {
