@@ -26,6 +26,7 @@ use App\Models\Member;
 use App\Models\Nonmember;
 use PhpOffice\PhpSpreadsheet\Writer\Ods\Meta;
 use App\Models\Committeeunit;
+use App\Models\University;
 use Exception;
 
 class TestimonialController extends Controller
@@ -762,6 +763,14 @@ public function testimonial() {
          ],200); 
     }
 
+
+    public function university($username){
+       $data = University::where('admin_name',$username)->where('university_status',1)->orderBy('university_name','asc')->get();
+        return response()->json([
+            'status'=>'success'
+            ,'data'=>$data  
+        ],200); 
+      }
 
 
 }
