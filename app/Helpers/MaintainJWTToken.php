@@ -10,7 +10,8 @@ class MaintainJWTToken
     public static function CreateToken($maintainUsername,$maintainEmail,$maintainID,$role,$phone)
     {
         //60*3= 3 minite
-        $key =env('JWT_KEY');
+        //$key =env('JWT_KEY');
+        $key="qomNRPiHjkS173qIm3BgIvNLQvnUpsmPfdAVbYtyuuYYYHKK";
         $payload=[
              'iss'=>'rayhan-token',
              'iat'=>time(),
@@ -31,7 +32,7 @@ class MaintainJWTToken
                 return 'unauthorized';
             }
             else{
-                $key =env('JWT_KEY');
+                $key="qomNRPiHjkS173qIm3BgIvNLQvnUpsmPfdAVbYtyuuYYYHKK";
                 return JWT::decode($token,new Key($key,'HS256'));
             }
         }

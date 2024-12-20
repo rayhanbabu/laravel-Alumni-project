@@ -10,7 +10,7 @@ class AlumniMemberJWTToken
     public static function CreateToken($maintainEmail,$maintainID,$admin_name)
     {
         //60*3= 3 minite
-        $key =env('JWT_KEY');
+        $key="qomNRPiHjkS173qIm3BgIvNLQvnUpsmPfdAVbYtyuuYYYHKKMember";
         $payload=[
             'iss'=>'rayhan-token',
             'iat'=>time(),
@@ -29,7 +29,7 @@ class AlumniMemberJWTToken
                 return 'unauthorized';
               }
              else{
-                 $key =env('JWT_KEY');
+                $key="qomNRPiHjkS173qIm3BgIvNLQvnUpsmPfdAVbYtyuuYYYHKKMember";
                  return JWT::decode($token,new Key($key,'HS256'));
              }
         } catch (Exception $e){

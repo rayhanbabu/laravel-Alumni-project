@@ -37,7 +37,7 @@ class DuclubController extends Controller
       }
     }
 
-
+ 
     public function product_view1(request $request)
     {
       // try {    

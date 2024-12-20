@@ -26,6 +26,7 @@ use App\Http\Controllers\WeekController;
 use App\Http\Controllers\DonormemberController;
 use App\Http\Controllers\DonorwithdrawController;
 use App\Http\Controllers\DuclubController;
+use App\Http\Controllers\CommitteeCustomize\CommitteeUnitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -388,8 +389,18 @@ use App\Http\Controllers\DuclubController;
          Route::post('/pdf/event_report',[AdminController::class,'event_report']);
          Route::post('/pdf/member_info',[AdminController::class,'member_info']);
          Route::post('/pdf/group_report',[AdminController::class,'group_report']);
-      
+
          Route::get('/auto_invoice', [AdminController::class,'auto_invoice']);
+
+
+         // Committee Customize 
+              //Unit
+         Route::get('/committee/unit',[CommitteeUnitController::class,'index']);
+         Route::post('/committee/unit',[CommitteeUnitController::class,'store']);
+         Route::get('/committee/unit_edit/{id}',[CommitteeUnitController::class,'edit']);
+         Route::post('/committee/unit_update',[CommitteeUnitController::class,'update']);
+         Route::delete('/committee/unit_delete/{id}',[CommitteeUnitController::class,'destroy']); 
+   
          
    });
 

@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Member;
 use App\Models\Nonmember;
 use PhpOffice\PhpSpreadsheet\Writer\Ods\Meta;
+use App\Models\Committeeunit;
 use Exception;
 
 class TestimonialController extends Controller
@@ -750,8 +751,16 @@ public function testimonial() {
             ],200); 
         }
        
-     
    }
+
+
+    public function committee_unit($username){
+        $data = Committeeunit::where('admin_name',$username)->where('unit_status',1)->orderBy('unit_name','asc')->get();
+        return response()->json([
+           'status'=>'success'
+            ,'data'=>$data  
+         ],200); 
+    }
 
 
 

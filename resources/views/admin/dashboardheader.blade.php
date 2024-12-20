@@ -181,6 +181,19 @@
         </a>
 
 
+ <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseattan_committee" aria-expanded="false" aria-controls="collapseLayouts">
+     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+        Com... Customize
+     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+     </a>
+       <div class="collapse" id="collapseattan_committee" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+         <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="{{url('/committee/unit')}}"> Committee Unit </a>
+            <a class="nav-link" href="{{url('/committee/year')}}"> Committee Year </a>
+            <a class="nav-link" href="{{url('/committee/list')}}"> Committee List </a>
+        </nav>
+    </div>
+
 
    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseattansms" aria-expanded="false" aria-controls="collapseLayouts">
      <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
