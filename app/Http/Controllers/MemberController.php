@@ -121,6 +121,7 @@ class MemberController extends Controller
                $model->batch_id = $request->input('batch_id');
                $model->profession_id = $request->input('profession_id');
                $model->session_id = $request->input('session_id');
+               $model->committeeunit_id = $request->input('committeeunit_id');
 
 
                if ($request->hasfile('profile_image')) {
