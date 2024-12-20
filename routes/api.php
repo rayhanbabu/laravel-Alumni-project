@@ -112,8 +112,9 @@ use App\Http\Controllers\DonormemberController;
        Route::get('/{username}/non_member_search/{registration}/{status}', [TestimonialController::class, 'non_member_search']);
       
        // Committe Customize 
-        //   Commitee unit
-        Route::get('/{username}/committe_unit', [TestimonialController::class, 'committee_unit']);
+          //Commitee unit
+          Route::get('/{username}/committe_unit', [TestimonialController::class, 'committee_unit']);
+          Route::get('/{username}/university', [TestimonialController::class, 'university']);
 
 
        //Du Club routes
