@@ -14,14 +14,14 @@ $(document).ready(function(){
          processing: true,
          serverSide: true,
          ajax: {
-             url: "/committee/unit",
+             url: "/committee/university",
              error: function(xhr, error, code) {
                  console.log(xhr.responseText);
              }
          },
          columns: [
              { data: 'id', name: 'id' },
-             { data: 'unit_name', name: 'unit_name' },
+             { data: 'university_name', name: 'university_name' },
              { data: 'status', name: 'status' },
              { data: 'edit', name: 'edit', orderable: false, searchable: false },
              { data: 'delete', name: 'delete', orderable: false, searchable: false },
@@ -37,7 +37,7 @@ $(document).ready(function(){
          const fd = new FormData(this);
          $.ajax({
            type:'POST',
-           url:"/committee/unit",
+           url:"/committee/university",
            data: fd,
            cache: false,
            contentType: false,
@@ -57,11 +57,11 @@ $(document).ready(function(){
                 $('#success_message').html("");
                 $('#success_message').addClass('alert alert-success');
                 $('#success_message').text(response.message);
-                $('.error_unit_name').text('');
+                $('.error_university_name').text('');
              
                 fetchAll();
                }else if(response.status == 400){
-                 $('.error_unit_name').text(response.message.unit_name);
+                 $('.error_university_name').text(response.message.university_name);
                
                }             
            }
@@ -77,7 +77,7 @@ $(document).ready(function(){
             // console.log(view_id);         
          $.ajax({
            type: 'GET',
-           url: '/committee/unit_edit/' + view_id,
+           url: '/committee/university_edit/' + view_id,
            success: function(response) {
              //console.log(response);
              if (response.status == 404) {
@@ -86,8 +86,8 @@ $(document).ready(function(){
                $('#success_message').text(response.message);
              } else {
                $('#edit_id').val(response.value.id);
-               $('#edit_unit_name').val(response.value.unit_name);
-               $('#edit_unit_status').val(response.value.unit_status);
+               $('#edit_university_name').val(response.value.university_name);
+               $('#edit_university_status').val(response.value.university_status);
            
 
             
@@ -106,7 +106,7 @@ $(document).ready(function(){
 
      $.ajax({
        type: 'POST',
-       url: '/committee/unit_update',
+       url: '/committee/university_update',
        data: fd,
        cache: false,
        contentType: false,
@@ -124,10 +124,11 @@ $(document).ready(function(){
              $("#edit_employee_form")[0].reset();
              $('#success_message').addClass('alert alert-success');
              $('#success_message').text(response.message);
-             $('.edit_error_unit_name').text('');
+             $('.edit_error_university_name').text('');
              fetchAll();
          } else if (response.status == 400) {
-            $('.edit_error_unit_name').text(response.message.unit_name);
+             $('.edit_error_university_name').text(response.message.university_name);
+          
          }
 
          $('.loader').hide();
@@ -153,7 +154,7 @@ $(document).ready(function(){
          }).then((result) => {
            if (result.isConfirmed) {
              $.ajax({
-               url:'/committee/unit_delete',
+               url:'/committee/university_delete',
                method:'delete',
                data: {
                  id: id,

@@ -3,7 +3,7 @@ namespace App\Http\Controllers\CommitteeCustomize;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\Committeeunit;
+use App\Models\University;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\validator;
 use App\Models\Admin;
@@ -11,7 +11,7 @@ use DB;
 use Yajra\DataTables\DataTables;
 
 
-class CommitteeUnitController extends Controller
+class UniversityController extends Controller
 {
 
    public function index(Request $request){
@@ -19,11 +19,11 @@ class CommitteeUnitController extends Controller
       $admin_name = $request->header('admin_name'); 
     if ($request->ajax()) {
     
-      $data = Committeeunit::where('admin_name',$admin_name)->latest()->get();
+      $data = University::where('admin_name',$admin_name)->latest()->get();
       return Datatables::of($data)
          ->addIndexColumn()
         ->addColumn('status', function($row){
-          $statusBtn = $row->unit_status == '1' ? 
+          $statusBtn = $row->university_status == '1' ? 
               '<button class="btn btn-success btn-sm">Active</button>' : 
               '<button class="btn btn-secondary btn-sm" >Inactive</button>';
           return $statusBtn;
@@ -40,16 +40,15 @@ class CommitteeUnitController extends Controller
         ->make(true);
      }
 
-        return view('committeecustomize.unit');  
+        return view('committeecustomize.university');  
     }
 
 
   
      public function store(Request $request){
          $admin_name = $request->header('admin_name'); 
-         $admin= Admin::where('admin_name',$admin_name)->first();
          $validator=\Validator::make($request->all(),[  
-          'unit_name' => 'required|unique:committeeunits,unit_name,NULL,id,admin_name,' . $admin_name,
+             'university_name' => 'required|unique:universities,university_name,NULL,id,admin_name,' . $admin_name,
           ]);
 
        if($validator->fails()){
@@ -58,10 +57,10 @@ class CommitteeUnitController extends Controller
               'message'=>$validator->messages(),
            ]);
         }else{
-                $app= new Committeeunit;
-                $app->unit_name=$request->input('unit_name');
-                $app->unit_status=1;
-                $app->admin_name=$admin->admin_name;
+                $app= new University;
+                $app->university_name=$request->input('university_name');
+                $app->university_status=1;
+                $app->admin_name=$admin_name;
                 $app->save();
                 return response()->json([
                  'status'=>200,  
@@ -72,7 +71,7 @@ class CommitteeUnitController extends Controller
 
 
         public function edit($id){
-            $edit_value=Committeeunit::find($id);
+            $edit_value=University::find($id);
             if($edit_value){
                return response()->json([
                     'status'=>200,  
@@ -88,10 +87,10 @@ class CommitteeUnitController extends Controller
 
 
      public function update(Request $request){
-          $admin_name = $request->header('admin_name'); 
+         $admin_name = $request->header('admin_name'); 
          $validator=\Validator::make($request->all(),[          
-            'unit_name' => 'required|unique:committeeunits,unit_name,' . $request->input('edit_id') . 'NULL,id,admin_name,' . $admin_name,
-            'unit_status' => 'required',
+            'university_name' => 'required|unique:universities,university_name,' . $request->input('edit_id') . 'NULL,id,admin_name,' . $admin_name,
+            'university_status' => 'required',
          ]);
 
      if($validator->fails()){
@@ -100,10 +99,10 @@ class CommitteeUnitController extends Controller
           'message'=>$validator->messages(),
         ]);
       }else{
-              $model=Committeeunit::find($request->input('edit_id'));
+              $model=University::find($request->input('edit_id'));
             if($model){
-                 $model->unit_name=$request->input('unit_name');
-                 $model->unit_status=$request->input('unit_status');
+                 $model->university_name=$request->input('university_name');
+                 $model->university_status=$request->input('university_status');
                  $model->update();   
               return response()->json([
                   'status'=>200,
@@ -121,8 +120,8 @@ class CommitteeUnitController extends Controller
 
 
      public function destroy(Request $request){
-         $id=$request->id;
-        $notice=Committeeunit::find($id);
+        $id=$request->id;
+        $notice=University::find($id);
         $notice->delete();
         return response()->json([
            'status'=>200,  

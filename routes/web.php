@@ -27,6 +27,7 @@ use App\Http\Controllers\DonormemberController;
 use App\Http\Controllers\DonorwithdrawController;
 use App\Http\Controllers\DuclubController;
 use App\Http\Controllers\CommitteeCustomize\CommitteeUnitController;
+use App\Http\Controllers\CommitteeCustomize\UniversityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -394,12 +395,20 @@ use App\Http\Controllers\CommitteeCustomize\CommitteeUnitController;
 
 
          // Committee Customize 
-              //Unit
+            //Unit
          Route::get('/committee/unit',[CommitteeUnitController::class,'index']);
          Route::post('/committee/unit',[CommitteeUnitController::class,'store']);
          Route::get('/committee/unit_edit/{id}',[CommitteeUnitController::class,'edit']);
          Route::post('/committee/unit_update',[CommitteeUnitController::class,'update']);
-         Route::delete('/committee/unit_delete/{id}',[CommitteeUnitController::class,'destroy']); 
+         Route::delete('/committee/unit_delete',[CommitteeUnitController::class,'destroy']); 
+
+
+            //university
+            Route::get('/committee/university',[UniversityController::class,'index']);
+            Route::post('/committee/university',[UniversityController::class,'store']);
+            Route::get('/committee/university_edit/{id}',[UniversityController::class,'edit']);
+            Route::post('/committee/university_update',[UniversityController::class,'update']);
+            Route::delete('/committee/university_delete',[UniversityController::class,'destroy']); 
    
          
    });

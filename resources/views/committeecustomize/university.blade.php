@@ -1,12 +1,12 @@
 @extends('admin/dashboardheader')
 @section('page_title','Committe Unit')
-@section('unit_select','active')
+@section('university_select','active')
 @section('content')
 
 <div class="card mt-2 mb-2 shadow-sm">
   <div class="card-header">
   <div class="row ">
-               <div class="col-8"> <h5 class="mt-0"> Unit List </h5></div>
+               <div class="col-8"> <h5 class="mt-0"> University List </h5></div>
                      <div class="col-2">
                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                              
@@ -34,7 +34,7 @@
                    <thead>
                      <tr>
                          <td> Id </td>
-                         <td> Unit name</td>
+                         <td> University name</td>
                          <td> Status </td>
                          <td> Edit </td>
                          <td> Delete </td>
@@ -56,7 +56,7 @@
   </div>
 </div>
 
-<script src="{{ asset('js/unit.js') }}"></script>
+<script src="{{ asset('js/university.js') }}"></script>
 
       
      
@@ -76,9 +76,9 @@
 
       
             <div class="col-lg-6">
-                <label for="roll"> Unit Name <span style="color:red;"> * </span> </label>
-                <input type="text" name="unit_name" id="unit_name" class="form-control" placeholder="" required>
-                <p class="text-danger error_unit_name"></p>
+                <label for="roll"> University Name <span style="color:red;"> * </span> </label>
+                <input type="text" name="university_name" id="university_name" class="form-control" placeholder="" required>
+                <p class="text-danger error_university_name"></p>
             </div>
 
 
@@ -122,15 +122,15 @@
           <div class="row">
 
           <div class="col-lg-6">
-                <label for="roll"> Unit Name <span style="color:red;"> * </span> </label>
-                <input type="text" name="unit_name" id="edit_unit_name" class="form-control" placeholder="" required>
-                <p class="text-danger edit_error_unit_name"></p>
+                <label for="roll"> University Name <span style="color:red;"> * </span> </label>
+                <input type="text" name="university_name" id="edit_university_name" class="form-control" placeholder="" required>
+                <p class="text-danger edit_error_university_name"></p>
             </div>
            
 
               <div class="col-lg-6 ">
                   <label class="">  Status  <span style="color:red;"> * </span> </label>
-                     <select class="form-select form-select-sm" name="unit_status" id="edit_unit_status" aria-label="Default select example">
+                     <select class="form-select form-select-sm" name="university_status" id="edit_university_status" aria-label="Default select example">
                        <option value="1">Active</option>
                         <option value="0">Inactive</option>
                     </select>
