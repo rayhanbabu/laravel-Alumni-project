@@ -121,12 +121,20 @@ class UniversityController extends Controller
 
      public function destroy(Request $request){
         $id=$request->id;
-        $notice=University::find($id);
-        $notice->delete();
+        $model=University::find($id);
+        $verify = DB::table('members')->where('university_id', $id)->where('admin_name', $model->admin_name)->count('id');
+        if($verify > 0){
+           return response()->json([
+               'status'=>400,  
+               'message'=>'Cannot delete this University as it is assigned to members',
+             ]);
+        }else{
+        $model->delete();
         return response()->json([
            'status'=>200,  
            'message'=>'Deleted Data',
          ]);
+        }
     }
     
 

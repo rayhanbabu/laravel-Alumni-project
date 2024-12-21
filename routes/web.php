@@ -28,6 +28,7 @@ use App\Http\Controllers\DonorwithdrawController;
 use App\Http\Controllers\DuclubController;
 use App\Http\Controllers\CommitteeCustomize\CommitteeUnitController;
 use App\Http\Controllers\CommitteeCustomize\UniversityController;
+use App\Http\Controllers\CommitteeCustomize\CommitteeYearController;
 
 /*
 |--------------------------------------------------------------------------
@@ -240,9 +241,9 @@ use App\Http\Controllers\CommitteeCustomize\UniversityController;
     //member
     Route::post('/admin/member_add',[AdminController::class,'member_add']);
     Route::get('/admin/member/{category_id}',[AdminController::class, 'member']);
-    Route::get('/admin/member_fetch/{category_id}',[AdminController::class, 'member_fetch']);
+ 
+
     Route::get('/admin/member_view/{id}', [AdminController::class, 'member_view']);
-    Route::get('/admin/member/fetch_data/{category_id}',[AdminController::class, 'member_fetch_data']);
     Route::post('/admin/member_update',[AdminController::class, 'member_update']);
     Route::get('/admin/member/{operator}/{status}/{id}', [AdminController::class, 'memberstatus']);
     Route::get('/admin/member_delete/{id}', [AdminController::class, 'member_delete']);
@@ -409,7 +410,16 @@ use App\Http\Controllers\CommitteeCustomize\UniversityController;
             Route::get('/committee/university_edit/{id}',[UniversityController::class,'edit']);
             Route::post('/committee/university_update',[UniversityController::class,'update']);
             Route::delete('/committee/university_delete',[UniversityController::class,'destroy']); 
-   
+
+
+          //committee Year
+         Route::get('/committee/year',[CommitteeYearController::class,'index']);
+         Route::post('committee/year_insert',[CommitteeYearController::class,'store']);
+         Route::get('/committee/year_fetch/{committeeunit_id}',[CommitteeYearController::class,'fetch']);
+         Route::get('/committee/year/fetch_data/{committeeunit_id}',[CommitteeYearController::class,'fetch_data']);
+         Route::get('/committee/year_edit/{id}',[CommitteeYearController::class,'edit']);
+         Route::post('/committee/year_update/{id}',[CommitteeYearController::class,'update']);
+         Route::delete('/committee/year_delete/{id}',[CommitteeYearController::class,'destroy']);
          
    });
 

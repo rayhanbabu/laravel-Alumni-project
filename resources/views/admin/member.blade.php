@@ -3,110 +3,91 @@
 @section($category_id.'_select','active')
 @section('content')
 
-   <div class="row mt-3 mb-0 mx-2">
-                <div class="col-sm-3 my-2"> <h5 class="mt-0"><?php if($category->category){ echo $category->category;}else{ echo "";}?> View </h5></div>
-                     
-                 <div class="col-sm-6 my-2">
-                 <div class="d-grid gap-2 d-flex justify-content-end"> 
-                      Verified:<span class="text-success">{{$verify}}</span>, 
-                      E-mail Verify Pending:<span class="text-danger">{{$email_verify}}</span>,
-                      Verify Pending:<span class="text-danger">{{$not_verify}}</span> 
-                </div>    
-                </div>
+  
+<div class="card mt-2 mb-2 shadow-sm">
+  <div class="card-header">
+  <div class="row ">
+               <div class="col-4"> <h5 class="mt-0"> {{$category->category}} List </h5></div>
+                     <div class="col-6">
+                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                             Verified:<span class="text-success">{{$verify}}</span>, 
+                             E-mail Verify Pending:<span class="text-danger">{{$email_verify}}</span>,
+                             Verify Pending:<span class="text-danger">{{$not_verify}}</span>            
+                         </div>
+                     </div>
 
-                <div class="col-sm-3 my-2 ">
-                 <div class="d-grid gap-3 d-flex justify-content-end">
-                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddModal">
-                           Add
-                         </button>  
-                 </div>
-                </div>
+                    
+                   <div class="col-2">
+                       <div class="d-grid gap-2 d-md-flex ">
+                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddModal">
+                                    Add
+                                </button>  
+                       </div>
+                     </div> 
 
-                @if(Session::has('success'))
+                     @if(Session::has('success'))
                   <div  class="alert alert-success"> {{Session::get('success')}}</div>
                    @endif
  
                      @if(Session::has('fail'))
                  <div  class="alert alert-danger"> {{Session::get('fail')}}</div>
                   @endif
-       </div>             
-
-   
-    <div class="row my-2">
-    <div class="col-md-3 p-2">
-      <select class="form-select form-select-sm" id="range" name="range" aria-label="Default select example " required>
-                     <option  value="10">10 </option>
-                    <option  value="20">20 </option>
-                    <option  value="50">50 </option>
-                    <option  value="100">100 </option>
-              </select>             
-    
-    </div>
-    <div class="col-md-6 "> </div>
-
-    <div class="col-md-3 p-2">
-     <div class="form-group">
-      <input type="text" name="search" id="search" placeholder="Enter Search " class="form-control form-control-sm"  autocomplete="off"  />
-     </div>
-    </div>
-   </div>
-
-   <div id="success_message"></div>
-				
-<div class="overflow">		
-<div class="x_content">
- <table id="employee_data"  class="table table-bordered table-hover">
-    <thead>
-       <tr>
-       <th width="15%"> Profile Image </th>
-		   <th width="15%">Certificate</th>
-      
-           <th width="8%" class="sorting" data-sorting_type="asc" data-column_name="member_card" style="cursor: pointer">
-           M No  <span id="member_card_icon"> <i class="fas fa-sort-amount-up-alt"></i></span> </th>
-           <th width="8%" class="sorting" data-sorting_type="asc" data-column_name="serial" style="cursor: pointer">
-           SL <span id="serial_icon"> <i class="fas fa-sort-amount-up-alt"></i></span> </th>
-		       <th width="35%">Name</th>
-	         <th width="20%">Email </th>
-           <th width="35%">Mobile</th>
-          
-           <th width="15%">Edit</th>
-           <th width="5%">View</th>		
-          
-          <th width="8%" class="sorting" data-sorting_type="asc" data-column_name="email_verify" style="cursor: pointer">
-          Email Verification <span id="email_verify_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
-
-           <th width="8%" class="sorting" data-sorting_type="asc" data-column_name="member_verify" style="cursor: pointer">
-           Member Verification <span id="member_verify_icon" ><i class="fas fa-sort-amount-up-alt"></i></span> </th>
-          <th width="5%" >Status</th>
-          <th width="5%" >Delete</th>
-          <th width="15%">Batch</th>
-          <th width="15%">Session</th>
-          <th width="15%">Profession</th>
-          <th width="5%">Password</th>
-          <th width="15%">UId</th>
-      </tr>
-
-      <tr>
-          <td colspan="19">
-            <div  class="loader_page text-center">
-                <img src="{{ asset('images/abc.gif') }}" alt="" style="width: 50px;height:50px;">
-            </div>
-         </td>
-      </tr>
-    </thead>
-    <tbody>
+         </div>
+           
+      </div>
+  <div class="card-body">   
        
-    </tbody>
-  </table>
+   <div class="row">
+       <div id="success_message"></div>
 
-     <input type="hidden" name="hidden_page" id="hidden_page" value="1"/>
-     <input type="hidden" name="hidden_column_name" id="hidden_column_name" value="member_verify" />
-     <input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="desc" />
+         <div class="col-md-12">
+           <div class="table-responsive">
+                <table class="table  table-bordered data-table">
+                   <thead>
+                     <tr>
+                         <th width="15%"> Profile Image </th>
+                         <th width="15%">Certificate</th>
+                         <th> Member No </th>       
+                         <th> SL No </th>
+                         <th width="35%">Name</th>
+	                    
+                         <th width="35%">Mobile</th>
 
-     <input type="hidden" name="category_id" id="category_id" value="{{$category_id}}"/>
- 
- 
-</div>
+                         <th width="15%">Edit</th>
+                         <th width="5%">View</th>	
+
+                          <th> Email Verification </th>
+                          <th> Memeber Verification </th>
+
+                          <th width="5%" >Status</th>
+                          <th width="5%" >Delete</th>
+
+                          <th width="15%"> Unit of Committee </th>
+                          <th width="20%">Email </th>
+                          <th width="15%">Batch</th>
+                          <th width="15%">Session</th>
+                          <th width="15%">Profession</th>
+                          <th width="5%">Password</th>
+                          <th width="15%">UId</th>
+                          <th width="15%">University</th>
+                        
+                        
+                      </tr>
+                   </thead>
+                   <tbody>
+
+                   </tbody>
+
+                </table>
+          </div>
+
+
+
+       </div>
+    </div>
+
+
+  </div>
 </div>
 
 
@@ -210,24 +191,58 @@
 
               var category=$('#category').val();
 
-        fetchAll();
-         function fetchAll(){
-            $.ajax({
-              type:'GET',
-              url:'/admin/member_fetch/{{$category_id}}',
-              datType:'json',
-              success:function(response){
-                    $('tbody').html('');
-                    $('.x_content tbody').html(response);
-                 }
-              });
-         }
+         fetchAll();
+
+         function fetchAll() {
+        // Destroy existing DataTable if it exists
+        if ($.fn.DataTable.isDataTable('.data-table')) {
+            $('.data-table').DataTable().destroy();
+        }
+
+        // Initialize DataTable
+        var table = $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                 url:'/admin/member/{{$category_id}}',
+                error: function(xhr, error, code) {
+                    console.log(xhr.responseText);
+                }
+            },
+            columns: [
+                { data: 'image', name: 'image' },
+                { data: 'image2', name: 'image2' },
+                { data: 'member_card', name: 'member_card' },
+                { data: 'serial', name: 'serial' },
+                { data: 'name', name: 'name' },
+             
+                { data: 'phone', name: 'phone' },
+                { data: 'edit', name: 'edit', orderable: false, searchable: false },
+                { data: 'view', name: 'view', orderable: false, searchable: false },
+          
+                { data: 'email_verify', name: 'email_verify' },
+                { data: 'member_verify', name: 'member_verify' },
+                { data: 'status', name: 'status' },
+                { data: 'delete', name: 'delete', orderable: false, searchable: false },
+                
+                { data: 'unit_name', name: 'unit_name' },
+                { data: 'email', name: 'email' },
+                { data: 'batch_id', name: 'batch_id' },
+                { data: 'session_id', name: 'session_id' },
+                { data: 'profession_id', name: 'profession_id' },
+                { data: 'member_password', name: 'member_password' },
+                { data: 'id', name: 'id' },
+                { data: 'university_name', name: 'university_name' },
+
+            ]
+        });
+    }
+      
  
-     
 
          $(document).on('click', '.edit', function(e){ 
             e.preventDefault(); 
-            var view_id = $(this).val(); 
+            var view_id = $(this).data('id'); 
             $('#EditModal').modal('show');
             $.ajax({
              type:'GET',
@@ -256,6 +271,8 @@
                   $('#edit_batch_id').val(response.value.batch_id);
                   $('#edit_session_id').val(response.value.session_id);
                   $('#edit_organization').val(response.value.organization);
+                  $('#edit_university_id').val(response.value.university_id);
+                  $('#edit_committeeunit_id').val(response.value.committeeunit_id);
                   $("#avatar_image").html(
                 `<img src="/uploads/admin/${response.value.profile_image}" width="100" class="img-fluid img-thumbnail">`);
                 }
@@ -268,7 +285,7 @@
 
       $(document).on('click', '.view_all', function(e){ 
             e.preventDefault(); 
-            var view_id = $(this).val(); 
+            var view_id = $(this).data('id'); 
             //alert(edit_id)
             $('#ViewModal').modal('show');
             $.ajax({
@@ -357,87 +374,6 @@
       
       });
 
-
-        
-       
-
-
-
-
-
-
-      function fetch_data(page, sort_type="", sort_by="", search="",range=""){
-        $.ajax({
-        url:"/admin/member/fetch_data/{{$category_id}}"+"?page="+page+"&sortby="+sort_by+"&sorttype="+sort_type+"&search="+search+"&range="+range,
-        beforeSend : function()
-               {
-               $('.loader_page').show();
-               },
-        success:function(data)
-        {
-         $('tbody').html('');
-         $('.loader_page').hide();
-         $('.x_content tbody').html(data);
-        }
-        });
-         }
-   
-       
-    $(document).on('keyup', '#search', function(){
-        var search = $('#search').val();
-        var column_name = $('#hidden_column_name').val();
-        var sort_type = $('#hidden_sort_type').val();
-        var page = $('#hidden_page').val();
-        var range = $('#range').val();
-        fetch_data(page, sort_type, column_name, search,range);
-      });
-
-
-      $(document).on('click', '.pagin_link a', function(event){
-           event.preventDefault();
-           var page = $(this).attr('href').split('page=')[1];
-           var column_name = $('#hidden_column_name').val();
-           var sort_type = $('#hidden_sort_type').val();
-           var search = $('#search').val();
-           var range = $('#range').val();
-          fetch_data(page, sort_type, column_name, search,range);
-        }); 
-
-
-        $(document).on('click', '.sorting', function(){
-          var column_name = $(this).data('column_name');
-          var order_type = $(this).data('sorting_type');
-          var reverse_order = '';
-            if(order_type == 'asc')
-             {
-            $(this).data('sorting_type', 'desc');
-            reverse_order = 'desc';
-            $('#'+column_name+'_icon').html('<i class="fas fa-sort-amount-down"></i>');
-             }
-            else
-            {
-            $(this).data('sorting_type', 'asc');
-            reverse_order = 'asc';
-            $('#'+column_name+'_icon').html('<i class="fas fa-sort-amount-up-alt"></i>');
-            }
-           $('#hidden_column_name').val(column_name);
-           $('#hidden_sort_type').val(reverse_order);
-           var page = $('#hidden_page').val();
-           var search = $('#search').val();
-           var range = $('#range').val();
-          fetch_data(page, reverse_order, column_name, search,range);
-          });
-
-
-	
-          $(document).on('change', '#range', function(){
-               var search = $('#search').val();
-               var column_name = $('#hidden_column_name').val();
-               var sort_type = $('#hidden_sort_type').val();
-               var page = $('#hidden_page').val();
-              var range = $('#range').val();
-             fetch_data(page, sort_type, column_name, search,range);
-  });
 
 
   $(document).on('submit', '#add_form', function(e){ 
@@ -559,18 +495,32 @@
               </div>
 
 
-            <div class="col-lg-7 my-2">
-                    <label>Committee Designation  </label>
-                    <input name="designation"  type="text" id="edit_designation" class="form-control" value=""  />
-                    <p class="text-danger edit_err_designation"></p>
-              </div>
+               <div class="col-lg-4 my-2">
+                  <label for="lname"> Unit of Committee <span style="color:red;"> * </span> </label>
+                   <select class="form-select" name="committeeunit_id" id="edit_committeeunit_id" aria-label="Default select example" required >
+                        @foreach(committee_unit() as $category) 
+                            <option value="{{$category->id}}">{{$category->unit_name}}</option>
+                       @endforeach
+                  </select>
+               </div>
 
-              <div class="col-lg-5 my-2">
-              <label for="lname">Batch/Session</label>
-                 <select class="form-select" name="batch_id" id="edit_batch_id" aria-label="Default select example"  >
+
+               <div class="col-lg-4 my-2">
+                  <label for="lname"> University <span style="color:red;"> * </span> </label>
+                   <select class="form-select" name="university_id" id="edit_university_id" aria-label="Default select example" required >
+                        @foreach(university() as $category) 
+                            <option value="{{$category->id}}">{{$category->university_name}}</option>
+                       @endforeach
+                  </select>
+               </div>
+
+
+              <div class="col-lg-4 my-2">
+                <label for="lname">Batch/Session</label>
+                   <select class="form-select" name="batch_id" id="edit_batch_id" aria-label="Default select example"  >
                        <option value="">Select One</option>
-                 @foreach(batch_category() as $category) 
-                         <option value="{{$category->id}}">{{$category->category}}</option>
+                     @foreach(batch_category() as $category) 
+                          <option value="{{$category->id}}">{{$category->category}}</option>
                      @endforeach
                 </select>
               </div>

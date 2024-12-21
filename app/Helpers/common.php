@@ -39,66 +39,70 @@ function prx($arr){
    Mail::to($email)->send(new \App\Mail\LoginMail($details));
 }
 
+     function alumni_info(){
+           $alumni_info=Cookie::get('alumni_info');
+           $result=unserialize($alumni_info);
+           return $result;
+          }
+
+
+      function admin_info(){
+          $alumni_token=Cookie::get('alumni_token');
+          $result=AlumniJWTToken::ReadToken($alumni_token);
+           return $result;
+      }
+
   
-   function member_category(){
-         $alumni_token=Cookie::get('alumni_token');
-         $result=AlumniJWTToken::ReadToken($alumni_token);
-         $category=DB::table('apps')->where('admin_name',$result->admin_name)->where('admin_category','Member')->get();
-        return $category;
-       
-    }
-
-    function event_category(){
-      $alumni_token=Cookie::get('alumni_token');
-      $result=AlumniJWTToken::ReadToken($alumni_token);
-      $category=DB::table('apps')->where('admin_name',$result->admin_name)->where('admin_category','Event')->get();
-     return $category;
-    
- }
-
-
-      function batch_category(){
-            $alumni_token=Cookie::get('alumni_token');
-            $result=AlumniJWTToken::ReadToken($alumni_token);
-            $category=DB::table('apps')->where('admin_name',$result->admin_name)->where('admin_category','Batch')->get();
-            return $category;
+      function member_category(){
+          $category=DB::table('apps')->where('admin_name',admin_info()->admin_name)->where('admin_category','Member')->get();
+          return $category;
        }
 
+       function event_category(){
+            $category=DB::table('apps')->where('admin_name',admin_info()->admin_name)->where('admin_category','Event')->get();
+           return $category;
+         }
 
-       function profession_category(){
-            $alumni_token=Cookie::get('alumni_token');
-            $result=AlumniJWTToken::ReadToken($alumni_token);
-            $category=DB::table('apps')->where('admin_name',$result->admin_name)->where('admin_category','Profession')->get();
+
+        function batch_category(){
+            $category=DB::table('apps')->where('admin_name',admin_info()->admin_name)->where('admin_category','Batch')->get();
+            return $category;
+         }
+
+
+        function profession_category(){
+              $category=DB::table('apps')->where('admin_name',admin_info()->admin_name)->where('admin_category','Profession')->get();
               return $category;
         }
 
         function session_category(){
-         $alumni_token=Cookie::get('alumni_token');
-         $result=AlumniJWTToken::ReadToken($alumni_token);
-         $category=DB::table('apps')->where('admin_name',$result->admin_name)->where('admin_category','Session')->get();
+            $category=DB::table('apps')->where('admin_name',admin_info()->admin_name)->where('admin_category','Session')->get();
            return $category;
-     }
+          }
 
      function show_category($id){
-         $alumni_token=Cookie::get('alumni_token');
-         $result=AlumniJWTToken::ReadToken($alumni_token);
-         $category=DB::table('apps')->where('id',$id)->where('admin_name',$result->admin_name)->first();
+         $category=DB::table('apps')->where('id',$id)->where('admin_name',admin_info()->admin_name)->first();
          return $category?$category->category:"";
      }
 
-   function news_category(){
-      $alumni_token=Cookie::get('alumni_token');
-      $result=AlumniJWTToken::ReadToken($alumni_token);
-      $category=DB::table('weeks')->where('admin_name',$result->admin_name)->where('category_name','Event')->orderBy('serial','asc')->get();
-      return $category;
-    }
+     function committee_unit(){
+        $category=DB::table('committeeunits')->where('admin_name',admin_info()->admin_name)->where('unit_status',1)->orderBy('unit_name','asc')->get();
+        return $category;
+      }
 
-        function alumni_info(){
-          $alumni_info=Cookie::get('alumni_info');
-          $result=unserialize($alumni_info);
-          return $result;
+      function university(){
+         $category=DB::table('universities')->where('admin_name',admin_info()->admin_name)->where('university_status',1)->orderBy('university_name','asc')->get();
+         return $category;
        }
+ 
 
+
+     function news_category(){
+        $category=DB::table('weeks')->where('admin_name',admin_info()->admin_name)->where('category_name','Event')->orderBy('serial','asc')->get();
+        return $category;
+     }
+
+     
     
   
 
