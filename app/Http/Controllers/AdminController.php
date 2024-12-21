@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\validator;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\URL;
+use Yajra\DataTables\DataTables;
 use App\Exports\UserExport;
 use App\Exports\NonMemberExport;
 use App\Models\Member;
@@ -308,46 +310,109 @@ class AdminController extends Controller
   }
 
 
-
-  public function member(request $request,$category_id)
-  {
-    try {
-        $status1 = 0;
-        $status = 1;
-        $admin_name = $request->header('admin_name'); 
-        $category = DB::table('apps')->where('admin_name',$admin_name)->where('admin_category','Member')
-          ->where('id', $category_id)->first();
-
-        if($category) {
-          $verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin_name)->where('member_verify', $status)->count('id');
-          $not_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin_name)->where('member_verify', $status1)->count('id');
-          $email_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin_name)->where('email_verify', $status1)->count('id');
-          return view('admin.member', ['category' => $category, 'category_id' => $category_id, 'verify' => $verify, 'not_verify' => $not_verify, 'email_verify' => $email_verify]);
-        } else {
-          return "Something Error occurred";
-        }
-      
-    } catch (Exception $e) {
-      return  'something Error';
-    }
-  }
-
-
-  public function member_fetch(request $request,$category_id)
-  {
-    try {
+  public function member(Request $request, $category_id){
+      $status1 = 0;
+      $status = 1;
       $admin_name = $request->header('admin_name'); 
-      $data = Member::leftjoin('apps', 'apps.id', '=', 'members.category_id')
-        ->where('members.admin_name', $admin_name)->Where('members.category_id', $category_id)
-        ->select('apps.category', 'members.*')->orderBy('member_verify', 'asc')->paginate(10);
-      return view('admin.member_data', compact('data'));
-    } catch (Exception $e) {
-      return  'something Error';
-    }
+      $category = DB::table('apps')->where('admin_name',$admin_name)->where('admin_category','Member')
+        ->where('id', $category_id)->first();
+
+       $verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin_name)->where('member_verify', $status)->count('id');
+       $not_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin_name)->where('member_verify', $status1)->count('id');
+       $email_verify = DB::table('members')->where('category_id', $category_id)->where('admin_name', $admin_name)->where('email_verify', $status1)->count('id');
+
+
+  if ($request->ajax()) {
+       $data = Member::leftjoin('committeeunits','committeeunits.id','=','members.committeeunit_id')
+         ->leftjoin('universities','universities.id','=','members.university_id')
+         ->where('members.admin_name',$admin_name)->where('members.category_id',$category_id)
+         ->select('committeeunits.unit_name','universities.university_name','members.*')->latest()->get();
+        return Datatables::of($data)
+           ->addIndexColumn()
+           ->addColumn('image', function($row){
+              $imageUrl = URL::to('uploads/admin/'.$row->profile_image); // Assuming 'profile_image' is the field name in the database
+              return '<a href="' . $imageUrl . '" > Profile </a>';
+            })
+
+            ->addColumn('image2', function($row){
+              $imageUrl = URL::to('uploads/admin/'.$row->certificate_image); // Assuming 'profile_image' is the field name in the database
+              return '<a href="' . $imageUrl . '" > Profile </a>';
+            })
+
+          ->addColumn('email_verify', function ($row) {
+            if ($row->email_verify == 1) {
+                return '<a href="' . url('admin/member/email/deactive/' . $row->id) . '" 
+                           onclick="return confirm(\'Are you sure you want to Change this status?\')" 
+                           class="btn btn-success btn-sm">
+                           Verified
+                        </a>';
+            } else {
+                return '<a href="' . url('admin/member/email/active/' . $row->id) . '" 
+                           onclick="return confirm(\'Are you sure you want to Move this status?\')" 
+                           class="btn btn-danger btn-sm">
+                           Pending Verification
+                        </a>';
+            }
+         })
+
+
+         ->addColumn('member_verify', function ($row) {
+          if ($row->member_verify == 1) {
+              return '<a href="' . url('admin/member/verify/deactive/' . $row->id) . '" 
+                         onclick="return confirm(\'Are you sure you want to verify this profile?\')" 
+                         class="btn btn-success btn-sm">
+                         Verified
+                      </a>';
+           } else {
+              return '<a href="' . url('admin/member/verify/active/' . $row->id) . '" 
+                         onclick="return confirm(\'Are you sure you want to verify this profile?\')" 
+                         class="btn btn-danger btn-sm">
+                         Pending Verification
+                      </a>';
+             }
+           })
+
+           ->addColumn('status', function ($row) {
+             if ($row->status == 1) {
+                  return '<a href="' . url('admin/member/status/deactive/' . $row->id) . '" 
+                           onclick="return confirm(\'Are you sure you want to Change this status?\')" 
+                           class="btn btn-success btn-sm">
+                           Active
+                        </a>';
+              } else {
+                  return '<a href="' . url('admin/member/status/active/' . $row->id) . '" 
+                           onclick="return confirm(\'Are you sure you want to Change this status?\')" 
+                           class="btn btn-danger btn-sm">
+                           Inactive
+                        </a>';
+              }
+           })
+
+           ->addColumn('view', function($row){
+             $btn = '<a href="javascript:void(0);" data-id="' . $row->id . '" class="view_all btn btn-primary btn-sm">View</a>';
+              return $btn;
+          })
+         ->addColumn('edit', function($row){
+            $btn = '<a href="javascript:void(0);" data-id="' . $row->id . '" class="edit btn btn-primary btn-sm">Edit</a>';
+            return $btn;
+         })
+         ->addColumn('delete', function($row){
+             $btn = '<a href="/admin/member_delete/' . $row->id . '" 
+                    onclick="return confirm(\'Are you sure you want to delete this item?\')" 
+                    class="btn btn-danger btn-sm">
+                     Delete
+                </a>';
+             return $btn;
+         })
+      ->rawColumns(['image','image2','status','edit','delete','view','email_verify','member_verify'])
+      ->make(true);
+   }
+
+   return view('admin.member', ['category' => $category, 'category_id' => $category_id, 'verify' => $verify, 'not_verify' => $not_verify, 'email_verify' => $email_verify]);
   }
 
 
-
+  
 
 
   public function memberstatus($operator, $status, $id)
@@ -386,28 +451,7 @@ class AdminController extends Controller
   }
 
 
-  function member_fetch_data(Request $request)
-  {
-    $admin_name = $request->header('admin_name'); 
-    if ($request->ajax()) {
-       $sort_by = $request->get('sortby');
-       $sort_type = $request->get('sorttype');
-       $search = $request->get('search');
-       $range = $request->get('range');
-       $search = str_replace(" ", "%", $search);
-       $data = Member::leftjoin('apps', 'apps.id', '=', 'members.category_id')
-        ->where('members.admin_name', $admin_name)->Where('members.category_id', $request->category_id)
-        ->where(function ($query) use ($search) {
-          $query->where('members.phone', 'like', '%' . $search . '%')
-            ->orWhere('member_card', 'like', '%' . $search . '%')
-            ->orWhere('name', 'like', '%' . $search . '%')
-            ->orWhere('email', 'like', '%' . $search . '%');
-         })->select('apps.category', 'members.*')->orderBy('member_verify', 'asc')->orderBy($sort_by, $sort_type)
-          ->paginate($range);
-         return view('admin.member_data', compact('data'))->render();
-    }
-  }
-
+ 
 
   public function member_view($id)
   {
@@ -485,10 +529,13 @@ class AdminController extends Controller
         $model->phone_status = $request->input('phone_status');
         $model->blood_status = $request->input('blood_status');
         $model->organization = $request->input('organization');
-
         $model->village = $request->input('village');
+
         $model->batch_id = $request->input('batch_id');
         $model->profession_id = $request->input('profession_id');
+        $model->committeeunit_id = $request->input('committeeunit_id');
+        $model->university_id = $request->input('university_id');
+
         if ($request->hasfile('image')) {
           $imgfile = 'profile-';
           $size = $request->file('image')->getsize();
