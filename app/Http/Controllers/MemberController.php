@@ -122,7 +122,7 @@ class MemberController extends Controller
                $model->profession_id = $request->input('profession_id');
                $model->session_id = $request->input('session_id');
                $model->committeeunit_id = $request->input('committeeunit_id');
-               $model->univeristy_id = $request->input('univeristy_id');
+               $model->university_id = $request->input('university_id');
 
 
                if ($request->hasfile('profile_image')) {
